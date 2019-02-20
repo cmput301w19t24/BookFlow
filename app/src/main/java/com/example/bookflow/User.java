@@ -1,31 +1,45 @@
+/**
+ * author: Yuhan Ye
+ * date: 2019/2/20
+ */
 package com.example.bookflow;
 
 import java.util.ArrayList;
 
+/**
+ * User class
+ */
 public class User implements Owner,Borrower{
     private String username;
     private String password;
     private String email;
     private int phoneNumber;
-    private ArrayList<Book> ownedBooks;
-    private ArrayList<Book> borrowedBooks;
+    private ArrayList<BookCopy> ownedBooks;
+    private ArrayList<BookCopy> borrowedBooks;
     private ArrayList<Request>  requests;
     private ArrayList<Review> reviews;
 
-
+=
     @Override
-    public void addBook(String title, String author, int ISBN) {
-        Book book = new Book(title,author,ISBN);
-        ownedBooks.add(book);
+    public void addBook(BookCopy bookCopy) {
+        ownedBooks.add(bookCopy);
     }
 
+    /**
+     *
+     * @param ISBN
+     */
     @Override
     public void getBookDescription(int ISBN) {
 
     }
 
+    /**
+     *
+     * @param bookCopy
+     */
     @Override
-    public void setStatus(Book book) {
+    public void setStatus(BookCopy bookCopy) {
 
     }
 
