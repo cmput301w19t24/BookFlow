@@ -4,19 +4,17 @@ import java.util.ArrayList;
 
 /**
  * Represent a single copy of a kind of book.
- * For example a book called "Frankenstein" may have multiple copies and each one may have different owner, borrower or isbn.
+ * For example a book called "Frankenstein" may have multiple copies and each one may have different owner, borrower or status.
  */
 public class BookCopy{
     Book book;
-    int isbn;
     String status;
     User owner;
     User borrower;
     ArrayList<Photo> photos = new ArrayList<>();
     
-    public BookCopy(Book book, int isbn, User owner){
+    public BookCopy(Book book, User owner){
         this.book = book;
-        this.isbn = isbn;
         this.owner = owner;
     }
     
