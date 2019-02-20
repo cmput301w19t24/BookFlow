@@ -41,6 +41,6 @@ public class BookCopy{
     }
     
     public setBorrower(User newborrower){
-        this.borrower = newborrower;
+        this.borrower = newBorrower;
     }
 }
