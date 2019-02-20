@@ -9,7 +9,7 @@ public interface Owner {
 
     public void editBookDescription();
 
-    public void deleteBook();
+    public void deleteBook(BookCopy bookCopy);
 
     public void viewRequest(BookCopy bookCopy);
 
