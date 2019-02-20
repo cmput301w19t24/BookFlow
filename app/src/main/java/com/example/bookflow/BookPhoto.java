@@ -1,7 +1,7 @@
 package com.example.bookflow;
 
 public class BookPhoto extends Photo {
-    BookPhoto() {
-
+    public BookPhoto(StorageReference storageReference) {
+        super(storageReference);
     }
 }
