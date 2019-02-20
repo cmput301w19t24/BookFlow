@@ -1,7 +1,7 @@
 package com.example.bookflow;
 
 public interface Owner {
-    public void addBook(BookCopy bookCopy);
+    public void addBook(Book book);
 
     public void getBookDescription(String ISBN);
 
@@ -9,21 +9,21 @@ public interface Owner {
 
     public void editBookDescription();
 
-    public void deleteBook(BookCopy bookCopy);
+    public void deleteBook(Book book);
 
-    public void viewRequest(BookCopy bookCopy);
+    public void viewRequest(Book book);
 
-    public void acceptRequest(BookCopy bookCopy);
+    public void acceptRequest(Book book);
 
-    public void declineRequest(BookCopy bookCopy);
+    public void declineRequest(Book book);
 
-    public void handOverBook(BookCopy bookCopy, String ISBN);
+    public void handOverBook(Book book, String ISBN);
 
-    public void receiveReturnedBook(BookCopy bookCopy, String ISBN);
+    public void receiveReturnedBook(Book book, String ISBN);
 
-    public void attachPhoto(BookCopy bookCopy);
+    public void attachPhoto(Book book);
 
-    public void deletePhoto(BookCopy bookCopy);
+    public void deletePhoto(Book book);
 
     public void specifyGeolocation();
 }
