@@ -2,6 +2,10 @@ package com.example.bookflow;
 
 import java.util.ArrayList;
 
+/**
+ * Represent a single copy of a kind of book.
+ * For example a book called "Frankenstein" may have multiple copies and each one may have different owner, borrower or isbn.
+ */
 public class BookCopy{
     Book book;
     int isbn;
