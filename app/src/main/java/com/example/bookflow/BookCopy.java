@@ -13,36 +13,36 @@ public class BookCopy{
     User borrower;
     ArrayList<Photo> photos = new ArrayList<>();
     
-    public BookCopy(Book book, User owner){
+    public void BookCopy(Book book, User owner){
         this.book = book;
         this.owner = owner;
     }
     
-    public setStatus(String newStatus){
+    public void setStatus(String newStatus){
         this.status = newStatus;
     }
     
-    public addPhoto(BookPhoto photo){
+    public void addPhoto(BookPhoto photo){
         photos.add(photo);
     }
     
-    public getPhoto(int index){
+    public Photo getPhoto(int index){
         return photos.get(index);
     }
     
-    public deletePhoto(int index){
+    public void deletePhoto(int index){
         photos.remove(index);
     }
     
-    public getOwner(){
+    public User getOwner(){
         return this.owner;
     }
     
-    public getBorrower(){
+    public User getBorrower(){
         return this.borrower;
     }
     
-    public setBorrower(User newborrower){
+    public void setBorrower(User newborrower){
         this.borrower = newBorrower;
     }
 }
