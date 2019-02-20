@@ -1,6 +1,16 @@
 package com.example.bookflow;
 
-public interface Borrower {
+import java.util.ArrayList;
 
+public interface Borrower {
+    void setStatus(BookCopy bookCopy, String status);
+    void searchBook(ArrayList<String> keywords);
+    void requestBook(BookCopy bookCopy);
+    ArrayList<BookCopy> listRequestedBooks();
+    ArrayList<BookCopy> listAcceptedBooks();
+    void receiveAcceptedBook();
+    void listBorrowingBooks();
+    void handOverBook();
+    void viewGeoLocation(BookCopy bookCopy);
 
 }
