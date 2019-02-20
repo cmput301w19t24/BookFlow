@@ -119,10 +119,7 @@ public class User implements Owner,Borrower{
 
     }
 
-    @Override
-    public void viewGeoLocation(BookCopy bookCopy) {
 
-    }
 
     public void editContactInfo(String e, String p) {
         email = e;

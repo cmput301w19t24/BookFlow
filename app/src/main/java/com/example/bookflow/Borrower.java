@@ -44,10 +44,4 @@ public interface Borrower {
      */
     void handOverBook();
 
-    /**
-     * view the geo location of the book
-     * @param bookCopy
-     */
-    void viewGeoLocation(BookCopy bookCopy);
-
 }
