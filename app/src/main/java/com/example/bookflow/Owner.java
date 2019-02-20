@@ -5,8 +5,6 @@ public interface Owner {
 
     public void getBookDescription(String ISBN);
 
-    public void setStatus(BookCopy bookCopy);
-
     public void viewOwnedBooks();
 
     public void editBookDescription();
