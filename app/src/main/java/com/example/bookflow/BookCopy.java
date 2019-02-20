@@ -11,7 +11,7 @@ public class BookCopy{
     String status;
     User owner;
     User borrower;
-    ArrayList<Photo> photos = new ArrayList<>();
+    ArrayList<Photo> photos = new ArrayList<Photo>();
     
     public void BookCopy(Book book, User owner){
         this.book = book;
@@ -42,7 +42,7 @@ public class BookCopy{
         return this.borrower;
     }
     
-    public void setBorrower(User newborrower){
+    public void setBorrower(User newBorrower){
         this.borrower = newBorrower;
     }
 }

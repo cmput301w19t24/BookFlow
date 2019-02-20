@@ -11,15 +11,15 @@ class Book {
         this.isbn = isbn;
     }
     
-    public getTitle(){
+    public String getTitle(){
         return this.title;
     }
     
-    public getAuthor(){
+    public String getAuthor(){
         return this.author;
     }
     
-    public getisbn(){
+    public String getisbn(){
         return this.isbn;
     }
 

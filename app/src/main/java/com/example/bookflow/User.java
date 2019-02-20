@@ -19,7 +19,6 @@ public class User implements Owner,Borrower{
     private ArrayList<Request>  requests;
     private ArrayList<Review> reviews;
 
-=
     @Override
     public void addBook(BookCopy bookCopy) {
         ownedBooks.add(bookCopy);
