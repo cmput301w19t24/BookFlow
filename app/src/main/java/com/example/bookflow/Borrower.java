@@ -5,13 +5,6 @@ import java.util.ArrayList;
 public interface Borrower {
 
     /**
-     * set the status of a book
-     * @param bookCopy the book whose status will be changed
-     * @param status the status
-     */
-    void setStatus(BookCopy bookCopy, String status);
-
-    /**
      * search for books, given a list of keywords
      * @param keywords an ArrayList of keywords
      */
