@@ -11,11 +11,13 @@ public class BookCopy{
     String status;
     User owner;
     User borrower;
+    int requestCount;
     ArrayList<Photo> photos = new ArrayList<Photo>();
     
     public void BookCopy(Book book, User owner){
         this.book = book;
         this.owner = owner;
+        this.requestCount = 0;
     }
     
     public void setStatus(String newStatus){
@@ -44,5 +46,13 @@ public class BookCopy{
     
     public void setBorrower(User newBorrower){
         this.borrower = newBorrower;
+    }
+    
+    public void countIncrease(){
+        this.requestCount ++;
+    }
+    
+    public int getCount(){
+        return this.requestCount;
     }
 }
