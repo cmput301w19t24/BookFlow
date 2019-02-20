@@ -5,6 +5,11 @@ class Book {
     String author;
     String isbn;
     int rating;
+    String status;
+    User owner;
+    User borrower;
+    int requestCount;
+    ArrayList<Photo> photos = new ArrayList<Photo>();
     
     public Book(String title, String author, String isbn){
         this.title = title;
