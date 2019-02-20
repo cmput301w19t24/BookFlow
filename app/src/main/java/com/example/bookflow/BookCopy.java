@@ -55,4 +55,8 @@ public class BookCopy{
     public int getCount(){
         return this.requestCount;
     }
+    
+    public Book getBook(){
+        return this.book;
+    }
 }
