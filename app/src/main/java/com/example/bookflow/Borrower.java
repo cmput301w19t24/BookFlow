@@ -3,7 +3,6 @@ package com.example.bookflow;
 import java.util.ArrayList;
 
 public interface Borrower {
-    void setStatus(BookCopy bookCopy, String status);
     void searchBook(ArrayList<String> keywords);
     void requestBook(BookCopy bookCopy);
     ArrayList<BookCopy> listRequestedBooks();

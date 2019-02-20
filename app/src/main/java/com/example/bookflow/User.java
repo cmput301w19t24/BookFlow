@@ -24,12 +24,8 @@ public class User implements Owner,Borrower{
         ownedBooks.add(bookCopy);
     }
 
-    /**
-     *
-     * @param ISBN
-     */
     @Override
-    public void getBookDescription(int ISBN) {
+    public void getBookDescription(String ISBN) {
 
     }
 
@@ -49,18 +45,82 @@ public class User implements Owner,Borrower{
     }
 
     @Override
-    public void viewRequest(Book book) {
+    public void viewRequest(BookCopy bookCopy) {
 
     }
 
     @Override
-    public void acceptRequest(Book book) {
+    public void acceptRequest(BookCopy bookCopy) {
 
     }
 
     @Override
-    public void declineRequest(Book book) {
+    public void declineRequest(BookCopy bookCopy) {
 
     }
 
+    @Override
+    public void handOverBook(BookCopy bookCopy, String ISBN) {
+
+    }
+
+    @Override
+    public void receiveReturnedBook(BookCopy bookCopy, String ISBN) {
+
+    }
+
+    @Override
+    public void attachPhoto(BookCopy bookCopy) {
+
+    }
+
+    @Override
+    public void deletePhoto(BookCopy bookCopy) {
+
+    }
+
+    @Override
+    public void specifyGeolocation() {
+
+    }
+
+    @Override
+    public void searchBook(ArrayList<String> keywords) {
+
+    }
+
+    @Override
+    public void requestBook(BookCopy bookCopy) {
+
+    }
+
+    @Override
+    public ArrayList<BookCopy> listRequestedBooks() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<BookCopy> listAcceptedBooks() {
+        return null;
+    }
+
+    @Override
+    public void receiveAcceptedBook() {
+
+    }
+
+    @Override
+    public void listBorrowingBooks() {
+
+    }
+
+    @Override
+    public void handOverBook() {
+
+    }
+
+    @Override
+    public void viewGeoLocation(BookCopy bookCopy) {
+
+    }
 }
