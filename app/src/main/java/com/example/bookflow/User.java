@@ -13,7 +13,7 @@ public class User implements Owner,Borrower{
     private String username;
     private String password;
     private String email;
-    private int phoneNumber;
+    private String phoneNumber;
     private ArrayList<BookCopy> ownedBooks;
     private ArrayList<BookCopy> borrowedBooks;
     private ArrayList<Request>  requests;
@@ -122,5 +122,10 @@ public class User implements Owner,Borrower{
     @Override
     public void viewGeoLocation(BookCopy bookCopy) {
 
+    }
+
+    public void editContactInfo(String e, String p) {
+        email = e;
+        phoneNumber = p;
     }
 }
