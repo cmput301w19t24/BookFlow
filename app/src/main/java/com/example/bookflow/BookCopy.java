@@ -59,10 +59,4 @@ public class BookCopy{
     public Book getBook(){
         return this.book;
     }
-    
-    public void setDescription(String title, String author, String isbn){
-        this.book.setTitle(title);
-        this.book.setAuthor(author);
-        this.book.setIsbn(isbn);
-    }
 }
