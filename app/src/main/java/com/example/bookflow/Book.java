@@ -21,18 +21,34 @@ class Book {
         this.requestCount = 0;
     }
     
+    /*setter and getter of title*/
     public String getTitle(){
         return this.title;
     }
     
+    public void setTitle(String title){
+        this.title = title;
+    }
+    
+    /*setter and getter of author*/
     public String getAuthor(){
         return this.author;
     }
     
-    public String getisbn(){
+    public void setAuthor(String author){
+        this.author = author;
+    }
+    
+    /*getter and setter of isbn*/
+    public String getIsbn(){
         return this.isbn;
     }
     
+    public void setIsbn(){
+        this.isbn = isbn;
+    }
+    
+    /*getter and setter of rating*/
     public void setRating(int rating){
         this.rating = rating;
     }
@@ -41,10 +57,16 @@ class Book {
         return this.rating;
     }
     
-        public void setStatus(String newStatus){
+    /*getter and setter of status*/
+    public void setStatus(String newStatus){
         this.status = newStatus;
     }
     
+    public String getStatus(){
+        return this.status;
+    }
+    
+    /*add, get and delete photo*/
     public void addPhoto(BookPhoto photo){
         photos.add(photo);
     }
@@ -57,6 +79,7 @@ class Book {
         photos.remove(index);
     }
     
+    /*getter and setter of owner*/
     public User getOwner(){
         return this.owner;
     }
@@ -65,6 +88,7 @@ class Book {
         this.owner = owner;
     }
     
+    /*getter and setter of borrower*/
     public User getBorrower(){
         return this.borrower;
     }
@@ -73,14 +97,17 @@ class Book {
         this.borrower = newBorrower;
     }
     
+    /*increase count*/
     public void countIncrease(){
         this.requestCount ++;
     }
     
+    /*getter of count*/
     public int getCount(){
         return this.requestCount;
     }
     
+    /*set isbn, title and author at once*/
     public void setDescription(String isbn, String title, String author){
         this.isbn = isbn;
         this.title = title;
