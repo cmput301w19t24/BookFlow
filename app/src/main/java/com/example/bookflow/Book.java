@@ -4,6 +4,7 @@ class Book {
     String title;
     String author;
     String isbn;
+    int rating;
     
     public Book(String title, String author, String isbn){
         this.title = title;
@@ -21,6 +22,14 @@ class Book {
     
     public String getisbn(){
         return this.isbn;
+    }
+    
+    public void setRating(int rating){
+        this.rating = rating;
+    }
+    
+    public int getRating(){
+        return this.rating;
     }
 
 }
