@@ -1,4 +1,6 @@
 package com.example.bookflow;
 
-public class Borrower {
+public interface Borrower {
+    public void setStatus(Book book);
+
 }
