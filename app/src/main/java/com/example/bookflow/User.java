@@ -110,16 +110,14 @@ public class User implements Owner,Borrower{
     }
 
     @Override
-    public void listBorrowingBooks() {
-
+    public ArrayList<BookCopy> listBorrowingBooks() {
+        return null;
     }
 
     @Override
     public void handOverBook() {
 
     }
-
-
 
     public void editContactInfo(String e, String p) {
         email = e;
