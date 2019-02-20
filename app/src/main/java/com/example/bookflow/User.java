@@ -57,5 +57,20 @@ public class User implements Owner,Borrower{
 
     }
 
+    @Override
+    public void viewRequest(Book book) {
+
+    }
+
+    @Override
+    public void acceptRequest(Book book) {
+
+    }
+
+    @Override
+    public void declineRequest(Book book) {
+
+    }
+
 
 }
