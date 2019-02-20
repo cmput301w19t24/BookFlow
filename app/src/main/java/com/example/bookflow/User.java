@@ -33,15 +33,6 @@ public class User implements Owner,Borrower{
 
     }
 
-    /**
-     *
-     * @param bookCopy
-     */
-    @Override
-    public void setStatus(BookCopy bookCopy) {
-
-    }
-
     @Override
     public void viewOwnedBooks() {
 
@@ -71,6 +62,5 @@ public class User implements Owner,Borrower{
     public void declineRequest(Book book) {
 
     }
-
 
 }
