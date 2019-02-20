@@ -31,5 +31,5 @@ class Book {
     public int getRating(){
         return this.rating;
     }
-
+    
 }
