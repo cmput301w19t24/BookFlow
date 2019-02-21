@@ -1,8 +1,8 @@
 package com.example.bookflow;
 
 import org.junit.Test;
-
 import static org.junit.Assert.*;
+import java.util.ArrayList;
 
 public class BookUnitTest {
     Book book1 = new Book("ABC", "jinming", "0123456789123");
@@ -15,15 +15,15 @@ public class BookUnitTest {
     }
     
     @Test
-    public void testPhotoMethods() {
+    public void testAddAndGetPhoto() {
         Photo photo1 = new Photo();
-        
         book1.addPhoto(photo1);
-        
         assertEqual(photo1, book1.getPhoto(0));
-        
-        book1.deletePhoto(0)
-        
+    }
+    
+    @Test
+    public void testDeletePhoto() {
+        book1.deletePhoto(0);
         assertEqual(0, book1.getAllPhotos().size());
     }
 }
