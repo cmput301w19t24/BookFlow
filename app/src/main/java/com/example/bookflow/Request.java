@@ -4,6 +4,13 @@ package com.example.bookflow;
  * This class models the relationship between two users with book
  */
 public class Request {
+
+    public Request(Borrower borrower, Owner owner, Book book) {
+        this.borrower = borrower;
+        this.owner = owner;
+        this.book = book;
+    }
+
     public Borrower getBorrower() {
         return borrower;
     }
@@ -20,11 +27,11 @@ public class Request {
         this.owner = owner;
     }
 
-    public BookCopy getBook() {
+    public Book getBook() {
         return book;
     }
 
-    public void setBook(BookCopy book) {
+    public void setBook(Book book) {
         this.book = book;
     }
 
@@ -41,6 +48,6 @@ public class Request {
     /**
      * The book
      */
-    private BookCopy book;
+    private Book book;
 
 }
