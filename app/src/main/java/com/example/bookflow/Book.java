@@ -113,4 +113,8 @@ class Book {
         this.title = title;
         this.author = author;
     }
+    
+    public ArrayList<Photo> getAllPhoto(){
+        return this.photos;
+    }
 }
