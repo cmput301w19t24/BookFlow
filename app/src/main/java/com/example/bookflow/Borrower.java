@@ -37,7 +37,7 @@ public interface Borrower {
     /**
      * receive an accepted book with ISBN scanner
      */
-    void receiveAcceptedBook();
+    void receiveAcceptedBook(Book book);
 
     /**
      * hand over a book by scanning ISBN

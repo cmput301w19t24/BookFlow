@@ -98,7 +98,7 @@ public class User implements Owner,Borrower{
     }
 
     @Override
-    public void receiveAcceptedBook() {
+    public void receiveAcceptedBook(Book book) {
 
     }
 
