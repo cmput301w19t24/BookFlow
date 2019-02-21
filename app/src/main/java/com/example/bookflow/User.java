@@ -70,16 +70,6 @@ public class User implements Owner,Borrower{
     }
 
     @Override
-    public void attachPhoto(Book book) {
-
-    }
-
-    @Override
-    public void deletePhoto(Book book) {
-
-    }
-
-    @Override
     public void specifyGeolocation() {
 
     }

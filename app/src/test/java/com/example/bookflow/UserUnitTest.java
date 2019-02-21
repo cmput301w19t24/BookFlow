@@ -39,23 +39,8 @@ public class UserUnitTest {
     //todo lsy
 
     @Test
-    public void testOwnerHandOverBook(Book book, String ISBN) {
-
-    }
-
-    @Test
     public void testReceiveReturnedBook(Book book, String ISBN) {
-
-    }
-
-    @Test
-    public void testAttachPhoto(Book book) {
-
-    }
-
-    @Test
-    public void testDeletePhoto(Book book) {
-
+        assertEquals(book.status, "AVAILABLE");
     }
 
     @Test

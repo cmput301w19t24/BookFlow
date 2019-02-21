@@ -13,17 +13,9 @@ public interface Owner {
 
     public void viewRequest(Book book);
 
-    public void acceptRequest(Book book);
-
-    public void declineRequest(Book book);
-
     public void ownerHandOverBook(Book book, String ISBN);
 
     public void receiveReturnedBook(Book book, String ISBN);
-
-    public void attachPhoto(Book book);
-
-    public void deletePhoto(Book book);
 
     public void specifyGeolocation();
 }
