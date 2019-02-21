@@ -115,14 +115,16 @@ public class UserUnitTest {
         Owner o = new User();
 
         Book book1 = new Book("frankenstein", "Mary Shelley", "9789176053461");
+        Request request1 = new Request(b, o, book1);
         o.addBook(book1);
         b.requestBook(book1);
-        o.acceptRequest(book1);
+        o.acceptRequest(request1);
 
         Book book2 = new Book("frankenstein", "Mary Shelley", "9782844002693");
+        Request request2 = new Request(b, o, book2);
         o.addBook(book2);
         b.requestBook(book2);
-        o.acceptRequest(book2);
+        o.acceptRequest(request2);
 
         ArrayList<Book> books = b.listAcceptedBooks();
 
@@ -136,17 +138,20 @@ public class UserUnitTest {
         Owner o = new User();
 
         Book book1 = new Book("frankenstein", "Mary Shelley", "9789176053461");
-        Request request1 = new Request()
+        Request request1 = new Request(b, o, book1);
         o.addBook(book1);
         b.requestBook(book1);
-        o.acceptRequest(book1);
+        o.acceptRequest(request1);
         o.ownerHandOverBook(book1);
-        b.receiveAcceptedBook();
+        b.receiveAcceptedBook(book1);
 
         Book book2 = new Book("frankenstein", "Mary Shelley", "9782844002693");
+        Request request2 = new Request(b, o, book1);
         o.addBook(book2);
         b.requestBook(book2);
-        o.acceptRequest(book2);
+        o.acceptRequest(request2);
+        o.ownerHandOverBook(book2);
+        b.receiveAcceptedBook(book2);
 
         ArrayList<Book> books = b.listAcceptedBooks();
 
