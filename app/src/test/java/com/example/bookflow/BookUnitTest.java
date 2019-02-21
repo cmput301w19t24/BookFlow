@@ -18,12 +18,12 @@ public class BookUnitTest {
     public void testAddAndGetPhoto() {
         Photo photo1 = new Photo("https://en.wikipedia.org/wiki/Java_(programming_language)#/media/File:Java_programming_language_logo.svg");
         book1.addPhoto(photo1);
-        assertEqual(photo1, book1.getPhoto(0));
+        assertEquals(photo1, book1.getPhoto(0));
     }
     
     @Test
     public void testDeletePhoto() {
         book1.deletePhoto(0);
-        assertEqual(0, book1.getAllPhotos().size());
+        assertEquals(0, book1.getAllPhotos().size());
     }
 }
