@@ -46,13 +46,16 @@ public class UserUnitTest {
     public void testReceiveReturnedBook() {
         Owner user = new User();
         Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
-        user.receiveReturnedBook(book, );
+        user.receiveReturnedBook(book);
         assertEquals(book.status, "AVAILABLE");
     }
 
     @Test
     public void testAcceptRequest() {
-
+        Owner user = new User();
+        Request request = new Request();
+        user.acceptRequest(request);
+        assertEquals(request.getBook().status, "ACCEPTED");
     }
 
     @Test
