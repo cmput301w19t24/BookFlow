@@ -15,7 +15,7 @@ public interface Owner {
 
     public void acceptRequest(Request request);
 
-    public void deleteRequest(Request request);
+    public void declineRequest(Request request);
 
     public void ownerHandOverBook(Book book);
 

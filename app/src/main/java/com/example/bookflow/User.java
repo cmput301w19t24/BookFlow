@@ -63,7 +63,7 @@ public class User implements Owner,Borrower{
 
     }
 
-    public void deleteRequest(Request request) {
+    public void declineRequest(Request request) {
 
     }
 
