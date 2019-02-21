@@ -41,6 +41,7 @@ public class UserUnitTest {
 
     }
 
+    //todo lsy
     @Test
     public void testDeclineRequest(){
 
@@ -76,6 +77,7 @@ public class UserUnitTest {
 
     }
 
+    //todo lpe
     @Test
     public void testRequestBook(Book book) {
 
