@@ -8,7 +8,11 @@ import static org.junit.Assert.*;
 public class UserUnitTest {
     @Test
     public void testAddBook(){
-
+        User user = new User();
+        ArrayList<Book> ownedBooks = new ArrayList<Book>();
+        Book book = new Book("hi","shiki","123456789");
+        user.addBook(book);
+        assertEquals(user.getOwnedBooks().get(0),book);
     }
 
     @Test
