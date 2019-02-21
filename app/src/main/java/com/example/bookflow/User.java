@@ -14,14 +14,14 @@ public class User implements Owner,Borrower{
     private String password;
     private String email;
     private String phoneNumber;
-    private ArrayList<BookCopy> ownedBooks;
-    private ArrayList<BookCopy> borrowedBooks;
+    private ArrayList<Book> ownedBooks;
+    private ArrayList<Book> borrowedBooks;
     private ArrayList<Request>  requests;
     private ArrayList<Review> reviews;
 
     @Override
-    public void addBook(BookCopy bookCopy) {
-        ownedBooks.add(bookCopy);
+    public void addBook(Book book) {
+        ownedBooks.add(book);
     }
 
     @Override
@@ -40,42 +40,42 @@ public class User implements Owner,Borrower{
     }
 
     @Override
-    public void deleteBook() {
+    public void deleteBook(Book book) {
 
     }
 
     @Override
-    public void viewRequest(BookCopy bookCopy) {
+    public void viewRequest(Book book) {
 
     }
 
     @Override
-    public void acceptRequest(BookCopy bookCopy) {
+    public void acceptRequest(Book book) {
 
     }
 
     @Override
-    public void declineRequest(BookCopy bookCopy) {
+    public void declineRequest(Book book) {
 
     }
 
     @Override
-    public void handOverBook(BookCopy bookCopy, String ISBN) {
+    public void ownerHandOverBook(Book book, String ISBN) {
 
     }
 
     @Override
-    public void receiveReturnedBook(BookCopy bookCopy, String ISBN) {
+    public void receiveReturnedBook(Book book, String ISBN) {
 
     }
 
     @Override
-    public void attachPhoto(BookCopy bookCopy) {
+    public void attachPhoto(Book book) {
 
     }
 
     @Override
-    public void deletePhoto(BookCopy bookCopy) {
+    public void deletePhoto(Book book) {
 
     }
 
@@ -95,12 +95,17 @@ public class User implements Owner,Borrower{
     }
 
     @Override
-    public ArrayList<BookCopy> listRequestedBooks() {
+    public void requestBook(Book book) {
+
+    }
+
+    @Override
+    public ArrayList<Book> listRequestedBooks() {
         return null;
     }
 
     @Override
-    public ArrayList<BookCopy> listAcceptedBooks() {
+    public ArrayList<Book> listAcceptedBooks() {
         return null;
     }
 
@@ -110,14 +115,16 @@ public class User implements Owner,Borrower{
     }
 
     @Override
-    public ArrayList<BookCopy> listBorrowingBooks() {
-        return null;
+    public void borrowerHandOverBook() {
+
     }
 
     @Override
-    public void handOverBook() {
-
+    public ArrayList<Book> listBorrowingBooks() {
+        return null;
     }
+
+
 
     public void editContactInfo(String e, String p) {
         email = e;
