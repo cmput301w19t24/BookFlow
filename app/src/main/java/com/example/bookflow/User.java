@@ -19,6 +19,16 @@ public class User implements Owner,Borrower{
     private ArrayList<Request>  requests;
     private ArrayList<Review> reviews;
 
+    public ArrayList<Book> getOwnedBooks(){
+        return ownedBooks;
+    }
+
+    public ArrayList<Book> getBorrowedBooks() {
+        return borrowedBooks;
+    }
+
+
+
     @Override
     public void addBook(Book book) {
         ownedBooks.add(book);
