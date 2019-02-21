@@ -2,12 +2,14 @@ package com.example.bookflow;
 
 import android.net.Uri;
 
+import java.net.URL;
+
 public abstract class Photo {
-    private Uri imageURL;
-    public Photo (Uri imageURL) {
+    private URL imageURL;
+    public Photo (URL imageURL) {
         this.imageURL = imageURL;
     }
-    public Uri getURL () {
+    public URL getURL () {
         return this.imageURL;
     }
 }
