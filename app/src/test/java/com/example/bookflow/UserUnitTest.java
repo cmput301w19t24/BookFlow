@@ -61,6 +61,14 @@ public class UserUnitTest {
     }
 
     @Test
+    public void testDeclineRequest() {
+        Owner user = new User();
+        Request request = new Request();
+        user.declineRequest(request);
+        assertEquals(request.getBook().status, "AVAILABLE");
+    }
+
+    @Test
     public void testSearchBook(ArrayList<String> keywords) {
 
     }
