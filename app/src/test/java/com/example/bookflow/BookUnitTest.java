@@ -16,7 +16,7 @@ public class BookUnitTest {
     
     @Test
     public void testAddAndGetPhoto() {
-        Photo photo1 = new Photo("https://en.wikipedia.org/wiki/Java_(programming_language)#/media/File:Java_programming_language_logo.svg");
+        BookPhoto photo1 = new BookPhoto("https://en.wikipedia.org/wiki/Java_(programming_language)#/media/File:Java_programming_language_logo.svg");
         book1.addPhoto(photo1);
         assertEquals(photo1, book1.getPhoto(0));
     }
