@@ -13,9 +13,9 @@ public interface Owner {
 
     public void viewRequest(Book book);
 
-    public void acceptRequest(Book book);
+    public void acceptRequest(Request request);
 
-    public void deleteRequest(Book book);
+    public void deleteRequest(Request request);
 
     public void ownerHandOverBook(Book book);
 
