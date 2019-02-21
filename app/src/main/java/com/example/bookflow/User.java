@@ -19,6 +19,10 @@ public class User implements Owner,Borrower{
     private ArrayList<Request>  requests;
     private ArrayList<Review> reviews;
 
+    public User(){
+
+    }
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
