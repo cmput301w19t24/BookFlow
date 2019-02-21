@@ -35,8 +35,8 @@ public class User implements Owner,Borrower{
     }
 
     @Override
-    public void getBookDescription(String ISBN) {
-
+    public String getBookDescription(String ISBN) {
+        return null;
     }
 
     @Override
