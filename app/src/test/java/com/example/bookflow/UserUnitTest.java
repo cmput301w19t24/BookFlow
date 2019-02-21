@@ -70,18 +70,35 @@ public class UserUnitTest {
 
     //todo lpe
     @Test
-    public void testRequestBook(Book book) {
+    public void testRequestBook() {
+        Borrower user = new User();
+        Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
+        user.requestBook(book);
 
+        assertEquals(book.getStatus(), "requested");
     }
 
     @Test
-    public ArrayList<Book> testListRequestedBooks() {
-        return null;
+    public void testListRequestedBooks() {
+        Borrower user = new User();
+        Book book1 = new Book("frankenstein", "Mary Shelley", "9789176053461");
+        user.requestBook(book1);
+
+        Book book2 = new Book("frankenstein", "Mary Shelley", "9782844002693");
+        user.requestBook(book2);
+
+        Book book3 = new Book("frankenstein", "Mary Shelley", "9782844002693");
+        user.requestBook(book3);
+
+
+        assertEquals(book1.getStatus(), "requested");
+        assertEquals(book2.getStatus(), "requested");
+        assertEquals(book3.getStatus(), "requested");
     }
 
     @Test
-    public ArrayList<Book> testListAcceptedBooks() {
-        return null;
+    public void testListAcceptedBooks() {
+
     }
 
     @Test
@@ -95,12 +112,12 @@ public class UserUnitTest {
     }
 
     @Test
-    public ArrayList<Book> testListBorrowingBooks() {
-        return null;
+    public void testListBorrowingBooks() {
+
     }
 
     @Test
-    public void testEditContactInfo(String e, String p) {
+    public void testEditContactInfo() {
 
     }
 }

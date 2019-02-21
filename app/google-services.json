@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "1002089724192",
+    "firebase_url": "https://bookflow-9db6f.firebaseio.com",
+    "project_id": "bookflow-9db6f",
+    "storage_bucket": "bookflow-9db6f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002089724192:android:6f47ea783a8e9b53",
+        "android_client_info": {
+          "package_name": "com.example.bookflow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1002089724192-mr96bgaq849c8pl523kgedeimgdk70ta.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bookflow",
+            "certificate_hash": "42725c46657e89f9894bbc75ea110ec9b0276781"
+          }
+        },
+        {
+          "client_id": "1002089724192-bls4q81ofidha3fnli8i3mac7ops4si9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bookflow",
+            "certificate_hash": "f47e701238d89edfa44feeaf09276e5d8817e557"
+          }
+        },
+        {
+          "client_id": "1002089724192-jos5i2qcmgmpku23rfc62qm3n29iu0og.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGAAKq-tTo9lIYNZx_ADoe2us8DZ1t-Ws"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1002089724192-jos5i2qcmgmpku23rfc62qm3n29iu0og.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
