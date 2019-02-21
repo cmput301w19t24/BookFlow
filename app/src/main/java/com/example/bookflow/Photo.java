@@ -1,5 +1,7 @@
 package com.example.bookflow;
 
+import com.google.firebase.storage;
+
 public abstract class Photo {
     private StorageReference storageReference;
     public Photo (StorageReference storageReference) {
@@ -8,4 +10,6 @@ public abstract class Photo {
     public StorageReference getReference () {
         return this.storageReference;
     }
+
+
 }
