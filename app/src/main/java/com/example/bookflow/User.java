@@ -19,6 +19,12 @@ public class User implements Owner,Borrower{
     private ArrayList<Request>  requests;
     private ArrayList<Review> reviews;
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+
     public ArrayList<Book> getOwnedBooks(){
         return ownedBooks;
     }
@@ -26,7 +32,6 @@ public class User implements Owner,Borrower{
     public ArrayList<Book> getBorrowedBooks() {
         return borrowedBooks;
     }
-
 
 
     @Override
