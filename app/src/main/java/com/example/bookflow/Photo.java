@@ -1,6 +1,6 @@
 package com.example.bookflow;
 
-import com.google.firebase.storage;
+import com.google.firebase.storage.StorageReference;
 
 public abstract class Photo {
     private StorageReference storageReference;
