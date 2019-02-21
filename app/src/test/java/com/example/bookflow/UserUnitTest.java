@@ -9,7 +9,8 @@ public class UserUnitTest {
     @Test
     public void testAddBook(){
         User user = new User();
-        Book book = new Book("hi","shiki","123456789");
+        Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
+
         user.addBook(book);
         assertEquals(user.getOwnedBooks().get(0),book);
     }
@@ -17,9 +18,10 @@ public class UserUnitTest {
     @Test
     public void testGetBookDescription(){
         User user = new User();
-        Book book = new Book("hi","shiki","123456789");
+        Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
+
         user.addBook(book);
-        assertEquals("hi shiki 123456789",user.getBookDescription("123456789"));
+        assertEquals("frankenstein Mary Shelley 9780440927174",user.getBookDescription("9780440927174"));
     }
 
     @Test
