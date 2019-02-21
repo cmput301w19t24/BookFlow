@@ -3,15 +3,15 @@ package com.example.bookflow;
 import java.util.ArrayList;
 
 class Book {
-    String title;
-    String author;
-    String isbn;
-    int rating;
-    String status;
-    User owner;
-    User borrower;
-    int requestCount;
-    ArrayList<Photo> photos = new ArrayList<Photo>();
+    private String title;
+    private String author;
+    private String isbn;
+    private int rating;
+    private String status;
+    private User owner;
+    private User borrower;
+    private int requestCount;
+    private ArrayList<Photo> photos = new ArrayList<Photo>();
     
     public Book(String title, String author, String isbn){
         this.title = title;
