@@ -8,4 +8,33 @@ public class UserUnitTest {
     public void testAddBook(){
 
     }
+
+    @Test
+    public void testGetBookDescription(){
+
+    }
+
+    @Test
+    public void testViewOwnedBooks(){
+
+    }
+
+    @Test
+    public void testEditBookDescription(){
+
+    }
+
+    @Test
+    public void testDeleteBook(){
+
+    }
+
+    @Test
+    public void testViewRequest(){
+
+    }
+
+
+
+
 }

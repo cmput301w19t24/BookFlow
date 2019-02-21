@@ -90,11 +90,6 @@ public class User implements Owner,Borrower{
     }
 
     @Override
-    public void requestBook(BookCopy bookCopy) {
-
-    }
-
-    @Override
     public void requestBook(Book book) {
 
     }
