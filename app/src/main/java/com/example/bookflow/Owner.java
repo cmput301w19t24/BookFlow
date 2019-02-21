@@ -17,8 +17,8 @@ public interface Owner {
 
     public void deleteRequest(Book book);
 
-    public void ownerHandOverBook(Book book, String ISBN);
+    public void ownerHandOverBook(Book book);
 
-    public void receiveReturnedBook(Book book, String ISBN);
+    public void receiveReturnedBook(Book book);
 }
 
