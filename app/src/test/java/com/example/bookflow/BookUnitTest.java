@@ -24,6 +24,6 @@ public class BookUnitTest {
         
         book1.deletePhoto(0)
         
-        assertEqual(0, );
+        assertEqual(0, book1.getAllPhotos().size());
     }
 }
