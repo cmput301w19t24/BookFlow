@@ -43,8 +43,16 @@ public class UserUnitTest {
     //todo lsy
 
     @Test
-    public void testReceiveReturnedBook(Book book, String ISBN) {
+    public void testReceiveReturnedBook() {
+        Owner user = new User();
+        Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
+        user.receiveReturnedBook(book, );
         assertEquals(book.status, "AVAILABLE");
+    }
+
+    @Test
+    public void testAcceptRequest() {
+
     }
 
     @Test

@@ -68,12 +68,12 @@ public class User implements Owner,Borrower{
     }
 
     @Override
-    public void ownerHandOverBook(Book book, String ISBN) {
+    public void ownerHandOverBook(Book book) {
 
     }
 
     @Override
-    public void receiveReturnedBook(Book book, String ISBN) {
+    public void receiveReturnedBook(Book book) {
 
     }
 
