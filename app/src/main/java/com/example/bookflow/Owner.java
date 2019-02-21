@@ -1,11 +1,13 @@
 package com.example.bookflow;
 
+import java.util.ArrayList;
+
 public interface Owner {
     public void addBook(Book book);
 
     public String getBookDescription(String ISBN);
 
-    public void viewOwnedBooks();
+    public ArrayList<Book> viewOwnedBooks();
 
     public void editBookDescription();
 

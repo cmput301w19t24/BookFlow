@@ -19,14 +19,16 @@ public class UserUnitTest {
     public void testGetBookDescription(){
         User user = new User();
         Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
-
         user.addBook(book);
         assertEquals("frankenstein Mary Shelley 9780440927174",user.getBookDescription("9780440927174"));
     }
 
     @Test
     public void testViewOwnedBooks(){
-
+        User user = new User();
+        Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
+        user.addBook(book);
+        assertEquals(user.viewOwnedBooks().get(0),user.getOwnedBooks().get(0));
     }
 
     @Test
@@ -36,7 +38,12 @@ public class UserUnitTest {
 
     @Test
     public void testDeleteBook(){
-
+        User user = new User();
+        Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
+        user.addBook(book);
+        assertEquals(user.getOwnedBooks().get(0),book);
+        user.deleteBook(book);
+        assertTrue(user.getOwnedBooks().size() == 0);
     }
 
     @Test

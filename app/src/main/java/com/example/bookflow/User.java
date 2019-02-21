@@ -45,8 +45,8 @@ public class User implements Owner,Borrower{
     }
 
     @Override
-    public void viewOwnedBooks() {
-
+    public ArrayList<Book> viewOwnedBooks() {
+        return ownedBooks;
     }
 
     @Override
