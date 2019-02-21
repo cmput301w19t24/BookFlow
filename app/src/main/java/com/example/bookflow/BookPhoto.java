@@ -1,7 +1,9 @@
 package com.example.bookflow;
 
+import android.net.Uri;
+
 public class BookPhoto extends Photo {
-    public BookPhoto(StorageReference storageReference) {
-        super(storageReference);
+    public BookPhoto(Uri imageURL) {
+        super(imageURL);
     }
 }

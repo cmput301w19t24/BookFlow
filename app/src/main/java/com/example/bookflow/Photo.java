@@ -1,15 +1,13 @@
 package com.example.bookflow;
 
-import com.google.firebase.storage;
+import android.net.Uri;
 
 public abstract class Photo {
-    private StorageReference storageReference;
-    public Photo (StorageReference storageReference) {
-        this.storageReference = storageReference;
+    private Uri imageURL;
+    public Photo (Uri imageURL) {
+        this.imageURL = imageURL;
     }
-    public StorageReference getReference () {
-        return this.storageReference;
+    public Uri getURL () {
+        return this.imageURL;
     }
-
-
 }
