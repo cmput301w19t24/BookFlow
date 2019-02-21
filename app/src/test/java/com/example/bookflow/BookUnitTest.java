@@ -11,7 +11,7 @@ public class BookUnitTest {
     public void testCountIncrease() {
         book1.countIncrease();
         book1.countIncrease();
-        assertEquals(1, book1.getCount());
+        assertEquals(2, book1.getCount());
     }
     
     @Test
