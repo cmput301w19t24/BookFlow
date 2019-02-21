@@ -44,11 +44,6 @@ public class UserUnitTest {
     }
 
     @Test
-    public void testSpecifyGeolocation() {
-
-    }
-
-    @Test
     public void testSearchBook(ArrayList<String> keywords) {
 
     }

@@ -16,7 +16,5 @@ public interface Owner {
     public void ownerHandOverBook(Book book, String ISBN);
 
     public void receiveReturnedBook(Book book, String ISBN);
-
-    public void specifyGeolocation();
 }
 

@@ -70,11 +70,6 @@ public class User implements Owner,Borrower{
     }
 
     @Override
-    public void specifyGeolocation() {
-
-    }
-
-    @Override
     public void searchBook(ArrayList<String> keywords) {
 
     }
