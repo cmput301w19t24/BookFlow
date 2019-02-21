@@ -66,10 +66,12 @@ public class UserUnitTest {
 
     @Test
     public void testDeclineRequest() {
-        Owner user = new User();
-        Request request = new Request();
-        user.declineRequest(request);
-        assertEquals(request.getBook().status, "AVAILABLE");
+        Owner owner = new User();
+        Borrower borrower = new User();
+        Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
+        Request request = new Request(borrower, owner, book);
+        owner.declineRequest(request);
+        assertEquals(request.getBook().getStatus(), "AVAILABLE");
     }
 
     @Test
