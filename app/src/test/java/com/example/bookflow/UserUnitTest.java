@@ -162,16 +162,65 @@ public class UserUnitTest {
 
     @Test
     public void testBorrowerHandOverBook() {
+        Borrower b = new User();
+        Owner o = new User();
+
+        Book book1 = new Book("frankenstein", "Mary Shelley", "9789176053461");
+        Request request1 = new Request(b, o, book1);
+        o.addBook(book1);
+        b.requestBook(book1);
+        o.acceptRequest(request1);
+        o.ownerHandOverBook(book1);
+
+        Book book2 = new Book("frankenstein", "Mary Shelley", "9782844002693");
+        Request request2 = new Request(b, o, book1);
+        o.addBook(book2);
+        b.requestBook(book2);
+        o.acceptRequest(request2);
+        o.ownerHandOverBook(book2);
+
+        ArrayList<Book> books = b.listAcceptedBooks();
+
+        assertEquals(books.get(0).getStatus(), "borrowed");
+        assertEquals(books.get(1).getStatus(), "borrowed");
 
     }
 
     @Test
     public void testListBorrowingBooks() {
+        Borrower b = new User();
+        Owner o = new User();
+
+        Book book1 = new Book("frankenstein", "Mary Shelley", "9789176053461");
+        Request request1 = new Request(b, o, book1);
+        o.addBook(book1);
+        b.requestBook(book1);
+        o.acceptRequest(request1);
+        o.ownerHandOverBook(book1);
+
+        Book book2 = new Book("frankenstein", "Mary Shelley", "9782844002693");
+        Request request2 = new Request(b, o, book1);
+        o.addBook(book2);
+        b.requestBook(book2);
+        o.acceptRequest(request2);
+        o.ownerHandOverBook(book2);
+
+        ArrayList<Book> books = b.listAcceptedBooks();
+
+        assertEquals(books.get(0).getStatus(), "borrowed");
+        assertEquals(books.get(1).getStatus(), "borrowed");
 
     }
 
     @Test
     public void testEditContactInfo() {
+        User u = new User();
+        String email = "example@example.com";
+        String phone = "1234567890";
+        u.editContactInfo(email, phone);
+
+        assertEquals(u.getEmail(), email);
+        assertEquals(u.getPhoneNumber(), phone);
 
     }
 }
