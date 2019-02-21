@@ -49,15 +49,17 @@ public class UserUnitTest {
         Owner user = new User();
         Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
         user.receiveReturnedBook(book);
-        assertEquals(book.status, "AVAILABLE");
+        assertEquals(book.getStatus(), "AVAILABLE");
     }
 
     @Test
     public void testAcceptRequest() {
-        Owner user = new User();
-        Request request = new Request();
-        user.acceptRequest(request);
-        assertEquals(request.getBook().status, "ACCEPTED");
+        Owner owner = new User();
+        Borrower borrower = new User();
+        Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
+        Request request = new Request(borrower, owner, book);
+        owner.acceptRequest(request);
+        assertEquals(request.getBook().getStatus(), "ACCEPTED");
     }
 
     @Test
