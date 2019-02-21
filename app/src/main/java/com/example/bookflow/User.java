@@ -50,16 +50,6 @@ public class User implements Owner,Borrower{
     }
 
     @Override
-    public void acceptRequest(Book book) {
-
-    }
-
-    @Override
-    public void declineRequest(Book book) {
-
-    }
-
-    @Override
     public void ownerHandOverBook(Book book, String ISBN) {
 
     }

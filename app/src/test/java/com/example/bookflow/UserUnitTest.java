@@ -36,16 +36,7 @@ public class UserUnitTest {
 
     }
 
-    @Test
-    public void testAcceptRequest(){
-
-    }
-
     //todo lsy
-    @Test
-    public void testDeclineRequest(){
-
-    }
 
     @Test
     public void testOwnerHandOverBook(Book book, String ISBN) {
