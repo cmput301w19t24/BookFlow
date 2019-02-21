@@ -3,7 +3,7 @@ package com.example.bookflow;
 public interface Owner {
     public void addBook(Book book);
 
-    public void getBookDescription(String ISBN);
+    public String getBookDescription(String ISBN);
 
     public void viewOwnedBooks();
 
