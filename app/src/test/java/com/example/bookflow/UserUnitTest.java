@@ -81,11 +81,6 @@ public class UserUnitTest {
         assertEquals(request.getBook().getStatus(), "AVAILABLE");
     }
 
-    @Test
-    public void testSearchBook(ArrayList<String> keywords) {
-
-    }
-
     //todo lpe
     @Test
     public void testRequestBook() {
