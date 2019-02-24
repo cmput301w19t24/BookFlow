@@ -76,7 +76,7 @@ public class BookUnitTest {
     @Test
     public void testSetBorrower(){
         User user1 = new User();
-        book1.setStatus(user1);
+        book1.setBorrower(user1);
         assertEquals(user1, book1.getBorrower());
     }
     
