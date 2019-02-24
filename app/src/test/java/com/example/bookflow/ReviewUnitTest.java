@@ -53,6 +53,36 @@ public class ReviewUnitTest {
         assertEquals(4, rList.getReviewAverage(usr2));
     }
 
+    @Test
+    public void testsetReviewer() {
+        User usr3 = new User();
+        Review review = new Review(usr1, usr2, "Nice Nice!",5);
+        review.setReviewer(usr3);
+        assertEquals(usr3, review.getReviewer());
+    }
+
+    @Test
+    public void testsetReviewee() {
+        User usr3 = new User();
+        Review review = new Review(usr1, usr2, "Nice Nice!",5);
+        review.setReviewee(usr3);
+        assertEquals(usr3,review.getReviewee());
+    }
+
+    @Test
+    public void testsetRating() {
+        Review review = new Review(usr1, usr2, "Nice Nice!",5);
+        review.setRating(4);
+        assertEquals(4,review.getRating());
+    }
+
+    @Test
+    public void testsetComments() {
+        Review review = new Review(usr1, usr2, "Nice Nice!",5);
+        review.setComments("BAD BAD!");
+        assertEquals("BAD BAD!",review.getComments());
+    }
+
     /*
     need to add signatures and test cases for user related review methods
     @Test
