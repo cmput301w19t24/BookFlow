@@ -9,7 +9,7 @@ public interface Owner {
 
     public ArrayList<Book> viewOwnedBooks();
 
-    public void editBookDescription();
+    public void editBookDescription(Book book,String title,String author, String ISBN);
 
     public void deleteBook(Book book);
 

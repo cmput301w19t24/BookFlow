@@ -14,9 +14,9 @@ public class User implements Owner,Borrower{
     private String password;
     private String email;
     private String phoneNumber;
-    private ArrayList<Book> ownedBooks;
-    private ArrayList<Book> borrowedBooks;
-    private ArrayList<Request>  requests;
+    private ArrayList<Book> ownedBooks = new ArrayList<Book>();
+    private ArrayList<Book> borrowedBooks= new ArrayList<Book>();
+    private ArrayList<Request>  requests= new ArrayList<Request>();
     private ReviewList reviews;
 
     public User(){
@@ -54,8 +54,8 @@ public class User implements Owner,Borrower{
     }
 
     @Override
-    public void editBookDescription() {
-
+    public void editBookDescription(Book book ,String title,String author, String ISBN) {
+        book.setDescription(ISBN,title,author);
     }
 
     @Override
