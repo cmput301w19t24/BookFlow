@@ -4,7 +4,7 @@ import android.net.Uri;
 
 import java.net.URL;
 
-public abstract class Photo {
+public class Photo {
     private URL imageURL;
     public Photo (URL imageURL) {
         this.imageURL = imageURL;

@@ -67,7 +67,7 @@ class Book {
     }
     
     /*add, get and delete photo*/
-    public void addPhoto(BookPhoto photo){
+    public void addPhoto(Photo photo){
         photos.add(photo);
     }
     

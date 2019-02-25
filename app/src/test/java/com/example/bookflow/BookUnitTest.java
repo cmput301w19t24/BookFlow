@@ -25,7 +25,7 @@ public class BookUnitTest {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        BookPhoto photo1 = new BookPhoto(url);
+        Photo photo1 = new Photo(url);
         book1.addPhoto(photo1);
         assertEquals(photo1, book1.getPhoto(0));
     }

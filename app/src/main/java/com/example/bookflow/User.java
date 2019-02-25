@@ -17,7 +17,7 @@ public class User implements Owner,Borrower{
     private ArrayList<Book> ownedBooks;
     private ArrayList<Book> borrowedBooks;
     private ArrayList<Request>  requests;
-    private ArrayList<Review> reviews;
+    private ReviewList reviews;
 
     public User(){
 
