@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BookFlow</string>
+    <string name ="book_name">book name</string>
 </resources>
