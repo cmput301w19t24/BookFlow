@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">BookFlow</string>
-    <string name ="book_name">book name</string>
+    <string name="book_name">book name</string>
+    <string name="RememberLogin">Remember My Login</string>
+    <string name="Register">Not having an account?</string>
+    <string name="login_button">Login</string>
 </resources>
