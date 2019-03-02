@@ -37,6 +37,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="4"
                 android:background="@color/common_google_signin_btn_text_dark_disabled"
+                android:contentDescription="@string/placeholder"
                 android:padding="10dp"
                 app:srcCompat="@drawable/login_user_icon" />
 
@@ -44,15 +45,16 @@
                 android:id="@+id/editText3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_weight="1"
+                android:autofillHints=""
                 android:background="@null"
                 android:drawableBottom="@drawable/round_border"
                 android:ems="10"
-                android:hint="Username"
+                android:hint="@string/user_name"
                 android:inputType="textPersonName"
                 android:paddingTop="10dp"
-                android:paddingBottom="10dp" />
+                android:paddingBottom="10dp" tools:targetApi="o" />
         </LinearLayout>
 
         <LinearLayout
@@ -72,6 +74,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="4"
                 android:background="@color/common_google_signin_btn_text_dark_disabled"
+                android:contentDescription="@string/placeholder"
                 android:padding="10dp"
                 app:srcCompat="@drawable/password_icon" />
 
@@ -79,14 +82,15 @@
                 android:id="@+id/editText5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_weight="1"
+                android:autofillHints=""
                 android:background="@null"
                 android:ems="10"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:inputType="textPassword"
                 android:paddingTop="10dp"
-                android:paddingBottom="10dp" />
+                android:paddingBottom="10dp" tools:targetApi="o" />
 
         </LinearLayout>
 
@@ -98,17 +102,18 @@
 
             <CheckBox
                 android:id="@+id/checkBox"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/RememberLogin" />
+                android:text="@string/remember_login"
+                android:textSize="18sp" />
         </LinearLayout>
 
     </LinearLayout>
 
     <Button
         android:id="@+id/button"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
@@ -137,8 +142,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/Register"
+        android:text="@string/register"
         android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button" />
