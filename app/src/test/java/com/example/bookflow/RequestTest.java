@@ -1,5 +1,11 @@
 package com.example.bookflow;
 
+import com.example.bookflow.Model.Book;
+import com.example.bookflow.Model.Borrower;
+import com.example.bookflow.Model.Owner;
+import com.example.bookflow.Model.Request;
+import com.example.bookflow.Model.User;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;

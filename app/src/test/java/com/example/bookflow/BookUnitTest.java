@@ -1,11 +1,14 @@
 package com.example.bookflow;
 
+import com.example.bookflow.Model.Book;
+import com.example.bookflow.Model.Photo;
+import com.example.bookflow.Model.User;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
 public class BookUnitTest {
     Book book1 = new Book("ABC", "jinming", "0123456789123");

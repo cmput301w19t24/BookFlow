@@ -1,5 +1,9 @@
 package com.example.bookflow;
 
+import com.example.bookflow.Model.Review;
+import com.example.bookflow.Model.ReviewList;
+import com.example.bookflow.Model.User;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
