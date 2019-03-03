@@ -10,4 +10,6 @@ public class UserProfileActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
     }
+
+    
 }
