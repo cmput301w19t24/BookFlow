@@ -10,9 +10,9 @@
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="36dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="36dp"
         android:gravity="fill_vertical|center_horizontal"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -38,7 +38,7 @@
                 android:layout_weight="4"
                 android:background="@color/common_google_signin_btn_text_dark_disabled"
                 android:contentDescription="@string/placeholder"
-                android:padding="10dp"
+                android:padding="13dp"
                 app:srcCompat="@drawable/login_user_icon" />
 
             <EditText
@@ -54,7 +54,8 @@
                 android:hint="@string/user_name"
                 android:inputType="textPersonName"
                 android:paddingTop="10dp"
-                android:paddingBottom="10dp" tools:targetApi="o" />
+                android:paddingBottom="10dp"
+                tools:targetApi="o" />
         </LinearLayout>
 
         <LinearLayout
@@ -75,7 +76,7 @@
                 android:layout_weight="4"
                 android:background="@color/common_google_signin_btn_text_dark_disabled"
                 android:contentDescription="@string/placeholder"
-                android:padding="10dp"
+                android:padding="13dp"
                 app:srcCompat="@drawable/password_icon" />
 
             <EditText
@@ -90,7 +91,8 @@
                 android:hint="@string/password"
                 android:inputType="textPassword"
                 android:paddingTop="10dp"
-                android:paddingBottom="10dp" tools:targetApi="o" />
+                android:paddingBottom="10dp"
+                tools:targetApi="o" />
 
         </LinearLayout>
 
