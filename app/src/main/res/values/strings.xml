@@ -1,10 +1,20 @@
 <resources>
+    <!-- Strings used globally -->
     <string name="app_name">BookFlow</string>
     <string name="book_name">book name</string>
+    <string name="placeholder">Placeholder</string>
+
+    <!-- Strings for login screen -->
     <string name="remember_login">Remember My Login</string>
     <string name="register">Not having an account?</string>
     <string name="login_button">\t\tLogin\t\t</string>
-    <string name="placeholder">Placeholder</string>
     <string name="user_name">Username</string>
     <string name="password">Password</string>
+
+    <!-- Strings for edit book detail screen -->
+    <string name="bookName">Book Title</string>
+    <string name="authorName">Author</string>
+    <string name="ISBN">ISBN</string>
+    <string name="bookStatus">Status</string>
+    <string name="borrower">Current Borrower</string>
 </resources>
