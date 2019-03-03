@@ -17,12 +17,9 @@ public class BasicActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic);
-        mainPageButton = (ImageButton)findViewById(R.id.main_page_button);
     }
 
     public void clickMainPageButton(View v){
-        mainPageButton.setBackgroundColor(Color.GRAY);
-        mainPageButton.setBackgroundColor(Color.WHITE);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
@@ -33,19 +30,18 @@ public class BasicActivity extends AppCompatActivity {
     }
 
     //Todo: add book
-
     /*public void clickAddButton(View v){
         Intent intent = new Intent(this, AddBookActivity.class);
         startActivity(intent);
     }
     */
 
-    //Todo: notification
-   /* public void clickNotificationButton(View v){
+
+    public void clickNotificationButton(View v){
         Intent intent = new Intent(this, NotificationActivity.class);
         startActivity(intent);
     }
-    */
+
 
     public void clickProfileButton(View v){
         Intent intent = new Intent(this, UserProfileActivity.class);

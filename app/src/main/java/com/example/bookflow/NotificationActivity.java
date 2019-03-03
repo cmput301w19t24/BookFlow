@@ -3,7 +3,7 @@ package com.example.bookflow;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class NotificationActivity extends AppCompatActivity {
+public class NotificationActivity extends BasicActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
