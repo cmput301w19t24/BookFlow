@@ -23,4 +23,10 @@
     <string name="phone">Phone:\t\t</string>
     <string name="booksOffered">Books Offered:</string>
     <string name="review">Reviews:</string>
+
+    <!-- main -->
+    <string name="bookflow">BookFlow</string>
+    <string name="more"><![CDATA[>>More]]></string>
+    <string name="my_borrows">My Borrows</string>
+    <string name="my_books">My Books</string>
 </resources>
