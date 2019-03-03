@@ -19,7 +19,7 @@
     <string name="borrower">Current Borrower</string>
 
     <!-- Strings for user profile screen -->
-    <string name="email">Email:\t\t</string>
+    <string name="email">Email:\t\t\t</string>
     <string name="phone">Phone:\t\t</string>
     <string name="booksOffered">Books Offered:</string>
     <string name="review">Reviews:</string>
