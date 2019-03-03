@@ -10,6 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".mapActivity"></activity>
+        <activity android:name=".ScanActivity"></activity>
+        <activity android:name=".NotificationActivity" />
         <activity
             android:name=".AddPhotoActivity"
             android:label="@string/title_activity_add_photo"

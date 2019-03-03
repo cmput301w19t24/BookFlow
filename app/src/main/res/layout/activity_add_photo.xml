@@ -44,4 +44,10 @@
         app:layout_constraintVertical_bias="0.502" />
 
 
+    <include
+        android:id="@+id/include"
+        layout="@layout/activity_basic"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="67dp" />
+
 </android.support.constraint.ConstraintLayout>
