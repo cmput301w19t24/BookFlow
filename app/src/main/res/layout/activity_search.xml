@@ -5,6 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SearchActivity">
+
+    <CheckBox
+        android:id="@+id/checkRequested"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Requested"
+        android:textSize="22dp"
+
+        app:layout_constraintBaseline_toBaselineOf="@+id/checkAvailable"
+        app:layout_constraintStart_toEndOf="@+id/checkAvailable" />
+
+    <CheckBox
+        android:id="@+id/checkAvailable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Available "
+        android:textSize="22dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkAccepted" />
+
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="699dp" />
+
+    <CheckBox
+        android:id="@+id/checkBorrowed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Borrowed"
+        android:textSize="22dp"
+
+        app:layout_constraintBaseline_toBaselineOf="@+id/checkAccepted"
+        app:layout_constraintStart_toEndOf="@+id/checkAccepted" />
+
     <include
         android:id="@+id/include"
         layout="@layout/activity_basic"
@@ -13,13 +50,66 @@
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
+        android:background="@null"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/search_icon" />
 
+    <EditText
+        android:id="@+id/searchTextView"
+        android:layout_width="0dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        android:text="Enter keywords"
+        android:textSize="22dp"
+        app:layout_constraintEnd_toStartOf="@+id/goSearch"
+        app:layout_constraintStart_toEndOf="@+id/imageView5"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/goSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="47dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        android:text="GO!"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="22dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/searchTextView"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:entries="@array/searchSelection"
+        android:textAlignment="center"
+        android:textSize="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchTextView" />
+
+    <CheckBox
+        android:id="@+id/checkAccepted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="250dp"
+        android:layout_marginBottom="8dp"
+        android:text="Accepted"
+
+        android:textSize="22dp"
+        app:layout_constraintBottom_toTopOf="@+id/checkAvailable"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
 </android.support.constraint.ConstraintLayout>

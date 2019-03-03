@@ -17,4 +17,13 @@
     <string name="ISBN">ISBN</string>
     <string name="bookStatus">Status</string>
     <string name="borrower">Current Borrower</string>
+
+    <string-array name="searchSelection">
+        <item>search user</item>
+        <item>search by book name</item>
+        <item>search by book author</item>
+        <item>search by book ISBN</item>
+        <item>sadness</item>
+
+    </string-array>
 </resources>
