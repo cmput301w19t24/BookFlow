@@ -17,4 +17,6 @@
     <string name="ISBN">ISBN</string>
     <string name="bookStatus">Status</string>
     <string name="borrower">Current Borrower</string>
+    <string name="done">DONE</string>
+    <string name="add_photo_image_button_description">Take A Photo</string>
 </resources>
