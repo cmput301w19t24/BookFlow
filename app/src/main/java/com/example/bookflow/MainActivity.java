@@ -1,7 +1,9 @@
 package com.example.bookflow;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -31,5 +33,15 @@ public class MainActivity extends BasicActivity {
 //        adapter = new MyAdapter();
         DatabaseReference myRef = database.getReference("message");
         myRef.setValue("Hello, World!", null);
+    }
+
+    public void seeMoreBooks(View moreBookView) {
+        Intent intent_booklist = new Intent(this, BookListActivity.class);
+        startActivity(intent_booklist);
+    }
+
+    public void seeMoreBorrows(View moreBorrowView) {
+        Intent intent_borrowlist = new Intent(this, BorrowListActivity.class);
+        startActivity(intent_borrowlist);
     }
 }
