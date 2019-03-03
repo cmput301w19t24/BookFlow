@@ -26,6 +26,7 @@ public class BasicActivity extends AppCompatActivity {
     public void clickMainPageButton(View v){
         if(!(this.getClass() == MainActivity.class)){
             Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
 
@@ -34,6 +35,7 @@ public class BasicActivity extends AppCompatActivity {
     public void clickSearchPageButton(View v){
         if(!(this.getClass() == SearchActivity.class)) {
             Intent intent = new Intent(this, SearchActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
     }
@@ -49,6 +51,7 @@ public class BasicActivity extends AppCompatActivity {
     public void clickNotificationButton(View v){
         if(!(this.getClass() == NotificationActivity.class)) {
             Intent intent = new Intent(this, NotificationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
     }
