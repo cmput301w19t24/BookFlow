@@ -39,14 +39,6 @@
           }
         },
         {
-          "client_id": "1002089724192-ks684e65a9cg38mfrgrefrt2fn5603rg.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.bookflow",
-            "certificate_hash": "91d3dea0365d6d4e8ce5017ae7a60eefab11d2ce"
-          }
-        },
-        {
           "client_id": "1002089724192-jos5i2qcmgmpku23rfc62qm3n29iu0og.apps.googleusercontent.com",
           "client_type": 3
         }

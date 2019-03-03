@@ -55,6 +55,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="8dp"
         android:background="@null"
+        android:onClick="clickNotificationButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/profile_button"
         app:layout_constraintHorizontal_bias="0.5"
