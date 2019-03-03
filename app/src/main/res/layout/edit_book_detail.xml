@@ -21,6 +21,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:padding="10dp"
         app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
@@ -59,60 +60,62 @@
             android:id="@+id/bookName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:layout_weight="1"
             android:background="@drawable/simple_black_border"
             android:ems="10"
             android:hint="@string/bookName"
             android:inputType="textPersonName"
-            android:padding="2dp" />
+            android:padding="6dp"
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/authorName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
+            android:layout_margin="5dp"
             android:layout_weight="1"
             android:background="@drawable/simple_black_border"
             android:ems="10"
             android:hint="@string/authorName"
             android:inputType="textPersonName"
-            android:padding="2dp" />
+            android:padding="6dp" />
 
         <EditText
             android:id="@+id/ISBN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
+            android:layout_margin="5dp"
             android:layout_weight="1"
             android:background="@drawable/simple_black_border"
             android:ems="10"
             android:hint="@string/ISBN"
             android:inputType="textPersonName"
-            android:padding="2dp" />
+            android:padding="6dp" />
 
         <EditText
             android:id="@+id/bookStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
+            android:layout_margin="5dp"
             android:layout_weight="1"
             android:background="@drawable/simple_black_border"
             android:ems="10"
             android:hint="@string/bookStatus"
             android:inputType="textPersonName"
-            android:padding="2dp" />
+            android:padding="6dp" />
 
         <EditText
             android:id="@+id/borrower"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
+            android:layout_margin="5dp"
             android:layout_weight="1"
             android:background="@drawable/simple_black_border"
             android:ems="10"
             android:hint="@string/borrower"
             android:inputType="textPersonName"
-            android:padding="2dp" />
+            android:padding="6dp" />
 
     </LinearLayout>
 
