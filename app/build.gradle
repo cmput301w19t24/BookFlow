@@ -37,4 +37,5 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
+//This line below is added to prevent a bug of google map version
 com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
