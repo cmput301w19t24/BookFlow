@@ -17,8 +17,34 @@
     <string name="ISBN">ISBN</string>
     <string name="bookStatus">Status</string>
     <string name="borrower">Current Borrower</string>
+
+    <!-- Strings for user profile screen -->
+    <string name="email">Email:\t\t\t</string>
+    <string name="phone">Phone:\t\t</string>
+    <string name="booksOffered">Books Offered:</string>
+    <string name="review">Reviews:</string>
+
+    <!-- main -->
     <string name="bookflow">BookFlow</string>
     <string name="more"><![CDATA[>>More]]></string>
     <string name="my_borrows">My Borrows</string>
     <string name="my_books">My Books</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- array for spinner -->
+    <string-array name="searchSelection">
+        <item>search user</item>
+        <item>search by book name</item>
+        <item>search by book author</item>
+        <item>search by book ISBN</item>
+
+    </string-array>
+
+    <!-- add_photo -->
+    <string name="title_activity_add_photo">AddPhotoActivity</string>
+    <string name="add_photo_image_button_description">Take A Photo</string>
+    <string name="done">DONE</string>
+
 </resources>
