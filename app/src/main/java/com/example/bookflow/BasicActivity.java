@@ -1,5 +1,6 @@
 package com.example.bookflow;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
@@ -9,6 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 import java.util.function.ToDoubleBiFunction;
 
 public class BasicActivity extends AppCompatActivity {
@@ -20,13 +24,20 @@ public class BasicActivity extends AppCompatActivity {
     }
 
     public void clickMainPageButton(View v){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        if(!(this.getClass() == MainActivity.class)){
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+
     }
 
     public void clickSearchPageButton(View v){
-        Intent intent = new Intent(this, SearchActivity.class);
-        startActivity(intent);
+        if(!(this.getClass() == SearchActivity.class)) {
+            Intent intent = new Intent(this, SearchActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
     }
 
     //Todo: add book
@@ -38,15 +49,55 @@ public class BasicActivity extends AppCompatActivity {
 
 
     public void clickNotificationButton(View v){
-        Intent intent = new Intent(this, NotificationActivity.class);
-        startActivity(intent);
+        if(!(this.getClass() == NotificationActivity.class)) {
+            Intent intent = new Intent(this, NotificationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
     }
 
 
     public void clickProfileButton(View v){
-        Intent intent = new Intent(this, UserProfileActivity.class);
-        startActivity(intent);
+        if(!(this.getClass() == UserProfileActivity.class)) {
+            Intent intent = new Intent(this, UserProfileActivity.class);
+            startActivity(intent);
+        }
     }
+
+    /*https://blog.csdn.net/linh0911111026/article/details/78895253 */
+    public static Activity getCurrentActivity () {
+        try {
+            Class activityThreadClass = Class.forName("android.app.ActivityThread");
+            Object activityThread = activityThreadClass.getMethod("currentActivityThread").invoke(
+                    null);
+            Field activitiesField = activityThreadClass.getDeclaredField("mActivities");
+            activitiesField.setAccessible(true);
+            Map activities = (Map) activitiesField.get(activityThread);
+            for (Object activityRecord : activities.values()) {
+                Class activityRecordClass = activityRecord.getClass();
+                Field pausedField = activityRecordClass.getDeclaredField("paused");
+                pausedField.setAccessible(true);
+                if (!pausedField.getBoolean(activityRecord)) {
+                    Field activityField = activityRecordClass.getDeclaredField("activity");
+                    activityField.setAccessible(true);
+                    Activity activity = (Activity) activityField.get(activityRecord);
+                    return activity;
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 
 

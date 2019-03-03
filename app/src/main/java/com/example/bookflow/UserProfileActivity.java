@@ -11,5 +11,5 @@ public class UserProfileActivity extends BasicActivity {
         setContentView(R.layout.activity_user_profile);
     }
 
-    
+
 }
