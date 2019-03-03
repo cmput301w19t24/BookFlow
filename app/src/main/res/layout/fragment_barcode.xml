@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/barcode_fragment"
-        android:name="com.example.bookflow.BarcodeReaderFragment"
+        android:name="com.example.bookflow.BarcodeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:auto_focus="true"
