@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".BasicActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".BookDetailActivity">
+        <activity android:name=".EditBookDetailActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".EditBookDetailActivity"></activity>
+        <activity android:name=".BookDetailActivity"></activity>
     </application>
 
 </manifest>
