@@ -5,7 +5,8 @@
     android:id="@+id/Constraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BookListActivity" >
+    tools:context=".BookListActivity"
+    android:theme="@style/AppTheme.AppBarOverlay">
 
     <include
         android:id="@+id/include"
@@ -29,7 +30,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary">
+            android:background="?attr/colorPrimary" >
 
             <TextView
                 android:id="@+id/textView2"

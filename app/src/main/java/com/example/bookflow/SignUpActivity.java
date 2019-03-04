@@ -3,7 +3,7 @@ package com.example.bookflow;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class SignUpActivity extends AppCompatActivity {
+public class SignUpActivity extends BasicActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
