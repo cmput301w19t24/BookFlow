@@ -1,7 +1,6 @@
 package com.example.bookflow;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -16,7 +15,9 @@ public class MainActivity extends BasicActivity {
 
     private static ListView myBookList;
     private static ListView myBorrowList;
+
 //    private static MyAdapter adapter;
+
 //    FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Override
@@ -33,6 +34,7 @@ public class MainActivity extends BasicActivity {
 //        adapter = new MyAdapter();
 //        DatabaseReference myRef = database.getReference("test");
 //        myRef.setValue("Hello, World!", null);
+
     }
 
     public void seeMoreBooks(View moreBookView) {

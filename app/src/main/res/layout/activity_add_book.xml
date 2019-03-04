@@ -47,6 +47,7 @@
             android:layout_weight="4"
             android:scaleX="1"
             android:scaleY="1"
+            android:onClick="clickAddPhotoImage"
             app:srcCompat="@drawable/image_placeholder" />
 
         <EditText
