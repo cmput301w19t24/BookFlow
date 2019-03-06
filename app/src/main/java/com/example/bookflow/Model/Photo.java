@@ -1,4 +1,4 @@
-package com.example.bookflow;
+package com.example.bookflow.Model;
 
 import android.net.Uri;
 

@@ -2,14 +2,14 @@
  * author: Shengyao Lu
  * date: 2019/2/20
  */
-package com.example.bookflow;
+package com.example.bookflow.Model;
 
 import java.util.UUID;
 
 /**
  * This class models the relationship between two users with book
  */
-class Review {
+public class Review {
     private User reviewer;
     private User reviewee;
     private String comments;

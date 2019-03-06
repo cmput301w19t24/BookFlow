@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "1002089724192-mr96bgaq849c8pl523kgedeimgdk70ta.apps.googleusercontent.com",
+          "client_id": "1002089724192-rsh1i8e34n4boj1ja29d6qc2k7hpqnmn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.bookflow",
-            "certificate_hash": "42725c46657e89f9894bbc75ea110ec9b0276781"
+            "certificate_hash": "68ad87638e8f013d9de8b560eeabf173c92c7221"
           }
         },
         {
@@ -28,6 +28,22 @@
           "android_info": {
             "package_name": "com.example.bookflow",
             "certificate_hash": "f47e701238d89edfa44feeaf09276e5d8817e557"
+          }
+        },
+        {
+          "client_id": "1002089724192-mr96bgaq849c8pl523kgedeimgdk70ta.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bookflow",
+            "certificate_hash": "42725c46657e89f9894bbc75ea110ec9b0276781"
+          }
+        },
+        {
+          "client_id": "1002089724192-ks684e65a9cg38mfrgrefrt2fn5603rg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bookflow",
+            "certificate_hash": "91d3dea0365d6d4e8ce5017ae7a60eefab11d2ce"
           }
         },
         {

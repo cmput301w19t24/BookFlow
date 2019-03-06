@@ -2,7 +2,7 @@
  * author: Yuhan Ye
  * date: 2019/2/20
  */
-package com.example.bookflow;
+package com.example.bookflow.Model;
 
 import java.util.ArrayList;
 
@@ -10,10 +10,13 @@ import java.util.ArrayList;
  * User class
  */
 public class User implements Owner,Borrower{
+    private String uid;
     private String username;
     private String password;
     private String email;
     private String phoneNumber;
+    private String imageurl; // user icon
+
     private ArrayList<Book> ownedBooks = new ArrayList<Book>();
     private ArrayList<Book> borrowedBooks= new ArrayList<Book>();
     private ArrayList<Request>  requests= new ArrayList<Request>();
@@ -150,6 +153,20 @@ public class User implements Owner,Borrower{
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getImageurl() {
+        return imageurl;
+    }
+    public void setImageurl(String url) {
+        this.imageurl = url;
+    }
+
+    public void setUid(String uid) {
+        this.uid =uid;
+    }
+    public String getUid() {
+        return this.uid;
     }
 
 }
