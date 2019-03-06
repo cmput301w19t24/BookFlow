@@ -42,7 +42,7 @@
                 app:srcCompat="@drawable/login_user_icon" />
 
             <EditText
-                android:id="@+id/editText3"
+                android:id="@+id/id"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
@@ -80,7 +80,7 @@
                 app:srcCompat="@drawable/password_icon" />
 
             <EditText
-                android:id="@+id/editText5"
+                android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
@@ -114,7 +114,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -141,7 +141,7 @@
         app:layout_constraintGuide_percent="0.15850145" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -152,6 +152,6 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/login" />
 
 </android.support.constraint.ConstraintLayout>
