@@ -40,9 +40,16 @@
 
     </string-array>
 
+    <!-- array for pick photo dialog -->
+    <string-array name="colors_array" >
+        <item>Choose From Album</item>
+        <item>Take A Photo</item>
+    </string-array>
+
     <!-- add_photo -->
     <string name="title_activity_add_photo">AddPhotoActivity</string>
     <string name="add_photo_image_button_description">Take A Photo</string>
     <string name="done">DONE</string>
+    <string name="pick_a_photo">Pick a Photo</string>
 
 </resources>
