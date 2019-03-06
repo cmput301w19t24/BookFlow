@@ -20,6 +20,7 @@ public class MainActivity extends BasicActivity {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +33,12 @@ public class MainActivity extends BasicActivity {
     protected void onStart() {
         super.onStart();
 //        adapter = new MyAdapter();
-        DatabaseReference myRef = database.getReference("Books");
-        myRef.child("Author").setValue("", null);
+
+        // TODO: delete after testing firebase
+//        DatabaseReference myRef = database.getReference("Books");
+//
+//        myRef.child("Author").setValue("", null);
+
 
     }
 
