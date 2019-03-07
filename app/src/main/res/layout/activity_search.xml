@@ -6,13 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".SearchActivity">
 
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
     <CheckBox
         android:id="@+id/checkRequested"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Requested"
-        android:textSize="22dp"
+        android:textSize="18dp"
 
         app:layout_constraintBaseline_toBaselineOf="@+id/checkAvailable"
         app:layout_constraintStart_toEndOf="@+id/checkAvailable" />
@@ -22,12 +29,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="Available "
-        android:textSize="22dp"
+        android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkAccepted" />
-
+`
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="699dp" />
 
@@ -37,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Borrowed"
-        android:textSize="22dp"
+        android:textSize="18dp"
 
         app:layout_constraintBaseline_toBaselineOf="@+id/checkAccepted"
         app:layout_constraintStart_toEndOf="@+id/checkAccepted" />
@@ -60,14 +67,14 @@
         app:srcCompat="@drawable/search_icon" />
 
     <EditText
-        android:id="@+id/searchTextView"
+        android:id="@+id/searchText"
         android:layout_width="0dp"
         android:layout_height="47dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:gravity="center"
-        android:text="Enter keywords"
-        android:textSize="22dp"
+        android:hint="Enter keywords"
+        android:textSize="18dp"
         app:layout_constraintEnd_toStartOf="@+id/goSearch"
         app:layout_constraintStart_toEndOf="@+id/userPicture"
         app:layout_constraintTop_toTopOf="parent" />
@@ -78,10 +85,11 @@
         android:layout_height="47dp"
         android:layout_marginEnd="8dp"
         android:clickable="true"
+        android:onClick="search"
         android:text="GO!"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="22dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/searchTextView"
+        android:textSize="18dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/searchText"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Spinner
@@ -93,23 +101,41 @@
         android:layout_marginEnd="8dp"
         android:entries="@array/searchSelection"
         android:textAlignment="center"
-        android:textSize="22dp"
+        android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/searchText" />
 
     <CheckBox
         android:id="@+id/checkAccepted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="250dp"
-        android:layout_marginBottom="8dp"
-        android:text="Accepted"
 
-        android:textSize="22dp"
-        app:layout_constraintBottom_toTopOf="@+id/checkAvailable"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Accepted"
+        android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/searchViewList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
 </android.support.constraint.ConstraintLayout>
