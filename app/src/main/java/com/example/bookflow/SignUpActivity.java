@@ -43,12 +43,6 @@ public class SignUpActivity extends BasicActivity {
         profile = findViewById(R.id.img_profile);
         mAuth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
-        id = findViewById(R.id.id);
-        password = findViewById(R.id.password);
-        repassword = findViewById(R.id.repassword);
-        email = findViewById(R.id.email);
-        phone = findViewById(R.id.phone);
-        btn = findViewById(R.id.signup);
 
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,8 +131,8 @@ public class SignUpActivity extends BasicActivity {
                                         user.setUid(uid);
 
                                         FirebaseDatabase.getInstance().getReference().child("Users").child(uid).setValue(user);
-                                        Intent intent_signedUp = new Intent(SignUpActivity.this, LoginActivity.class);
-                                        startActivity(intent_signedUp);
+                                        Intent intent_main = new Intent(SignUpActivity.this, MainActivity.class);
+                                        startActivity(intent_main);
                                     }
                                 });
                             } else {
