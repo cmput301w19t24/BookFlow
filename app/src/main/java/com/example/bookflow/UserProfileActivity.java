@@ -1,20 +1,28 @@
 package com.example.bookflow;
 
-import android.service.autofill.Dataset;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.bookflow.Model.Review;
+import com.example.bookflow.Model.ReviewList;
+import com.example.bookflow.Model.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.UUID;
+
 public class UserProfileActivity extends BasicActivity {
     private DatabaseReference dbRef;
+    private String email, phoneNum, username, selfIntro;
+    private ReviewList reviewList;
+    private ListView reviewListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,18 +34,23 @@ public class UserProfileActivity extends BasicActivity {
     protected void onStart() {
         super.onStart();
 
+        reviewListView = findViewById(R.id.reviewList);
+
         dbRef = FirebaseDatabase.getInstance().getReference();
+
 
         ValueEventListener userInfoListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String email = dataSnapshot.child("email").toString();
-                String  phoneNum = dataSnapshot.child("phoneNumber").toString();
-                String username = dataSnapshot.child("username").toString();
-                String selfIntro = dataSnapshot.child("selfIntro").toString();
+                email = dataSnapshot.child("email").toString();
+                phoneNum = dataSnapshot.child("phoneNumber").toString();
+                username = dataSnapshot.child("username").toString();
+                selfIntro = dataSnapshot.child("selfIntro").toString();
                 // TODO: user image upload to storage and get it
 
                 setupTextView(username, selfIntro, email, phoneNum);
+
+
             }
 
             @Override
@@ -45,6 +58,31 @@ public class UserProfileActivity extends BasicActivity {
                 Log.w("listener cancelled", databaseError.toException());
             }
         };
+
+        ValueEventListener reviewsListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot review: dataSnapshot.getChildren()){
+                    if (username.equals(review.child("reviewee").toString())){
+
+                        //TODO: not able to initialize a review if reviewer and reviewee are stored
+                        //TODO: as user
+                        UUID uuid = UUID.fromString(review.child("uuid").getValue().toString());
+                        int rating = Integer.getInteger(review.child("rating").getValue().toString());
+                        String comments = review.child("comments").getValue().toString();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("listener cancelled", databaseError.toException());
+            }
+        };
+
+
+    dbRef.child("Users").addListenerForSingleValueEvent(userInfoListener);
+    dbRef.child("Reviews").addListenerForSingleValueEvent(reviewsListener);
     }
 
     private void setupTextView(String name, String intro, String email, String phone) {
