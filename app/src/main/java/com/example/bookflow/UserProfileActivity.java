@@ -35,11 +35,13 @@ public class UserProfileActivity extends BasicActivity {
     private ListView reviewListView;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
     }
+
 
     /**
      * onStart method get all needed data in this page from firebase
@@ -65,6 +67,7 @@ public class UserProfileActivity extends BasicActivity {
                         phoneNum = eachUser.child("phoneNumber").getValue().toString();
                         username = eachUser.child("username").getValue().toString();
                         selfIntro = eachUser.child("selfIntro").getValue().toString();
+                        break;
                     }
                 }
 
@@ -85,15 +88,7 @@ public class UserProfileActivity extends BasicActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot eachReview: dataSnapshot.getChildren()){
                     if (username.equals(eachReview.child("reviewee").toString())){
-
-                        /*
-                        TODO: not able to initialize a review with User reviewer and reviewee
-                        TODO: option 1: users in Review class change to FirebaseUser
-                        TODO: option 2: users in Review class only store name or uid or email
-                        */
-                        UUID uuid = UUID.fromString(eachReview.child("uuid").getValue().toString());
-                        int rating = Integer.getInteger(eachReview.child("rating").getValue().toString());
-                        String comments = eachReview.child("comments").getValue().toString();
+                        prepareReviewList(eachReview);
                     }
                 }
             }
@@ -108,6 +103,37 @@ public class UserProfileActivity extends BasicActivity {
         dbRef.child("Users").addListenerForSingleValueEvent(userInfoListener);
         dbRef.child("Reviews").addListenerForSingleValueEvent(reviewsListener);
     }
+
+    /**
+     * This function prepares a review and add it to review list
+     * @param eachReview a review object from firebase
+     */
+    private void prepareReviewList(@NonNull DataSnapshot eachReview) {
+        // prepare uuid, rating, comments
+        UUID uuid = UUID.fromString(eachReview.child("uuid").getValue().toString());
+        int rating = Integer.getInteger(eachReview.child("rating").getValue().toString());
+        String comments = eachReview.child("comments").getValue().toString();
+
+        // prepare reviewer and reviewee
+        User reviewer = new User();
+        User reviewee = new User();
+
+        reviewer.setUsername(eachReview.child("reviewer").toString());
+
+        reviewee.setUsername(username);
+        reviewee.setEmail(email);
+        reviewee.setPhoneNumber(phoneNum);
+        FirebaseUser user = mAuth.getCurrentUser();
+        reviewee.setUid(user.getUid());
+
+        // create a review base on prepared information
+        Review review = new Review(reviewer, reviewee, comments, rating);
+        review.setUUID(uuid);
+
+        // append to review list
+        reviewList.addReview(review);
+    }
+
 
     /**
      * setupTextView just fill text views with corresponding data

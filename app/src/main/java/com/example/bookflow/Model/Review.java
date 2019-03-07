@@ -16,10 +16,6 @@ public class Review {
     private int rating;
     private UUID uuid;
 
-    public Review() {
-
-    }
-
     public Review(User reviewer, User reviewee, String comments, int rating) {
         this.reviewer = reviewer;
         this.reviewee = reviewee;
@@ -49,6 +45,7 @@ public class Review {
     }
 
     // setter for reviewer/reviewee probably not necessary as they should not be editable
+    public void setUUID(UUID uuid) { this.uuid = uuid; }
     public void setRating(int rating) { this.rating = rating; }
     public void setReviewer(User reviewer) { this.reviewer = reviewer; }
     public void setReviewee(User reviewee) { this.reviewee = reviewee; }

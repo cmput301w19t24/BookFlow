@@ -16,9 +16,13 @@ public class ReviewList {
         return rList;
     }
 
-    public void addReview(Review review) {}
+    public void addReview(Review review) {
+        rList.add(review);
+    }
 
-    public void deleteReview(Review review) {}
+    public void deleteReview(Review review) {
+        rList.remove(review);
+    }
 
     // edit review, should use Review getters and setters
     public void editReview(Review review, int rating, String comments) {
