@@ -7,22 +7,28 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.util.UUID;
+
 public class AddBookActivity extends BasicActivity {
 
     private final int ADD_PHOTO_REQUEST_CODE = 0;
-    private ImageView photoImageView;
+
 
     private final int RC_PHOTO_PICKER = 1;
     private final int RC_IMAGE_CAPTURE = 2;
@@ -36,7 +42,14 @@ public class AddBookActivity extends BasicActivity {
     private StorageReference mBookPhotoStorageReference;
     private DatabaseReference mUserDatabaseReference;
 
-    private Uri selectedPhotoUri;
+    private Uri mSelectedPhotoUri;
+
+    // storage
+    private Uri mCameraImgUri;
+
+    // UI
+    private RelativeLayout mLoadingPanel;
+    private ImageView mPhotoImageView;
 
 
     @Override
@@ -44,7 +57,9 @@ public class AddBookActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book);
 
-        photoImageView = findViewById(R.id.imageView4);
+        mPhotoImageView = findViewById(R.id.imageView4);
+        mLoadingPanel = findViewById(R.id.loading_panel);
+        mLoadingPanel.setVisibility(View.GONE);
 
         // initialize Firebase
         mFirebaseStorage = FirebaseStorage.getInstance();
@@ -84,26 +99,63 @@ public class AddBookActivity extends BasicActivity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RC_PHOTO_PICKER || requestCode == RC_IMAGE_CAPTURE) {
-            if (resultCode == RESULT_OK) {
-                Uri imgUri = data.getData();
-                Log.d(TAG, imgUri.toString());
-                final StorageReference imgRef = mBookPhotoStorageReference.child(imgUri.getLastPathSegment());
+        mLoadingPanel.setVisibility(View.VISIBLE);
+        if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
 
-                imgRef.putFile(imgUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            Uri imgUri = data.getData();
 
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                selectedPhotoUri = uri;
-                                Log.d(TAG, "selectedPhotoUri: " + selectedPhotoUri.toString());
-                            }
-                        });
-                    }
-                });
+            Log.d(TAG, imgUri.toString());
+            final StorageReference imgRef = mBookPhotoStorageReference.child(imgUri.getLastPathSegment());
 
-            }
+            imgRef.putFile(imgUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            onUploadPhotoSuccess(uri);
+                        }
+                    });
+                }
+            });
+
+
+        } else if (requestCode == RC_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap selectedImg = (Bitmap) extras.get("data");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            selectedImg.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+            byte[] ba = baos.toByteArray();
+
+            String uuid = UUID.randomUUID().toString();
+            final StorageReference imgRef = mBookPhotoStorageReference.child(uuid);
+            imgRef.putBytes(ba).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            onUploadPhotoSuccess(uri);
+                        }
+                    });
+                }
+            });
         }
+
     }
+
+    /**
+     * onUploadPhotoSuccess
+     * @param uri
+     */
+    private void onUploadPhotoSuccess(Uri uri) {
+        mSelectedPhotoUri = uri;
+        mLoadingPanel.setVisibility(View.GONE);
+
+        // display photo on the image view
+        Glide.with(mPhotoImageView.getContext())
+                .load(uri)
+                .into(mPhotoImageView);
+    }
+
 }
