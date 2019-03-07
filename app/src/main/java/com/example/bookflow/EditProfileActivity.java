@@ -1,13 +1,20 @@
 package com.example.bookflow;
 
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.regex.Pattern;
@@ -18,6 +25,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private Uri imageUri = null;
     private FirebaseAuth mAuth;
     private FirebaseStorage storage;
+    private DatabaseReference dbRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +47,50 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        ValueEventListener userInfoListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                FirebaseUser user = mAuth.getCurrentUser();
+                String userUid = user.getUid();
+                String emailHint = "";
+                String phoneHint = "";
+                String nameHint = "";
+                String introHint = "";
+
+                for (DataSnapshot eachUser: dataSnapshot.getChildren()) {
+                    String getEmail = eachUser.child("uid").getValue().toString();
+                    if (getEmail.equals(userUid)) {
+                        emailHint = eachUser.child("email").getValue().toString();
+                        phoneHint = eachUser.child("phoneNumber").getValue().toString();
+                        nameHint = eachUser.child("username").getValue().toString();
+                        introHint = eachUser.child("selfIntro").getValue().toString();
+                        break;
+                    }
+                }
+
+                // TODO: user image upload to storage and get it
+
+                username.setText(nameHint);
+                selfIntro.setText(introHint);
+                email.setText(emailHint);
+                phone.setText(phoneHint);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("listener cancelled", databaseError.toException());
+            }
+        };
+
+        dbRef.child("Users").addListenerForSingleValueEvent(userInfoListener);
+    }
+
 
     /**
      * The onClick method for button "CONFIRM"
