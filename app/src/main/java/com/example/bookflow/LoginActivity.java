@@ -2,10 +2,7 @@ package com.example.bookflow;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,11 +13,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
+import java.util.regex.Pattern;
 
 public class LoginActivity extends BasicActivity {
 
-    EditText id, password;
+    EditText email, password;
     TextView signup;
     Button login;
     FirebaseAuth mAuth;
@@ -32,7 +30,7 @@ public class LoginActivity extends BasicActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        id = findViewById(R.id.id);
+        email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         login = findViewById(R.id.login);
         signup = findViewById(R.id.signup);
@@ -52,17 +50,32 @@ public class LoginActivity extends BasicActivity {
         });
 
 
-        // test: make development faster
-        id.setText("paul@example.com");
-        password.setText("123456");
+//        // test: make development faster
+//        email.setText("paul@example.com");
+//        password.setText("123456");
 
     }
 
     private void loggedIn() {
-        mAuth.signInWithEmailAndPassword(id.getText().toString(), password.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    private static final String TAG = "1";
+        // regex
+        boolean valid = true;
+        String emailPat = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
+        if (!Pattern.matches(emailPat, email.getText().toString())) {
+            email.setError("Invalid email address");
+            email = null;
+            valid = false;
+        }
+        String passwordPat = "^(.{6,20})$";
+        if (!Pattern.matches(passwordPat, password.getText().toString())) {
+            password.setError("password should more than 6 and less than 20 characters");
+            password = null;
+            valid = false;
+        }
+        if (!valid)
+            return;
 
+        mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {

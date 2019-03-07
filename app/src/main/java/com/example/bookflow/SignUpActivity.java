@@ -17,8 +17,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -78,17 +76,25 @@ public class SignUpActivity extends BasicActivity {
             valid = false;
         }
         String passwordPat = "^(.{6,20})$";
-        if (!Pattern.matches(passwordPat, password.getText().toString())) {
-            password.setError("password should more 6 and less than 20 characters");
+        if (!password.getText().toString().equals(repassword.getText().toString())) {
+            password.setError("Password not match!");
+            repassword.setError("Password not match!");
             password = null;
-            valid = false;
-        }
-        if (!Pattern.matches(passwordPat, repassword.getText().toString())) {
-            repassword.setError("password should more 6 and less than 20 characters");
             repassword = null;
             valid = false;
+        } else {
+            if (!Pattern.matches(passwordPat, password.getText().toString())) {
+                password.setError("password should more 6 and less than 20 characters");
+                password = null;
+                valid = false;
+            }
+            if (!Pattern.matches(passwordPat, repassword.getText().toString())) {
+                repassword.setError("password should more than 6 and less than 20 characters");
+                repassword = null;
+                valid = false;
+            }
         }
-        String emailPat = "[0-9a-z]+@[0-9a-z]+.[a-z]+";
+        String emailPat = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
         if (!Pattern.matches(emailPat, email.getText().toString())) {
             email.setError("Invalid email address");
             email = null;
@@ -103,26 +109,17 @@ public class SignUpActivity extends BasicActivity {
 
         if (!valid)
             return;
-
-        if (!password.getText().toString().equals(repassword.getText().toString())) {
-            password.setError("Password not match!");
-            repassword.setError("Password not match!");
-            password = null;
-            repassword = null;
+        // if the user did not upload an icon
+        if (imageUri==null) {
+            Toast.makeText(SignUpActivity.this, "Please upload an icon", Toast.LENGTH_SHORT).show();
             return;
         }
-
         mAuth.createUserWithEmailAndPassword(email.getText().toString(),password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     final String uid = mAuth.getCurrentUser().getUid();
                     final StorageReference storageRef = storage.getReference("users").child(uid);
-                    // if the user did not upload an icon
-                    if (imageUri==null) {
-                        Toast.makeText(SignUpActivity.this, "Please upload an icon", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
                     storageRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
@@ -151,7 +148,7 @@ public class SignUpActivity extends BasicActivity {
                     });
 
                 } else {
-                    Toast.makeText(SignUpActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUpActivity.this, "Email address already exists.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
