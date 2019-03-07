@@ -43,7 +43,7 @@ public class EditProfileActivity extends AppCompatActivity {
     /**
      * The onClick method for button "CONFIRM"
      * It checks if each input is in correct format then call update
-     * @param view
+     * @param view onClick method needed
      */
     public void confirm(View view) {
         String usernameStr = username.getText().toString();

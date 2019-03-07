@@ -22,6 +22,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.UUID;
 
+/**
+ * This class is for user profile page
+ * It fills all information of a user profile, including
+ * name, phone, self-intro, email, books offered and review list
+ * it also provides a button, an access to edit profile page
+ */
 public class UserProfileActivity extends BasicActivity {
     private DatabaseReference dbRef;
     private String email, phoneNum, username, selfIntro;
@@ -35,13 +41,17 @@ public class UserProfileActivity extends BasicActivity {
         setContentView(R.layout.activity_user_profile);
     }
 
+    /**
+     * onStart method get all needed data in this page from firebase
+     * and convert them to strings, integers, users which we can directly use
+     */
     @Override
     protected void onStart() {
         super.onStart();
         reviewListView = findViewById(R.id.reviewList);
         dbRef = FirebaseDatabase.getInstance().getReference();
 
-
+        // get user information from the database
         ValueEventListener userInfoListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -69,6 +79,7 @@ public class UserProfileActivity extends BasicActivity {
             }
         };
 
+        // get all reviews from database
         ValueEventListener reviewsListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -93,11 +104,18 @@ public class UserProfileActivity extends BasicActivity {
             }
         };
 
-
-    dbRef.child("Users").addListenerForSingleValueEvent(userInfoListener);
-    dbRef.child("Reviews").addListenerForSingleValueEvent(reviewsListener);
+        // activate listeners
+        dbRef.child("Users").addListenerForSingleValueEvent(userInfoListener);
+        dbRef.child("Reviews").addListenerForSingleValueEvent(reviewsListener);
     }
 
+    /**
+     * setupTextView just fill text views with corresponding data
+     * @param name  the user name string
+     * @param intro the self introduction string
+     * @param email the email string
+     * @param phone the phone number string
+     */
     private void setupTextView(String name, String intro, String email, String phone) {
         TextView textView = findViewById(R.id.profileName);
         textView.setText(name);
@@ -112,6 +130,11 @@ public class UserProfileActivity extends BasicActivity {
         textView.setText(phone);
     }
 
+
+    /**
+     * This is onClick method for button "edit profile"
+     * @param view  onClick method needed
+     */
     public void editProfile(View view) {
         Intent intent = new Intent(this, EditProfileActivity.class);
         startActivity(intent);

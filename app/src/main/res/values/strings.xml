@@ -55,5 +55,7 @@
 
     <!-- edit user profile -->
     <string name="Introduction">Introduction</string>
+    <string name="edit_email">Email</string>
+    <string name="edit_phone">Phone</string>
 
 </resources>
