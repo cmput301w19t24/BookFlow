@@ -29,13 +29,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
         android:text="Available "
         android:textSize="18dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/checkAccepted" />
 `
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="699dp" />
@@ -112,13 +110,13 @@
         android:id="@+id/checkAccepted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
 
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
         android:text="Accepted"
         android:textSize="18dp"
-        app:layout_constraintBottom_toTopOf="@+id/checkAvailable"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline5"
