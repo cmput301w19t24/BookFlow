@@ -27,6 +27,7 @@
         android:layout_weight="1"
         android:background="@null"
         android:contentDescription="@string/placeholder"
+        android:onClick="editProfile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/edit_icon" />

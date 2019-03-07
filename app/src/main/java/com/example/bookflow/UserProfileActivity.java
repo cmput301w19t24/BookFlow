@@ -1,9 +1,11 @@
 package com.example.bookflow;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -110,5 +112,8 @@ public class UserProfileActivity extends BasicActivity {
         textView.setText(phone);
     }
 
-
+    public void editProfile(View view) {
+        Intent intent = new Intent(this, EditProfileActivity.class);
+        startActivity(intent);
+    }
 }

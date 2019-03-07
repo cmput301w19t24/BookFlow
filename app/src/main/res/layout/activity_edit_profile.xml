@@ -87,7 +87,7 @@
                 android:background="@color/common_google_signin_btn_text_dark_disabled"
                 android:contentDescription="@string/placeholder"
                 android:padding="13dp"
-                app:srcCompat="@drawable/password_icon" />
+                app:srcCompat="@drawable/shiki_face" />
 
             <EditText
                 android:id="@+id/edit_self_intro"
@@ -128,7 +128,7 @@
                 app:srcCompat="@drawable/email_icon" />
 
             <EditText
-                android:id="@+id/email"
+                android:id="@+id/edit_email"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
@@ -165,7 +165,7 @@
                 app:srcCompat="@drawable/phone_icon" />
 
             <EditText
-                android:id="@+id/phone"
+                android:id="@+id/edit_phone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
@@ -189,7 +189,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
-        android:onClick="signUp"
+        android:onClick="confirm"
         android:text="@string/confirm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
