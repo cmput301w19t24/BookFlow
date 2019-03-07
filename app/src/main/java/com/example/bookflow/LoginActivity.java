@@ -50,6 +50,12 @@ public class LoginActivity extends BasicActivity {
                 startActivity(new Intent(LoginActivity.this,SignUpActivity.class));
             }
         });
+
+
+        // test: make development faster
+        id.setText("paul@example.com");
+        password.setText("123456");
+
     }
 
     private void loggedIn() {
