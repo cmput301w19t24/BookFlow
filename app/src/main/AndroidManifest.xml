@@ -19,7 +19,7 @@
         <activity android:name=".SignUpActivity" />
         <activity android:name=".BorrowListActivity" />
         <activity android:name=".BookListActivity" />
-        <activity android:name=".mapActivity" />
+        <activity android:name=".MapsActivity" />
         <activity android:name=".ScanActivity" />
         <activity android:name=".NotificationActivity" />
         <activity
