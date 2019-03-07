@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.example.bookflow.Model.Review;
 import com.example.bookflow.Model.ReviewList;
 import com.example.bookflow.Model.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,15 +44,23 @@ public class UserProfileActivity extends BasicActivity {
         ValueEventListener userInfoListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                email = dataSnapshot.child("email").toString();
-                phoneNum = dataSnapshot.child("phoneNumber").toString();
-                username = dataSnapshot.child("username").toString();
-                selfIntro = dataSnapshot.child("selfIntro").toString();
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                FirebaseUser user = mAuth.getCurrentUser();
+                String userEmail = user.getEmail();
+
+                for (DataSnapshot eachUser: dataSnapshot.getChildren()) {
+                    String getEmail = eachUser.child("email").getValue().toString();
+                    if (getEmail.equals(userEmail)) {
+                        email = userEmail;
+                        phoneNum = eachUser.child("phoneNumber").getValue().toString();
+                        username = eachUser.child("username").getValue().toString();
+                        selfIntro = eachUser.child("selfIntro").getValue().toString();
+                    }
+                }
+
                 // TODO: user image upload to storage and get it
 
                 setupTextView(username, selfIntro, email, phoneNum);
-
-
             }
 
             @Override
