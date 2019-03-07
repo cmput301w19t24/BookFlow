@@ -1,10 +1,12 @@
 package com.example.bookflow;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,10 +20,14 @@ import java.util.regex.Pattern;
 
 public class LoginActivity extends BasicActivity {
 
-    EditText email, password;
-    TextView signup;
-    Button login;
-    FirebaseAuth mAuth;
+    private EditText email, password;
+    private TextView signup;
+    private Button login;
+    private FirebaseAuth mAuth;
+    private CheckBox checkBox;
+    private SharedPreferences loginPreferences;
+    private SharedPreferences.Editor loginPrefsEditor;
+    private Boolean saveLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,11 @@ public class LoginActivity extends BasicActivity {
         password = findViewById(R.id.password);
         login = findViewById(R.id.login);
         signup = findViewById(R.id.signup);
+        checkBox = (CheckBox)findViewById(R.id.checkBox);
+        loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+        loginPrefsEditor = loginPreferences.edit();
+
+        checkRemem();
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,11 +60,15 @@ public class LoginActivity extends BasicActivity {
             }
         });
 
+    }
 
-//        // test: make development faster
-//        email.setText("paul@example.com");
-//        password.setText("123456");
-
+    private void checkRemem() {
+        saveLogin = loginPreferences.getBoolean("saveLogin", false);
+        if (saveLogin == true) {
+            email.setText(loginPreferences.getString("email", ""));
+            password.setText(loginPreferences.getString("password", ""));
+            checkBox.setChecked(true);
+        }
     }
 
     private void loggedIn() {
@@ -79,10 +94,20 @@ public class LoginActivity extends BasicActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-//                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (checkBox.isChecked()) {
+                                loginPrefsEditor.putBoolean("saveLogin", true);
+                                loginPrefsEditor.putString("email", email.getText().toString());
+                                loginPrefsEditor.putString("password", password.getText().toString());
+                                loginPrefsEditor.commit();
+                            } else {
+                                loginPrefsEditor.clear();
+                                loginPrefsEditor.commit();
+                            }
+                            Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         } else {
                             Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                            return;
                         }
                     }
         });
