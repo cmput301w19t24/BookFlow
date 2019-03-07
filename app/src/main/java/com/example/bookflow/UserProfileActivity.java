@@ -25,6 +25,7 @@ public class UserProfileActivity extends BasicActivity {
     private String email, phoneNum, username, selfIntro;
     private ReviewList reviewList;
     private ListView reviewListView;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +36,13 @@ public class UserProfileActivity extends BasicActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         reviewListView = findViewById(R.id.reviewList);
-
         dbRef = FirebaseDatabase.getInstance().getReference();
 
 
         ValueEventListener userInfoListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
                 FirebaseUser user = mAuth.getCurrentUser();
                 String userEmail = user.getEmail();
 
@@ -72,14 +70,17 @@ public class UserProfileActivity extends BasicActivity {
         ValueEventListener reviewsListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot review: dataSnapshot.getChildren()){
-                    if (username.equals(review.child("reviewee").toString())){
+                for (DataSnapshot eachReview: dataSnapshot.getChildren()){
+                    if (username.equals(eachReview.child("reviewee").toString())){
 
-                        //TODO: not able to initialize a review if reviewer and reviewee are stored
-                        //TODO: as user
-                        UUID uuid = UUID.fromString(review.child("uuid").getValue().toString());
-                        int rating = Integer.getInteger(review.child("rating").getValue().toString());
-                        String comments = review.child("comments").getValue().toString();
+                        /*
+                        TODO: not able to initialize a review with User reviewer and reviewee
+                        TODO: option 1: users in Review class change to FirebaseUser
+                        TODO: option 2: users in Review class only store name or uid or email
+                        */
+                        UUID uuid = UUID.fromString(eachReview.child("uuid").getValue().toString());
+                        int rating = Integer.getInteger(eachReview.child("rating").getValue().toString());
+                        String comments = eachReview.child("comments").getValue().toString();
                     }
                 }
             }

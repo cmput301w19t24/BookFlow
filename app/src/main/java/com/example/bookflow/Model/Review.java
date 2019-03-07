@@ -16,6 +16,10 @@ public class Review {
     private int rating;
     private UUID uuid;
 
+    public Review() {
+
+    }
+
     public Review(User reviewer, User reviewee, String comments, int rating) {
         this.reviewer = reviewer;
         this.reviewee = reviewee;

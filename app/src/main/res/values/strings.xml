@@ -3,6 +3,7 @@
     <string name="app_name">BookFlow</string>
     <string name="book_name">book name</string>
     <string name="placeholder">Placeholder</string>
+    <string name="confirm">Confirm</string>
 
     <!-- Strings for login screen -->
     <string name="remember_login">Remember My Login</string>
@@ -41,7 +42,7 @@
     </string-array>
 
     <!-- array for pick photo dialog -->
-    <string-array name="colors_array" >
+    <string-array name="colors_array">
         <item>Choose From Album</item>
         <item>Take A Photo</item>
     </string-array>
@@ -51,5 +52,8 @@
     <string name="add_photo_image_button_description">Take A Photo</string>
     <string name="done">DONE</string>
     <string name="pick_a_photo">Pick a Photo</string>
+
+    <!-- edit user profile -->
+    <string name="Introduction">Introduction</string>
 
 </resources>
