@@ -27,7 +27,7 @@
             android:label="@string/title_activity_add_photo"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".UserProfileActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".BasicActivity" />
         <activity android:name=".EditBookDetailActivity" />
         <activity
