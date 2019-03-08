@@ -41,6 +41,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
+    // for barcode ML
+    implementation 'com.google.firebase:firebase-ml-vision:19.0.2'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
