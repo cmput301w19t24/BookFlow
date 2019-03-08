@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -37,21 +38,51 @@ public class SearchActivity extends BasicActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
-        search_Text = findViewById(R.id.searchText);
-        spinner = findViewById(R.id.spinner);
         checkAccepted = findViewById(R.id.checkAccepted);
         checkAvailable = findViewById(R.id.checkAvailable);
         checkRequested = findViewById(R.id.checkRequested);
         checkBorrowed = findViewById(R.id.checkBorrowed);
+        checkAccepted.setVisibility(View.INVISIBLE);
+        checkAvailable.setVisibility(View.INVISIBLE);
+        checkRequested.setVisibility(View.INVISIBLE);
+        checkBorrowed.setVisibility(View.INVISIBLE);
         recyclerView = findViewById(R.id.searchViewList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+        search_Text = findViewById(R.id.searchText);
+        spinner = findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position == 0){
+                    checkAccepted.setVisibility(View.INVISIBLE);
+                    checkAvailable.setVisibility(View.INVISIBLE);
+                    checkRequested.setVisibility(View.INVISIBLE);
+                    checkBorrowed.setVisibility(View.INVISIBLE);
+                }
+                else{
+                    checkAccepted.setVisibility(View.VISIBLE);
+                    checkAvailable.setVisibility(View.VISIBLE);
+                    checkRequested.setVisibility(View.VISIBLE);
+                    checkBorrowed.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+
+        });
+
         boolean isCheckedAccepted = false;
         boolean isCheckedAvailable = false;
         boolean isCheckedRequested = false;
         boolean isCheckedBorrowed = false;
     }
+
 
     public void searchUser(String searchText){
         Toast.makeText(SearchActivity.this, "Started Search", Toast.LENGTH_LONG).show();
@@ -107,6 +138,7 @@ public class SearchActivity extends BasicActivity {
     public void searchByBookName(){}
     public void searchByAuthor(){}
     public void searchByISBN(){}
+
 
     public void search(View v){
         String searchOption = spinner.getSelectedItem().toString();
