@@ -125,19 +125,7 @@ public class AddBookActivity extends BasicActivity {
                     }
 
                     Uri downloadUri = task.getResult();
-                    mybook.addPhoto();
-                }
-            });
-
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    photoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-
-                        }
-                    })
+                    mybook.addPhoto(downloadUri);
                 }
             });
 
