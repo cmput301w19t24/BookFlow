@@ -36,10 +36,10 @@ public class LoginActivity extends BasicActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        email = findViewById(R.id.email);
-        password = findViewById(R.id.password);
-        login = findViewById(R.id.login);
-        signup = findViewById(R.id.signup);
+        email = (EditText)findViewById(R.id.email);
+        password = (EditText)findViewById(R.id.password);
+        login = (Button)findViewById(R.id.login);
+        signup = (TextView)findViewById(R.id.signup);
         checkBox = (CheckBox)findViewById(R.id.checkBox);
         loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
         loginPrefsEditor = loginPreferences.edit();
@@ -89,6 +89,7 @@ public class LoginActivity extends BasicActivity {
         if (!valid)
             return;
 
+        // try to sign in
         mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -107,7 +108,6 @@ public class LoginActivity extends BasicActivity {
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         } else {
                             Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
-                            return;
                         }
                     }
         });
