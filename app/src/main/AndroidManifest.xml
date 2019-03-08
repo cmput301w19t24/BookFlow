@@ -27,11 +27,11 @@
             android:label="@string/title_activity_add_photo"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".UserProfileActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".BasicActivity" />
         <activity android:name=".EditBookDetailActivity" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".LoginActivity"
             android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,7 +39,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".SearchActivity" />
         <activity android:name=".BookDetailActivity" />
         <activity android:name=".AddBookActivity" />
     </application>

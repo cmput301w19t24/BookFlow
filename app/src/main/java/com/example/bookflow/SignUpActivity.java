@@ -118,6 +118,7 @@ public class SignUpActivity extends BasicActivity {
                         @Override
                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                             if (task.isSuccessful()) {
+                                Toast.makeText(SignUpActivity.this, "Signed Up", Toast.LENGTH_SHORT).show();
                                 storageRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                                     // store the user's profile to database and storage
                                     @Override
@@ -142,7 +143,7 @@ public class SignUpActivity extends BasicActivity {
                     });
 
                 } else {
-                    Toast.makeText(SignUpActivity.this, "Email address already exists.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUpActivity.this, "Email address already registered.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
