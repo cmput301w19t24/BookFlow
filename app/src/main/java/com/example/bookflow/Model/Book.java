@@ -1,6 +1,6 @@
 package com.example.bookflow.Model;
 
-import java.util.ArrayList;
+import android.net.Uri;
 
 public class Book {
     private String title;
@@ -11,7 +11,7 @@ public class Book {
     private User owner;
     private User borrower;
     private int requestCount;
-    private ArrayList<Photo> photos = new ArrayList<Photo>();
+    private Uri photo;
     
     public Book(String title, String author, String isbn){
         this.title = title;
@@ -67,16 +67,16 @@ public class Book {
     }
     
     /*add, get and delete photo*/
-    public void addPhoto(Photo photo){
-        photos.add(photo);
+    public void addPhoto(Uri photo){
+        this.photo = photo;
     }
     
-    public Photo getPhoto(int index){
-        return photos.get(index);
+    public Uri getPhoto(){
+        return photo;
     }
     
-    public void deletePhoto(int index){
-        photos.remove(index);
+    public void deletePhoto(){
+        photo = null;
     }
     
     /*getter and setter of owner*/
@@ -112,9 +112,5 @@ public class Book {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
-    }
-    
-    public ArrayList<Photo> getAllPhoto(){
-        return this.photos;
     }
 }

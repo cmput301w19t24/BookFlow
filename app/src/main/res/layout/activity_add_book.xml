@@ -27,7 +27,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/add_book_save_iv"
                 android:layout_width="50dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
@@ -39,7 +39,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/add_book_image_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -51,7 +51,7 @@
             app:srcCompat="@drawable/image_placeholder" />
 
         <EditText
-            android:id="@+id/bookName"
+            android:id="@+id/book_title_et"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -64,7 +64,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/authorName"
+            android:id="@+id/add_book_author_name_et"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -76,7 +76,7 @@
             android:padding="6dp" />
 
         <EditText
-            android:id="@+id/ISBN"
+            android:id="@+id/add_book_isbn_et"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -90,7 +90,7 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/loading_panel"
+        android:id="@+id/add_book_loading_panel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center" >

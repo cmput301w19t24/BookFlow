@@ -1,5 +1,7 @@
 package com.example.bookflow;
 
+import android.net.Uri;
+
 import com.example.bookflow.Model.Book;
 import com.example.bookflow.Model.Photo;
 import com.example.bookflow.Model.User;
@@ -22,21 +24,17 @@ public class BookUnitTest {
     
     @Test
     public void testAddAndGetPhoto() {
-        URL url = null;
-        try {
-            url = new URL("https://en.wikipedia.org/wiki/Java_(programming_language)#/media/File:Java_programming_language_logo.svg");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        Photo photo1 = new Photo(url);
-        book1.addPhoto(photo1);
-        assertEquals(photo1, book1.getPhoto(0));
+        Uri uri = null;
+        uri = Uri.parse("https://en.wikipedia.org/wiki/Java_(programming_language)#/media/File:Java_programming_language_logo.svg");
+
+        book1.addPhoto(uri);
+        assertEquals(uri, book1.getPhoto());
     }
     
     @Test
     public void testDeletePhoto() {
-        book1.deletePhoto(0);
-        assertEquals(0, book1.getAllPhoto().size());
+        book1.deletePhoto();
+        assertEquals(null, book1.getPhoto());
     }
     
     @Test
