@@ -31,7 +31,7 @@
         <activity android:name=".BasicActivity" />
         <activity android:name=".EditBookDetailActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
