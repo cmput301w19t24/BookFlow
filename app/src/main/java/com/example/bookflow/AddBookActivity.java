@@ -40,9 +40,6 @@ import java.io.IOException;
 
 public class AddBookActivity extends BasicActivity {
 
-    private final int ADD_PHOTO_REQUEST_CODE = 0;
-
-
     private final int RC_PHOTO_PICKER = 1;
     private final int RC_IMAGE_CAPTURE = 2;
 
