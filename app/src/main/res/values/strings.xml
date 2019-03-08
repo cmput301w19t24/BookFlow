@@ -57,5 +57,8 @@
     <string name="Introduction">Introduction</string>
     <string name="edit_email">Email</string>
     <string name="edit_phone">Phone</string>
+    <string name="add_book_success">New book added!</string>
+    <string name="add_book_error">Error occurred. Please try again.</string>
+    <string name="add_book_invalid_info">Please enter required fields</string>
 
 </resources>

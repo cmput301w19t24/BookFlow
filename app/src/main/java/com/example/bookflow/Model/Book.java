@@ -8,10 +8,10 @@ public class Book {
     private String isbn;
     private int rating;
     private String status;
-    private User owner;
-    private User borrower;
+    private String ownerId;
+    private String borrowerId;
     private int requestCount;
-    private Uri photo;
+    private String photoUri;
     
     public Book(String title, String author, String isbn){
         this.title = title;
@@ -67,34 +67,34 @@ public class Book {
     }
     
     /*add, get and delete photo*/
-    public void addPhoto(Uri photo){
-        this.photo = photo;
+    public void setPhotoUri(String photo){
+        this.photoUri = photo;
     }
     
-    public Uri getPhoto(){
-        return photo;
+    public String getPhotoUri(){
+        return this.photoUri;
     }
     
-    public void deletePhoto(){
-        photo = null;
+    public void deletePhotoUri(){
+        photoUri = null;
     }
     
     /*getter and setter of owner*/
-    public User getOwner(){
-        return this.owner;
+    public String getOwnerId(){
+        return this.ownerId;
     }
     
-    public void setOwner(User owner){
-        this.owner = owner;
+    public void setOwnerId(String ownerId){
+        this.ownerId = ownerId;
     }
     
     /*getter and setter of borrower*/
-    public User getBorrower(){
-        return this.borrower;
+    public String getBorrowerId(){
+        return this.borrowerId;
     }
     
-    public void setBorrower(User newBorrower){
-        this.borrower = newBorrower;
+    public void setBorrowerId(String newBorrowerId){
+        this.borrowerId = newBorrowerId;
     }
     
     /*increase count*/

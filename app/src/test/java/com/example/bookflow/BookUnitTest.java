@@ -19,18 +19,18 @@ public class BookUnitTest {
     }
     
     @Test
-    public void testAddAndGetPhoto() {
+    public void testSetAndGetPhoto() {
         Uri uri = null;
         uri = Uri.parse("https://en.wikipedia.org/wiki/Java_(programming_language)#/media/File:Java_programming_language_logo.svg");
 
-        book1.addPhoto(uri);
-        assertEquals(uri, book1.getPhoto());
+        book1.setPhotoUri(uri.toString());
+        assertEquals(uri, Uri.parse(book1.getPhotoUri()));
     }
     
     @Test
     public void testDeletePhoto() {
-        book1.deletePhoto();
-        assertEquals(null, book1.getPhoto());
+        book1.deletePhotoUri();
+        assertEquals(null, book1.getPhotoUri());
     }
     
     @Test
@@ -62,20 +62,7 @@ public class BookUnitTest {
         book1.setStatus("Available");
         assertEquals("Available", book1.getStatus());
     }
-    
-    @Test
-    public void testSetOwner(){
-        User user1 = new User();
-        book1.setOwner(user1);
-        assertEquals(user1, book1.getOwner());
-    }
-    
-    @Test
-    public void testSetBorrower(){
-        User user1 = new User();
-        book1.setBorrower(user1);
-        assertEquals(user1, book1.getBorrower());
-    }
+
     
     @Test
     public void testSetDescription(){

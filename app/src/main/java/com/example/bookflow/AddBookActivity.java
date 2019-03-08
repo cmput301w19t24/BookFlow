@@ -1,13 +1,17 @@
 package com.example.bookflow;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -20,16 +24,14 @@ import com.bumptech.glide.Glide;
 import com.example.bookflow.Model.Book;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -51,7 +53,7 @@ public class AddBookActivity extends BasicActivity {
     private FirebaseDatabase mFirebaseDatabase;
 
     private StorageReference mBookPhotoStorageReference;
-    private DatabaseReference mUserDatabaseReference;
+    private DatabaseReference mBookDatabaseReference;
 
     private Uri mSelectedPhotoUri;
 
@@ -94,21 +96,42 @@ public class AddBookActivity extends BasicActivity {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
 
         mBookPhotoStorageReference = mFirebaseStorage.getReference().child("book_photos");
-        mUserDatabaseReference = mFirebaseDatabase.getReference().child("Books");
+        mBookDatabaseReference = mFirebaseDatabase.getReference().child("Books");
     }
 
     /**
-     * save the book information to firebase
+     * save the book information to firebase. This method fires a series of async tasks
+     * first check if the user has uploaded a photo. if so, upload the photo to
+     * Firebase Storage, and add the URI to Book
      */
     private void saveBook(final Book mybook) {
-        // first check if the user has uploaded a photo.
-        // if so, upload the photo to FirebaseStorage, and
-        // add the URI to Book
+        //
+
+        OnCompleteListener<Void> listener = new OnCompleteListener<Void>() {
+            // upon completion, hide the loading panel and prompt user
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.add_book_success), Toast.LENGTH_LONG).show();
+                } else {
+                    task.getException().printStackTrace();
+                    Toast.makeText(getApplicationContext(), getString(R.string.add_book_error), Toast.LENGTH_LONG).show();
+                }
+                mLoadingPanel.setVisibility(View.GONE);
+            }
+        };
+
         if (mSelectedPhotoUri != null) {
+            mLoadingPanel.setVisibility(View.VISIBLE);
+
+            Log.d(TAG, "mSelectedPhotoUri: " + mSelectedPhotoUri.toString());
+            Log.d(TAG, "mSelectedPhotoUri.getLast...: " + mSelectedPhotoUri.getLastPathSegment());
+
             final StorageReference photoRef = mBookPhotoStorageReference.child(mSelectedPhotoUri.getLastPathSegment());
             UploadTask uploadTask = photoRef.putFile(mSelectedPhotoUri);
 
             uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                // upon completion, start to retrieve Uri
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                     if (!task.isSuccessful()) {
@@ -118,6 +141,7 @@ public class AddBookActivity extends BasicActivity {
                     return photoRef.getDownloadUrl();
                 }
             }).continueWithTask(new Continuation<Uri, Task<Void>>() {
+                // upon completion, start to upload to database
                 @Override
                 public Task<Void> then(@NonNull Task<Uri> task) throws Exception {
                     if (!task.isSuccessful()) {
@@ -125,13 +149,23 @@ public class AddBookActivity extends BasicActivity {
                     }
 
                     Uri downloadUri = task.getResult();
-                    mybook.addPhoto(downloadUri);
+                    Log.d(TAG, "downloadUri = " + downloadUri.toString());
+                    mybook.setPhotoUri(downloadUri.toString());
+
+                    String myuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    mybook.setOwnerId(myuid);
+
+                    return mBookDatabaseReference.push().setValue(mybook);
                 }
-            });
+            }).addOnCompleteListener(listener);
 
-            mLoadingPanel.setVisibility(View.VISIBLE);
+        } else {
+            // no photo uploaded, so just upload to the database
+            String myuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            mybook.setOwnerId(myuid);
+
+            mBookDatabaseReference.push().setValue(mybook).addOnCompleteListener(listener);
         }
-
     }
 
     /**
@@ -145,7 +179,7 @@ public class AddBookActivity extends BasicActivity {
         String isbn = mIsbnEditText.getText().toString().trim();
 
         if (bookTitle.equals("") || author.equals("") || isbn.equals("")) {
-            Toast.makeText(this, "Please enter required fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.add_book_invalid_info), Toast.LENGTH_SHORT).show();
             return null;
         }
 
@@ -197,30 +231,15 @@ public class AddBookActivity extends BasicActivity {
 
                 mSelectedPhotoUri = imgUri;
 
-                final StorageReference imgRef = mBookPhotoStorageReference.child(imgUri.getLastPathSegment());
-
-                imgRef.putFile(imgUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                onUploadPhotoSuccess(uri);
-                            }
-                        });
-                    }
-                });
             } else if (requestCode == RC_IMAGE_CAPTURE) {
                 Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
 
-                // display photo on the image view
-                mPhotoImageView.setImageBitmap(imageBitmap);
-
+                checkWritePermission();
 
                 // create a temporary file
                 File tempDir= Environment.getExternalStorageDirectory();
                 tempDir=new File(tempDir.getAbsolutePath()+"/.temp/");
-                tempDir.mkdir();
+                tempDir.mkdirs();
                 File tempFile = null;
                 try {
                     tempFile = File.createTempFile("temp", ".jpg", tempDir);
@@ -230,13 +249,10 @@ public class AddBookActivity extends BasicActivity {
                 }
 
                 // store the Bitmap to a temporary
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] ba = baos.toByteArray();
 
                 try {
                     FileOutputStream fos = new FileOutputStream(tempFile);
-                    fos.write(ba);
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
                     fos.flush();
                     fos.close();
                 } catch (IOException e) {
@@ -244,18 +260,19 @@ public class AddBookActivity extends BasicActivity {
                     return;
                 }
 
+                // display photo on the image view
+                mPhotoImageView.setImageBitmap(imageBitmap);
+
                 mSelectedPhotoUri = Uri.fromFile(tempFile);
             }
         }
     }
 
-    /**
-     * onUploadPhotoSuccess
-     * @param uri
-     */
-    private void onUploadPhotoSuccess(Uri uri) {
-        mSelectedPhotoUri = uri;
-        mLoadingPanel.setVisibility(View.GONE);
+    private void checkWritePermission(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            Log.v(TAG,"Permission is revoked");
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }
     }
 
 }
