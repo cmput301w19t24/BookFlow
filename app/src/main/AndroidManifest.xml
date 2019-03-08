@@ -27,10 +27,12 @@
             android:label="@string/title_activity_add_photo"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".UserProfileActivity" />
-        <activity android:name=".SearchActivity" />
+        <activity android:name=".LoginActivity" />
         <activity android:name=".BasicActivity" />
         <activity android:name=".EditBookDetailActivity" />
-        <activity android:name=".LoginActivity">
+        <activity
+            android:name=".SearchActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
