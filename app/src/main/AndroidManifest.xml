@@ -30,7 +30,9 @@
         <activity android:name=".SearchActivity" />
         <activity android:name=".BasicActivity" />
         <activity android:name=".EditBookDetailActivity" />
-
+        <activity android:name=".MainActivity" />
+        <activity android:name=".BookDetailActivity" />
+        <activity android:name=".AddBookActivity" />
         <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="adjustPan|stateHidden">
@@ -40,9 +42,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".BookDetailActivity" />
-        <activity android:name=".AddBookActivity" />
     </application>
 
 </manifest>
