@@ -30,7 +30,11 @@
     <ImageView
         android:id="@+id/searchItemImage"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="130dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="8dp"
+
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
