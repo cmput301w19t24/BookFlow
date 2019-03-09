@@ -115,6 +115,8 @@ public class AddBookActivity extends BasicActivity {
                     Toast.makeText(getApplicationContext(), getString(R.string.add_book_error), Toast.LENGTH_LONG).show();
                 }
                 mLoadingPanel.setVisibility(View.GONE);
+                
+                finish();
             }
         };
 
@@ -245,7 +247,7 @@ public class AddBookActivity extends BasicActivity {
                     return;
                 }
 
-                // store the Bitmap to a temporary
+                // store the Bitmap to a temporary file
 
                 try {
                     FileOutputStream fos = new FileOutputStream(tempFile);

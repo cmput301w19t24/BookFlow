@@ -144,6 +144,7 @@ public class SignUpActivity extends BasicActivity {
                     });
 
                 } else {
+                    task.getException().printStackTrace();
                     Toast.makeText(SignUpActivity.this, "Email address already registered.", Toast.LENGTH_SHORT).show();
                 }
             }
