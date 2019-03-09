@@ -11,12 +11,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
@@ -24,7 +26,7 @@ import java.util.regex.Pattern;
 
 
 public class EditProfileActivity extends AppCompatActivity {
-    private EditText username, email, selfIntro,phone;
+    private TextView username, email, selfIntro,phone;
     private ImageView profile;
     private Uri imageUri = null;
     private FirebaseAuth mAuth;
@@ -41,6 +43,7 @@ public class EditProfileActivity extends AppCompatActivity {
         username = findViewById(R.id.edit_username);
         email = findViewById(R.id.edit_email);
         phone = findViewById(R.id.edit_phone);
+        selfIntro = findViewById(R.id.edit_self_intro);
 
         mAuth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -51,23 +54,15 @@ public class EditProfileActivity extends AppCompatActivity {
                 upload();
             }
         });
-
-        Button button = findViewById(R.id.confirm);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirm(v);
-            }
-        });
-
     }
 
 
     @Override
     protected void onStart() {
         super.onStart();
+        dbRef = FirebaseDatabase.getInstance().getReference();
 
-        ValueEventListener userInfoListener = new ValueEventListener() {
+        ValueEventListener userInfoListener2 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 FirebaseUser user = mAuth.getCurrentUser();
@@ -89,6 +84,8 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
 
                 // TODO: user image upload to storage and get it
+                TextView textview  = findViewById(R.id.edit_username);
+                textview.setText("Heihei");
 
                 username.setText(nameHint);
                 selfIntro.setText(introHint);
@@ -102,11 +99,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         };
 
-        dbRef.child("Users").addListenerForSingleValueEvent(userInfoListener);
-    }
-
-    public void test(View v) {
-        return;
+        dbRef.child("Users").addListenerForSingleValueEvent(userInfoListener2);
     }
 
     private void upload() {
@@ -120,7 +113,7 @@ public class EditProfileActivity extends AppCompatActivity {
      * It checks if each input is in correct format then call update
      * @param view onClick method needed
      */
-    public void confirm(View view) {
+    public void confirm_button(View view) {
 
         String usernameStr = username.getText().toString();
         String introStr = selfIntro.getText().toString();
@@ -138,15 +131,15 @@ public class EditProfileActivity extends AppCompatActivity {
         }
 
         // check if self introduction is valid
-        if (introStr.length() > 20) {
-            selfIntro.setError("self introduction cannot exceed 20 characters");
+        if (introStr.length() > 25) {
+            selfIntro.setError("self introduction cannot exceed 25 characters");
             selfIntro = null;
             valid = false;
         }
 
         // check if email is valid
         String emailPat = "[0-9a-z]+@[0-9a-z]+.[a-z]+";
-        if (!Pattern.matches(emailPat, email.getText().toString())) {
+        if (!Pattern.matches(emailPat, emailStr)) {
             email.setError("Invalid email address");
             email = null;
             valid = false;
@@ -154,7 +147,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         // check if phone is valid
         String phonePat = "[0-9]+";
-        if (!Pattern.matches(phonePat, phone.getText().toString())) {
+        if (!Pattern.matches(phonePat, phoneStr)) {
             phone.setError("Invalid phone number");
             phone = null;
             valid = false;
@@ -164,6 +157,13 @@ public class EditProfileActivity extends AppCompatActivity {
             return ;
 
         FirebaseUser user = mAuth.getCurrentUser();
-        dbRef.child("Users");
+        String uid = user.getUid();
+        dbRef.child("Users").child(uid).child("username").setValue(usernameStr);
+        dbRef.child("Users").child(uid).child("selfIntro").setValue(introStr);
+        dbRef.child("Users").child(uid).child("email").setValue(emailStr);
+        dbRef.child("Users").child(uid).child("phoneNumber").setValue(phoneStr);
+
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        startActivity(intent);
     }
 }

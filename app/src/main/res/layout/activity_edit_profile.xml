@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUpActivity">
+    tools:context=".EditProfileActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -101,7 +101,7 @@
                 android:background="@null"
                 android:ems="10"
                 android:hint="@string/Introduction"
-                android:inputType="textPassword"
+                android:inputType="textShortMessage"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 tools:targetApi="o" />
@@ -185,15 +185,15 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/confirm"
+        android:id="@+id/confirm_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
-        android:clickable="true"
         android:focusable="true"
         android:text="@string/confirm"
+        android:onClick="confirm_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
