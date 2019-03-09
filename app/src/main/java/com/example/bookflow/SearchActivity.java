@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.bookflow.Model.Book;
 import com.example.bookflow.Model.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
@@ -49,7 +50,7 @@ public class SearchActivity extends BasicActivity {
         recyclerView = findViewById(R.id.searchViewList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+        mUserDatabase = FirebaseDatabase.getInstance().getReference();
         search_Text = findViewById(R.id.searchText);
         spinner = findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -82,37 +83,7 @@ public class SearchActivity extends BasicActivity {
         boolean isCheckedRequested = false;
         boolean isCheckedBorrowed = false;
     }
-
-
-    public void searchUser(String searchText){
-        Toast.makeText(SearchActivity.this, "Started Search", Toast.LENGTH_LONG).show();
-        Query firebaseSearchQuery = mUserDatabase.orderByChild("username").startAt(searchText).endAt(searchText + "\uf8ff");
-        FirebaseRecyclerAdapter<User,UserViewHolder> firebaseRecyclerAdapter=
-        new FirebaseRecyclerAdapter<User, UserViewHolder>(
-                User.class,
-                R.layout.searchitem,
-                UserViewHolder.class,
-                firebaseSearchQuery
-        ) {
-            @Override
-            protected void populateViewHolder(UserViewHolder viewHolder, User model, final int position) {
-                viewHolder.setDetails(getApplicationContext(),model.getUsername(),model.getEmail(),model.getPhoneNumber(),model.getImageurl());
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String user_id = getRef(position).getKey();
-                        Intent intent = new Intent(SearchActivity.this,UserProfileActivity.class);
-                        intent.putExtra("user_id",user_id);
-                        startActivity(intent);
-                    }
-                });
-            }
-
-        };
-        recyclerView.setAdapter(firebaseRecyclerAdapter);
-    }
-
-    // View Holder class
+    // User Holder class
     public static class UserViewHolder extends RecyclerView.ViewHolder{
         View mView;
 
@@ -133,11 +104,90 @@ public class SearchActivity extends BasicActivity {
         }
     }
 
+    // search user function
+    public void searchUser(String searchText){
+        Toast.makeText(SearchActivity.this, "Started Search", Toast.LENGTH_LONG).show();
+        Query firebaseSearchQuery = mUserDatabase.child("Users").orderByChild("username").startAt(searchText).endAt(searchText + "\uf8ff");
+        FirebaseRecyclerAdapter<User,UserViewHolder> firebaseRecyclerAdapter=
+        new FirebaseRecyclerAdapter<User, UserViewHolder>(
+                User.class,
+                R.layout.searchitem,
+                UserViewHolder.class,
+                firebaseSearchQuery
+        ) {
+            @Override
+            protected void populateViewHolder(UserViewHolder viewHolder, User model, final int position) {
+                viewHolder.setDetails(getApplicationContext(),model.getUsername(),model.getEmail(),model.getPhoneNumber(),model.getImageurl());
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String user_id = getRef(position).getKey();
+                        Log.i("userid",user_id);
+                        Intent intent = new Intent(SearchActivity.this,UserProfileActivity.class);
+                        intent.putExtra("user_id",user_id);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+        };
+        recyclerView.setAdapter(firebaseRecyclerAdapter);
+    }
+
+    // BookName Holder class
+    public static class BookTitleViewHolder extends RecyclerView.ViewHolder{
+        View mView;
+
+        public BookTitleViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mView = itemView;
+        }
+
+        public void setDetails(Context ctx, String isbn, String title, String author, String bookImage){
+            TextView book_isbn = (TextView)mView.findViewById(R.id.searchDetail1);
+            TextView book_title = (TextView)mView.findViewById(R.id.searchDetail2);
+            TextView book_author = (TextView)mView.findViewById(R.id.searchDetail3);
+            ImageView book_image = (ImageView)mView.findViewById(R.id.searchItemImage);
+            book_isbn.setText(isbn);
+            book_title.setText(title);
+            book_author.setText(author);
+            Glide.with(ctx).load(bookImage).into(book_image);
+        }
+    }
+
+    public void searchByBookTitle(String searchText){
+        Toast.makeText(SearchActivity.this, "Started Search", Toast.LENGTH_LONG).show();
+        Query firebaseSearchQuery = mUserDatabase.child("Books").orderByChild("title").startAt(searchText).endAt(searchText + "\uf8ff");
+        FirebaseRecyclerAdapter<Book,BookTitleViewHolder> firebaseRecyclerAdapter=
+                new FirebaseRecyclerAdapter<Book,BookTitleViewHolder>(
+                        Book.class,
+                        R.layout.searchitem,
+                        BookTitleViewHolder.class,
+                        firebaseSearchQuery
+                ) {
+                    @Override
+                    protected void populateViewHolder(BookTitleViewHolder viewHolder, Book model, final int position) {
+                        viewHolder.setDetails(getApplicationContext(),model.getIsbn(),model.getTitle(),model.getAuthor(),model.getPhotoUri());
+                        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String book_id = getRef(position).getKey();
+                                Intent intent = new Intent(SearchActivity.this,BookDetailActivity.class);
+                                intent.putExtra("book_id",book_id);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+
+                };
+        recyclerView.setAdapter(firebaseRecyclerAdapter);
+    }
 
 
-    public void searchByBookName(){}
-    public void searchByAuthor(){}
-    public void searchByISBN(){}
+
+
+    public void searchByAuthor(String searchText){}
+    public void searchByISBN(String searchText){}
 
 
     public void search(View v){
@@ -148,13 +198,13 @@ public class SearchActivity extends BasicActivity {
                 searchUser(searchText);
                 break;
             case "search by book name":
-                searchByBookName();
+                searchByBookTitle(searchText);
                 break;
             case "search by book author":
-                searchByAuthor();
+                searchByAuthor(searchText);
                 break;
             case "search by book ISBN":
-                searchByISBN();
+                searchByISBN(searchText);
         }
 
     }
