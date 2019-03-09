@@ -1,7 +1,6 @@
 <resources>
     <!-- Strings used globally -->
-    <string name="app_name">BookFlow</string>
-    <string name="book_name">book name</string>
+    <string name="app_name">BookFlow</string>    <string name="book_name">book name</string>
     <string name="placeholder">Placeholder</string>
     <string name="confirm">Confirm</string>
 

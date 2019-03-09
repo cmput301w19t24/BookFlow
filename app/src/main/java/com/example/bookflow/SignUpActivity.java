@@ -50,7 +50,6 @@ public class SignUpActivity extends BasicActivity {
                 upload();
             }
         });
-
     }
 
     public void signUp(View v) {
@@ -100,6 +99,8 @@ public class SignUpActivity extends BasicActivity {
             phone = null;
             valid = false;
         }
+
+
 
         if (!valid)
             return;

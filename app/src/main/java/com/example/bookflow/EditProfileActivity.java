@@ -1,11 +1,14 @@
 package com.example.bookflow;
 
+import android.content.Intent;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -19,6 +22,7 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.regex.Pattern;
 
+
 public class EditProfileActivity extends AppCompatActivity {
     private EditText username, email, selfIntro,phone;
     private ImageView profile;
@@ -26,6 +30,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseStorage storage;
     private DatabaseReference dbRef;
+    private static final int PICK_FROM_ALBUM = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +48,18 @@ public class EditProfileActivity extends AppCompatActivity {
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                update();
+                upload();
             }
         });
+
+        Button button = findViewById(R.id.confirm);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirm(v);
+            }
+        });
+
     }
 
 
@@ -64,8 +78,8 @@ public class EditProfileActivity extends AppCompatActivity {
                 String introHint = "";
 
                 for (DataSnapshot eachUser: dataSnapshot.getChildren()) {
-                    String getEmail = eachUser.child("uid").getValue().toString();
-                    if (getEmail.equals(userUid)) {
+                    String getUid = eachUser.child("uid").getValue().toString();
+                    if (getUid.equals(userUid)) {
                         emailHint = eachUser.child("email").getValue().toString();
                         phoneHint = eachUser.child("phoneNumber").getValue().toString();
                         nameHint = eachUser.child("username").getValue().toString();
@@ -91,6 +105,15 @@ public class EditProfileActivity extends AppCompatActivity {
         dbRef.child("Users").addListenerForSingleValueEvent(userInfoListener);
     }
 
+    public void test(View v) {
+        return;
+    }
+
+    private void upload() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(intent, PICK_FROM_ALBUM);
+    }
 
     /**
      * The onClick method for button "CONFIRM"
@@ -98,6 +121,7 @@ public class EditProfileActivity extends AppCompatActivity {
      * @param view onClick method needed
      */
     public void confirm(View view) {
+
         String usernameStr = username.getText().toString();
         String introStr = selfIntro.getText().toString();
         String emailStr = email.getText().toString();
@@ -136,14 +160,10 @@ public class EditProfileActivity extends AppCompatActivity {
             valid = false;
         }
 
-        if (!valid) {return;}
+        if (!valid)
+            return ;
 
-        // TODO: connect to firebase and update the user information
-
-
-    }
-
-    private void update(){
-
+        FirebaseUser user = mAuth.getCurrentUser();
+        dbRef.child("Users");
     }
 }
