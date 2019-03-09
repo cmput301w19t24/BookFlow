@@ -16,6 +16,14 @@ public class ReviewList {
         return rList;
     }
 
+    public ArrayList<String> toStringArray() {
+        ArrayList<String> strList = new ArrayList<String>();
+        for (Review eachReview: rList) {
+            strList.add(eachReview.toString());
+        }
+        return strList;
+    }
+
     public void addReview(Review review) {
         rList.add(review);
     }

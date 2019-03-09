@@ -44,6 +44,14 @@ public class Review {
         return rating;
     }
 
+    public String toString() {
+        String result = reviewer.getUsername() + "\n";
+        result = result + comments + "\n";
+        result = result + "Rating: " + String.valueOf(rating);
+        return result;
+
+    }
+
     // setter for reviewer/reviewee probably not necessary as they should not be editable
     public void setUUID(UUID uuid) { this.uuid = uuid; }
     public void setRating(int rating) { this.rating = rating; }

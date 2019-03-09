@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -30,8 +32,8 @@ import java.util.UUID;
  */
 public class UserProfileActivity extends BasicActivity {
     private DatabaseReference dbRef;
-    private String email, phoneNum, username, selfIntro;
-    private ReviewList reviewList;
+    private String email, phoneNum, username, selfIntro, uid;
+    private ReviewList reviewList = new ReviewList();
     private ListView reviewListView;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -40,6 +42,8 @@ public class UserProfileActivity extends BasicActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+        FirebaseUser user = mAuth.getCurrentUser();
+        uid = user.getUid();
     }
 
 
@@ -50,7 +54,7 @@ public class UserProfileActivity extends BasicActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        reviewListView = findViewById(R.id.reviewList);
+        reviewListView = (ListView) findViewById(R.id.reviewList);
         dbRef = FirebaseDatabase.getInstance().getReference();
 
         // get user information from the database
@@ -58,12 +62,11 @@ public class UserProfileActivity extends BasicActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 FirebaseUser user = mAuth.getCurrentUser();
-                String userEmail = user.getEmail();
 
                 for (DataSnapshot eachUser: dataSnapshot.getChildren()) {
-                    String getEmail = eachUser.child("email").getValue().toString();
-                    if (getEmail.equals(userEmail)) {
-                        email = userEmail;
+                    String getUid = eachUser.child("uid").getValue().toString();
+                    if (getUid.equals(uid)) {
+                        email = eachUser.child("email").getValue().toString();
                         phoneNum = eachUser.child("phoneNumber").getValue().toString();
                         username = eachUser.child("username").getValue().toString();
                         selfIntro = eachUser.child("selfIntro").getValue().toString();
@@ -87,10 +90,17 @@ public class UserProfileActivity extends BasicActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot eachReview: dataSnapshot.getChildren()){
-                    if (username.equals(eachReview.child("reviewee").toString())){
+                    if (uid.equals(eachReview.child("reviewee").getValue().toString())){
                         prepareReviewList(eachReview);
                     }
                 }
+                ArrayList<String> stringList = reviewList.toStringArray();
+                if (stringList.size() == 0) {
+                    stringList.add("No Review");
+                }
+                ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(UserProfileActivity.this,
+                        R.layout.review_list_adapter, stringList);
+                reviewListView.setAdapter(adapter1);
             }
 
             @Override
@@ -110,25 +120,24 @@ public class UserProfileActivity extends BasicActivity {
      */
     private void prepareReviewList(@NonNull DataSnapshot eachReview) {
         // prepare uuid, rating, comments
-        UUID uuid = UUID.fromString(eachReview.child("uuid").getValue().toString());
-        int rating = Integer.getInteger(eachReview.child("rating").getValue().toString());
+        String test1 = eachReview.child("rating").getValue().toString();
         String comments = eachReview.child("comments").getValue().toString();
+        int rating = Integer.parseInt(eachReview.child("rating").getValue().toString());
+
 
         // prepare reviewer and reviewee
         User reviewer = new User();
         User reviewee = new User();
 
-        reviewer.setUsername(eachReview.child("reviewer").toString());
+        reviewer.setUsername(eachReview.child("reviewer").getValue().toString());
 
         reviewee.setUsername(username);
         reviewee.setEmail(email);
         reviewee.setPhoneNumber(phoneNum);
-        FirebaseUser user = mAuth.getCurrentUser();
-        reviewee.setUid(user.getUid());
+        reviewee.setUid(uid);
 
         // create a review base on prepared information
         Review review = new Review(reviewer, reviewee, comments, rating);
-        review.setUUID(uuid);
 
         // append to review list
         reviewList.addReview(review);
