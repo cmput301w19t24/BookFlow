@@ -28,8 +28,8 @@ import com.google.firebase.database.Query;
 
 public class NotificationActivity extends BasicActivity {
     private FirebaseAuth mAuth;
-    private ListView notifListview;
-    private FirebaseDatabase database;
+    private ListView recyclerView;
+    private FirebaseListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +41,34 @@ public class NotificationActivity extends BasicActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         String user_id = user.getUid();
 
-        DatabaseReference notificationRef = FirebaseDatabase.getInstance().getReference().child("Notifications").child(user_id);
+        Query query = FirebaseDatabase.getInstance().getReference().child("Notifications").child(user_id);
 
-        notifListview = (ListView) findViewById(R.id.recyclerView);
-        Query query = database.getReference().child("Books");
+        FirebaseListOptions<Book> options = new FirebaseListOptions.Builder<Book>()
+                .setLayout(R.layout.main_listitem)
+                .setLifecycleOwner(NotificationActivity.this)
+                .setQuery(query,Book.class).build();
+        recyclerView = (ListView) findViewById(R.id.recyclerView);
+        adapter = new FirebaseListAdapter<Notification>(options) {
+            @Override
+            protected void populateView(@NonNull View v, @NonNull Notification model, int position) {
+                TextView mauthor = v.findViewById(R.id.iauthor);
+                TextView mtitle = v.findViewById(R.id.ititle);
+                ImageView mphoto = v.findViewById(R.id.iphoto);
 
+                Notification notification = (Notification) model;
+                mauthor.setText(book.getAuthor());
+                mtitle.setText(book.getTitle());
+
+
+                String outString = "";
+//                String sender = model.getSender_name();
+//                String book = model.getBook_title();
+//                if (model.getType().equals("request")) {
+//                    viewHolder.setNotificationType("Book Request");
+//                    outString = sender + " has requested " + "\"" + book + "\"";
+//                }
+//                viewHolder.setNotificationText(outString);
+            }
 
 //        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 //        LinearLayoutManager llm = new LinearLayoutManager(this);
