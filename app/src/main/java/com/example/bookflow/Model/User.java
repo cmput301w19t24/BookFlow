@@ -60,11 +60,6 @@ public class User implements Owner,Borrower{
     }
 
     @Override
-    public void editBookDescription(Book book ,String title,String author, String ISBN) {
-        book.setDescription(ISBN,title,author);
-    }
-
-    @Override
     public void deleteBook(Book book) {
 
     }
