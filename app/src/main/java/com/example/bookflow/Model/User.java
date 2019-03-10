@@ -16,6 +16,7 @@ public class User implements Owner,Borrower{
     private String email;
     private String phoneNumber;
     private String imageurl; // user icon
+    private String selfintro;
 
     private ArrayList<Book> ownedBooks = new ArrayList<Book>();
     private ArrayList<Book> borrowedBooks= new ArrayList<Book>();
@@ -161,6 +162,9 @@ public class User implements Owner,Borrower{
     public void setImageurl(String url) {
         this.imageurl = url;
     }
+
+    public String getSelfintro() { return this.selfintro; }
+    public void setSelfintro(String intro) { this.selfintro = intro; }
 
     public void setUid(String uid) {
         this.uid =uid;

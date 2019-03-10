@@ -100,8 +100,6 @@ public class SignUpActivity extends BasicActivity {
             valid = false;
         }
 
-
-
         if (!valid)
             return;
         // if the user did not upload an icon
@@ -124,14 +122,14 @@ public class SignUpActivity extends BasicActivity {
                                     // store the user's profile to database and storage
                                     @Override
                                     public void onComplete(@NonNull Task<Uri> task) {
-                                        String imageurl = task.toString();
+                                        String imageurl = task.getResult().toString();
                                         User user = new User();
                                         user.setUsername(id.getText().toString());
                                         user.setEmail(email.getText().toString());
                                         user.setPhoneNumber(phone.getText().toString());
                                         user.setImageurl(imageurl);
                                         user.setUid(uid);
-
+                                        user.setSelfintro("No introduction.");
                                         FirebaseDatabase.getInstance().getReference().child("Users").child(uid).setValue(user);
                                         Intent intent_main = new Intent(SignUpActivity.this, MainActivity.class);
                                         startActivity(intent_main);
