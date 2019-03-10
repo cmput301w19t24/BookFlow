@@ -99,7 +99,7 @@ public class PhotoUtility {
      * location.
      */
     private static void checkWriteExternalPermission(Activity act){
-        if (ContextCompat.checkSelfPermission(act, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(act, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Log.v(TAG,"Permission is revoked");
             ActivityCompat.requestPermissions(act, new String[]{Manifest.permission.CAMERA}, 1);
         }
