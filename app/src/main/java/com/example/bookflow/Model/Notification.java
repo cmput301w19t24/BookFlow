@@ -1,6 +1,8 @@
 package com.example.bookflow.Model;
 
 public class Notification {
+
+    public Notification(){}
     public String getSender_id() {
         return sender_id;
     }
@@ -56,7 +58,7 @@ public class Notification {
     }
 
     private String transaction_id;
-    public Notification(){}
+
     public Notification(String sender_id, String book_id, String type, String transaction_id, String book_title, String sender_name) {
         this.sender_id = sender_id;
         this.book_id = book_id;

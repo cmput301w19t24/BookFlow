@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.bookflow.Model.Book;
 import com.example.bookflow.Model.Notification;
+import com.example.bookflow.Model.Request;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -36,39 +37,33 @@ public class NotificationActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_notification);
-
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         String user_id = user.getUid();
 
         Query query = FirebaseDatabase.getInstance().getReference().child("Notifications").child(user_id);
-
-        FirebaseListOptions<Book> options = new FirebaseListOptions.Builder<Book>()
-                .setLayout(R.layout.main_listitem)
+        FirebaseListOptions<Notification> options = new FirebaseListOptions.Builder<Notification>()
+                .setLayout(R.layout.notification_list_item)
                 .setLifecycleOwner(NotificationActivity.this)
-                .setQuery(query,Book.class).build();
+                .setQuery(query, Notification.class).build();
+
         recyclerView = (ListView) findViewById(R.id.recyclerView);
         adapter = new FirebaseListAdapter<Notification>(options) {
             @Override
             protected void populateView(@NonNull View v, @NonNull Notification model, int position) {
-                TextView mauthor = v.findViewById(R.id.iauthor);
-                TextView mtitle = v.findViewById(R.id.ititle);
-                ImageView mphoto = v.findViewById(R.id.iphoto);
+
+                String sender = model.getSender_name();
+                String book = model.getBook_title();
+                TextView text = v.findViewById(R.id.notification_text);
+                TextView type = v.findViewById(R.id.notification_type);
 
                 Notification notification = (Notification) model;
-                mauthor.setText(book.getAuthor());
-                mtitle.setText(book.getTitle());
-
-
-                String outString = "";
-//                String sender = model.getSender_name();
-//                String book = model.getBook_title();
-//                if (model.getType().equals("request")) {
-//                    viewHolder.setNotificationType("Book Request");
-//                    outString = sender + " has requested " + "\"" + book + "\"";
-//                }
-//                viewHolder.setNotificationText(outString);
-            }
+                if (model.getType().equals("request")) {
+                    text.setText(sender + " has requested " + "\"" + book + "\"");
+                    type.setText("Book Request");
+                } else {
+                    text.setText("");
+                }
 
 //        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 //        LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -91,35 +86,9 @@ public class NotificationActivity extends BasicActivity {
 //        };
 
 
-        recyclerView.setAdapter(adapter);
-
-    }
-
-    private void notifList() {
-        myBookList = (ListView) findViewById(R.id.myBookList);
-        Query query = database.getReference().child("Books");
-        FirebaseListOptions<Book> options = new FirebaseListOptions.Builder<Book>()
-                .setLayout(R.layout.main_listitem)
-                .setLifecycleOwner(MainActivity.this)
-                .setQuery(query,Book.class).build();
-        adapterBook = new FirebaseListAdapter<Book>(options) {
-            @Override
-            protected void populateView(@NonNull View v, @NonNull Book model, int position) {
-                TextView mauthor = v.findViewById(R.id.iauthor);
-                TextView mtitle = v.findViewById(R.id.ititle);
-                ImageView mphoto = v.findViewById(R.id.iphoto);
-
-                Book book = (Book) model;
-                mauthor.setText(book.getAuthor());
-                mtitle.setText(book.getTitle());
-                Glide.with(MainActivity.this).load(book.getPhotoUri()).into(mphoto);
+                recyclerView.setAdapter(adapter);
             }
-
-//            @Override
-//            public int getCount() {
-//                return 3;
-//            }
         };
-        myBookList.setAdapter(adapterBook);
     }
+
 }
