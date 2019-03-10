@@ -44,13 +44,12 @@ public class MainActivity extends BasicActivity {
             protected void populateView(@NonNull View v, @NonNull Book model, int position) {
                 TextView mauthor = v.findViewById(R.id.iauthor);
                 TextView mtitle = v.findViewById(R.id.ititle);
-                ImageView mphoto = findViewById(R.id.iphoto);
+                ImageView mphoto = v.findViewById(R.id.iphoto);
 
                 Book book = (Book) model;
                 mauthor.setText(book.getAuthor());
                 mtitle.setText(book.getTitle());
-//                Glide.with(MainActivity.this).load(book.getPhotoUri()).into(mphoto);
-//                mphoto.setImageURI();
+                Glide.with(MainActivity.this).load(book.getPhotoUri()).into(mphoto);
             }
 
 //            @Override
