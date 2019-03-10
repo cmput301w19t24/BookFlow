@@ -23,14 +23,6 @@ public class UserUnitTest {
     }
 
     @Test
-    public void testGetBookDescription(){
-        User user = new User();
-        Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
-        user.addBook(book);
-        assertEquals("frankenstein Mary Shelley 9780440927174",user.getBookDescription("9780440927174"));
-    }
-
-    @Test
     public void testViewOwnedBooks(){
         User user = new User();
         Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");

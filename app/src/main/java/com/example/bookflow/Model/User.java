@@ -55,11 +55,6 @@ public class User implements Owner,Borrower{
     }
 
     @Override
-    public String getBookDescription(String ISBN) {
-        return null;
-    }
-
-    @Override
     public ArrayList<Book> viewOwnedBooks() {
         return ownedBooks;
     }

@@ -5,8 +5,6 @@ import java.util.ArrayList;
 public interface Owner {
     public void addBook(Book book);
 
-    public String getBookDescription(String ISBN);
-
     public ArrayList<Book> viewOwnedBooks();
 
     public void editBookDescription(Book book,String title,String author, String ISBN);

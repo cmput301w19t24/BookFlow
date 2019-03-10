@@ -34,28 +34,30 @@ public class ReviewUnitTest {
         assertEquals(0, rList.count());
     }
 
-    @Test
-    public void editReviewOnListTest() {
-        ReviewList rList = new ReviewList();
-        Review r = new Review(usr1, usr2, "nice book", 5);
-        rList.addReview(r);
-        rList.editReview(r, 3, "okay book");
-        Review test = rList.getReviewByUUID(r.getUUID());
-        assertEquals(3, test.getRating());
-        assertEquals("okay book", test.getComments());
-    }
 
-    @Test
-    public void reviewAverageFromListTest() {
-        ReviewList rList = new ReviewList();
-        Review r1 = new Review(usr1, usr2, "nice book", 3);
-        Review r2 = new Review(usr1, usr2, "nice book", 4);
-        Review r3 = new Review(usr1, usr2, "nice book", 5);
-        rList.addReview(r1);
-        rList.addReview(r2);
-        rList.addReview(r3);
-        assertEquals(4, rList.getReviewAverage(usr2));
-    }
+    // TODO: to be implemented in next phase
+//    @Test
+//    public void editReviewOnListTest() {
+//        ReviewList rList = new ReviewList();
+//        Review r = new Review(usr1, usr2, "nice book", 5);
+//        rList.addReview(r);
+//        rList.editReview(r, 3, "okay book");
+//        Review review = rList.getReviewByUUID(r.getUUID());
+//        assertEquals(3, review.getRating());
+//        assertEquals("okay book", review.getComments());
+//    }
+
+//    @Test
+//    public void reviewAverageFromListTest() {
+//        ReviewList rList = new ReviewList();
+//        Review r1 = new Review(usr1, usr2, "nice book", 3);
+//        Review r2 = new Review(usr1, usr2, "nice book", 4);
+//        Review r3 = new Review(usr1, usr2, "nice book", 5);
+//        rList.addReview(r1);
+//        rList.addReview(r2);
+//        rList.addReview(r3);
+//        assertEquals(4, rList.getReviewAverage(usr2));
+//    }
 
     @Test
     public void testsetReviewer() {
