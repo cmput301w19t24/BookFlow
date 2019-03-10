@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.bookflow.Model.Book;
 import com.example.bookflow.Model.Notification;
 import com.example.bookflow.Model.Request;
@@ -51,13 +50,11 @@ public class NotificationActivity extends BasicActivity {
         adapter = new FirebaseListAdapter<Notification>(options) {
             @Override
             protected void populateView(@NonNull View v, @NonNull Notification model, int position) {
-
                 String sender = model.getSender_name();
                 String book = model.getBook_title();
                 TextView text = v.findViewById(R.id.notification_text);
                 TextView type = v.findViewById(R.id.notification_type);
 
-                Notification notification = (Notification) model;
                 if (model.getType().equals("request")) {
                     text.setText(sender + " has requested " + "\"" + book + "\"");
                     type.setText("Book Request");
@@ -84,8 +81,6 @@ public class NotificationActivity extends BasicActivity {
 //                viewHolder.setNotificationText(outString);
 //            }
 //        };
-
-
                 recyclerView.setAdapter(adapter);
             }
         };
