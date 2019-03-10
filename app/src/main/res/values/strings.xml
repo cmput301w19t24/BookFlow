@@ -46,11 +46,12 @@
         <item>Take A Photo</item>
     </string-array>
 
-    <!-- add_photo -->
+    <!-- add book -->
     <string name="title_activity_add_photo">AddPhotoActivity</string>
     <string name="add_photo_image_button_description">Take A Photo</string>
     <string name="done">DONE</string>
     <string name="pick_a_photo">Pick A Photo From</string>
+    <string name="add_book_image">Add Book Image</string>
 
     <!-- edit user profile -->
     <string name="Introduction">Introduction</string>
@@ -68,6 +69,10 @@
     <!-- barcode scanner -->
     <string name="scan_the_barcode">Scan the barcode</string>
     <string name="save">save</string>
-    <string name="add_book_image">Add Book Image</string>
+    <string name="book_detail">Book detail</string>
+    <string name="scan">scan</string>
+
+    <!-- edit book -->
+
 
 </resources>

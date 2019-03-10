@@ -6,12 +6,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddBookActivity">
+    tools:context=".EditBookDetailActivity">
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/add_book_scroll_view"
+        android:id="@+id/edit_book_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -26,13 +26,13 @@
             android:paddingRight="24dp">
 
             <ImageView
-                android:id="@+id/add_book_image_iv"
+                android:id="@+id/edit_book_image_iv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="24dp"
                 android:contentDescription="@string/add_book_image"
-                app:srcCompat="@drawable/add_book_icon" />
+                app:srcCompat="@drawable/image_placeholder" />
 
 
             <android.support.design.widget.TextInputLayout
@@ -42,7 +42,7 @@
                 android:layout_marginBottom="8dp">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/add_book_title_et"
+                    android:id="@+id/edit_book_title_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/authorName"
@@ -56,12 +56,35 @@
                 android:layout_marginBottom="8dp">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/add_book_author_name_et"
+                    android:id="@+id/edit_book_author_name_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/bookName"
                     android:inputType="textEmailAddress" />
             </android.support.design.widget.TextInputLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_book_isbn_et"
+                    android:layout_width="276dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/ISBN"
+                    android:inputType="textEmailAddress" />
+
+                <Button
+                    android:id="@+id/edit_book_scan_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/scan"
+                    android:layout_toEndOf="@+id/edit_book_isbn_et"/>
+
+            </RelativeLayout>
+
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -70,28 +93,21 @@
                 android:layout_marginBottom="8dp">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/add_book_isbn_et"
+                    android:id="@+id/edit_book_detail_it"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/ISBN"
+                    android:layout_height="133dp"
+                    android:hint="@string/book_detail"
                     android:inputType="textEmailAddress" />
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/add_book_scan_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/scan_the_barcode" />
-
             <ImageView
-                android:id="@+id/add_book_save_iv"
+                android:id="@+id/edit_book_save_iv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
                 android:contentDescription="@string/save"
                 app:srcCompat="@drawable/ic_baseline_save_24px" />
-
 
         </LinearLayout>
 
@@ -99,7 +115,7 @@
 
 
     <ProgressBar
-        android:id="@+id/add_book_progress_bar"
+        android:id="@+id/edit_book_progress_bar"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

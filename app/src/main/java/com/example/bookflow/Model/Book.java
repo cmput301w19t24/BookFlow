@@ -1,7 +1,5 @@
 package com.example.bookflow.Model;
 
-import android.net.Uri;
-
 public class Book {
     private String title;
     private String author;
@@ -12,6 +10,7 @@ public class Book {
     private String borrowerId;
     private int requestCount;
     private String photoUri;
+    private String description;
     
     public Book(String title, String author, String isbn){
         this.title = title;
@@ -20,6 +19,7 @@ public class Book {
         this.rating = 0;
         this.requestCount = 0;
         this.status = BookStatus.AVAILABLE;
+        this.description = "";
     }
     
     /*setter and getter of title*/
@@ -113,6 +113,14 @@ public class Book {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public enum BookStatus {
