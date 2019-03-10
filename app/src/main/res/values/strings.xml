@@ -60,4 +60,7 @@
     <string name="add_book_error">Error occurred. Please try again.</string>
     <string name="add_book_invalid_info">Please enter required fields</string>
 
+    <!-- barcode scanner -->
+    <string name="please_scan_the_barcode">Scan the barcode</string>
+
 </resources>

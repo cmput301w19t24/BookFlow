@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.bookflow">
 
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -21,7 +22,7 @@
         <activity android:name=".BorrowListActivity" />
         <activity android:name=".BookListActivity" />
         <activity android:name=".MapsActivity" />
-        <activity android:name=".ScanActivity" />
+        <activity android:name=".LoginActivity" />
         <activity android:name=".NotificationActivity" />
         <activity
             android:name=".AddPhotoActivity"
@@ -31,11 +32,15 @@
         <activity android:name=".SearchActivity" />
         <activity android:name=".BasicActivity" />
         <activity android:name=".EditBookDetailActivity" />
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".ScanActivity"
+            android:label="ScanActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".BookDetailActivity" />
         <activity android:name=".AddBookActivity" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

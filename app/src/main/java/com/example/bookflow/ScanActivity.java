@@ -1,7 +1,16 @@
+/**
+ * ScanActivity: scan the barcode on-the-fly with the rear camera.
+ *
+ * Return the ISBN string to the caller activity with an intent.
+ * To retrieve the ISBN, do the following in onActivityResult:
+ *      String isbn = data.getExtra(ScanActivity.SCAN_RESULT);
+ */
+
 package com.example.bookflow;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +19,8 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.vision.CameraSource;
@@ -21,13 +32,14 @@ import java.io.IOException;
 
 public class ScanActivity extends AppCompatActivity {
 
+    protected static final String SCAN_RESULT = "scan_result";
     private static final String TAG = "ScanActivity";
 
     private SurfaceView mCameraView;
-    private TextView mBarcodeInfoTextView;
 
     private CameraSource mCameraSource;
     private BarcodeDetector mBarcodeDetector;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +48,13 @@ public class ScanActivity extends AppCompatActivity {
 
 
         mCameraView = findViewById(R.id.scan_camera_view);
-        mBarcodeInfoTextView = findViewById(R.id.scan_txt_content);
-
 
         mBarcodeDetector = new BarcodeDetector.Builder(this)
-                .setBarcodeFormats(Barcode.CODE_128)//QR_CODE)
+                .setBarcodeFormats(Barcode.EAN_13)// ISBN 13 CODE
                 .build();
 
         mCameraSource = new CameraSource
                 .Builder(this, mBarcodeDetector)
-                .setRequestedPreviewSize(640, 480)
                 .build();
 
         mCameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -86,15 +95,18 @@ public class ScanActivity extends AppCompatActivity {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
 
                 if (barcodes.size() != 0) {
-                    mBarcodeInfoTextView.post(new Runnable() {
-                        public void run() {
-                            mBarcodeInfoTextView.setText(
-                                    barcodes.valueAt(0).displayValue
-                            );
-                        }
-                    });
+                    String retBarcode = barcodes.valueAt(0).displayValue;
+                    Log.i(TAG, "ISBN result: " + retBarcode);
+
+                    // go back to the caller activity and return the ISBN with an intent.
+                    Intent resIntent = new Intent();
+                    resIntent.putExtra(SCAN_RESULT, retBarcode);
+                    setResult(Activity.RESULT_OK, resIntent);
+                    finish();
                 }
             }
         });
     }
+
+
 }
