@@ -1,18 +1,23 @@
 package com.example.bookflow;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.bookflow.Model.Review;
 import com.example.bookflow.Model.ReviewList;
 import com.example.bookflow.Model.User;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +25,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -32,11 +39,11 @@ import java.util.UUID;
  */
 public class UserProfileActivity extends BasicActivity {
     private DatabaseReference dbRef;
-    private String email, phoneNum, username, selfIntro, uid;
+    private String email, phoneNum, username, selfIntro, uid, photo;
     private ReviewList reviewList = new ReviewList();
     private ListView reviewListView;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
+    FirebaseStorage storage = FirebaseStorage.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +81,15 @@ public class UserProfileActivity extends BasicActivity {
                     }
                 }
 
-                // TODO: user image upload to storage and get it
+                // download user image from storage and update
+                StorageReference storageRef = storage.getReference().child("users").child(uid);
+                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        ImageView userImage = findViewById(R.id.userPicture);
+                        Glide.with(UserProfileActivity.this).load(uri).into(userImage);
+                    }
+                });
 
                 setupTextView(username, selfIntro, email, phoneNum);
             }
