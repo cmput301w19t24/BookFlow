@@ -131,6 +131,7 @@ public class SignUpActivity extends BasicActivity {
                                         user.setPhoneNumber(phone.getText().toString());
                                         user.setImageurl(imageurl);
                                         user.setUid(uid);
+                                        user.setSelfintro("No introduction");
 
                                         FirebaseDatabase.getInstance().getReference().child("Users").child(uid).setValue(user);
                                         Intent intent_main = new Intent(SignUpActivity.this, MainActivity.class);
