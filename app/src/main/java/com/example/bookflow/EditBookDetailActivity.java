@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 
 import com.example.bookflow.Model.Book;
 import com.example.bookflow.Util.FirebaseIO;
+import com.example.bookflow.Util.PhotoUtility;
 
 public class EditBookDetailActivity extends BasicActivity {
 
@@ -61,14 +62,14 @@ public class EditBookDetailActivity extends BasicActivity {
                                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                                     intent.setType("image/jpeg");
                                     intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                                    startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
+                                    startActivityForResult(Intent.createChooser(intent, "Complete action using"), PhotoUtility.RC_PHOTO_PICKER);
                                 }
                                 break;
                                 case 1: {
                                     // take a photo
                                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                                     if (intent.resolveActivity(getPackageManager()) != null) {
-                                        startActivityForResult(intent, RC_IMAGE_CAPTURE);
+                                        startActivityForResult(intent, PhotoUtility.RC_IMAGE_CAPTURE);
                                     }
                                 }
                                 break;
