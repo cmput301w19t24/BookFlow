@@ -7,7 +7,7 @@ public class Book {
     private String author;
     private String isbn;
     private int rating;
-    private String status;
+    private BookStatus status;
     private String ownerId;
     private String borrowerId;
     private int requestCount;
@@ -19,6 +19,7 @@ public class Book {
         this.isbn = isbn;
         this.rating = 0;
         this.requestCount = 0;
+        this.status = BookStatus.AVAILABLE;
     }
     
     /*setter and getter of title*/
@@ -58,11 +59,11 @@ public class Book {
     }
     
     /*getter and setter of status*/
-    public void setStatus(String newStatus){
+    public void setStatus(BookStatus newStatus){
         this.status = newStatus;
     }
     
-    public String getStatus(){
+    public BookStatus getStatus(){
         return this.status;
     }
     
@@ -112,5 +113,12 @@ public class Book {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
+    }
+
+    public enum BookStatus {
+        AVAILABLE,
+        REQUESTED,
+        ACCEPTED,
+        BORROWED
     }
 }
