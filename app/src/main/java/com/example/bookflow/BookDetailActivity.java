@@ -53,7 +53,9 @@ public class BookDetailActivity extends BasicActivity {
         //book_id = extras.getString("book_id");
         //book_id = "-L_UVcRjH_7D3MHna9Oe";
         //owned by me
-        book_id = "-L_WfB7zG6uE4QHbecb1";
+        //book_id = "-L_WfB7zG6uE4QHbecb1";
+        //owned by a@a
+        book_id = "-L__rwKWq_t63ywH4Rk1";
 
         mDatabase = FirebaseDatabase.getInstance();
         notificationRef = mDatabase.getReference("Notifications");
@@ -103,7 +105,7 @@ public class BookDetailActivity extends BasicActivity {
         if (owner_id.equals(borrower_id)) {
             Toast toast = Toast.makeText(getApplicationContext(),
                     "you cannot request your own book",
-                    Toast.LENGTH_LONG);
+                    Toast.LENGTH_SHORT);
             toast.show();
         }
         else {
@@ -130,7 +132,7 @@ public class BookDetailActivity extends BasicActivity {
             mDatabase.getReference().child("Users").child(borrower_id).addListenerForSingleValueEvent(userListener);
             Toast toast = Toast.makeText(getApplicationContext(),
                     "request sent",
-                    Toast.LENGTH_LONG);
+                    Toast.LENGTH_SHORT);
             toast.show();
         }
     }

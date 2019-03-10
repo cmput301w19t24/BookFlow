@@ -8,10 +8,21 @@ public class TestRequest {
     private String book_id;
     private Location location;
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    private String status;
+
     public TestRequest(String owner_id, String borrower_id, String book_id) {
         this.owner_id = owner_id;
         this.borrower_id = borrower_id;
         this.book_id = book_id;
+        this.status = "pending";
     }
 
     public String getOwner_id() {
