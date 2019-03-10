@@ -59,8 +59,8 @@ public class BookUnitTest {
     
     @Test
     public void testSetStatus(){
-        book1.setStatus("Available");
-        assertEquals("Available", book1.getStatus());
+        book1.setStatus(Book.BookStatus.ACCEPTED);
+        assertEquals(Book.BookStatus.ACCEPTED, book1.getStatus());
     }
 
     
