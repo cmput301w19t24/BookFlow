@@ -51,32 +51,7 @@ public class EditBookDetailActivity extends BasicActivity {
         mPhotoImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(EditBookDetailActivity.this);
-                builder.setTitle(R.string.pick_a_photo)
-                    .setItems(R.array.pick_photo_array, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            switch (which) {
-
-                                case 0: {
-                                    // pick from album
-                                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                                    intent.setType("image/jpeg");
-                                    intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                                    startActivityForResult(Intent.createChooser(intent, "Complete action using"), PhotoUtility.RC_PHOTO_PICKER);
-                                }
-                                break;
-                                case 1: {
-                                    // take a photo
-                                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                    if (intent.resolveActivity(getPackageManager()) != null) {
-                                        startActivityForResult(intent, PhotoUtility.RC_IMAGE_CAPTURE);
-                                    }
-                                }
-                                break;
-                            }
-                        }
-                    })
-                    .show();
+                PhotoUtility.showPickPhotoDialog(EditBookDetailActivity.this);
             }
         });
 

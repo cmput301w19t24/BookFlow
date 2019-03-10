@@ -136,6 +136,10 @@ public class AddBookActivity extends BasicActivity {
         });
 
         mProgressbar.setVisibility(View.GONE);
+
+        // ask for permission
+        PhotoUtility.checkCameraPermission(this);
+        PhotoUtility.checkWriteExternalPermission(this);
     }
 
     /**

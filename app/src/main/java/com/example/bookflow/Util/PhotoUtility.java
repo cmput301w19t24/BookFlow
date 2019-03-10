@@ -98,7 +98,7 @@ public class PhotoUtility {
      * Should be used before storing the picture to a temporary
      * location.
      */
-    private static void checkWriteExternalPermission(Activity act){
+    public static void checkWriteExternalPermission(Activity act){
         if (ContextCompat.checkSelfPermission(act, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Log.v(TAG,"Permission is revoked");
             ActivityCompat.requestPermissions(act, new String[]{Manifest.permission.CAMERA}, 1);
@@ -110,7 +110,7 @@ public class PhotoUtility {
      * Should be used before storing the picture to a temporary
      * location.
      */
-    private static void checkCameraPermission(Activity act){
+    public static void checkCameraPermission(Activity act){
         if (ContextCompat.checkSelfPermission(act, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             Log.v(TAG,"Permission is revoked");
             ActivityCompat.requestPermissions(act, new String[]{Manifest.permission.CAMERA}, 1);
