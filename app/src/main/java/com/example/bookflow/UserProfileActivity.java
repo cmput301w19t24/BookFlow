@@ -200,4 +200,8 @@ public class UserProfileActivity extends BasicActivity {
         Intent intent = new Intent(this, EditProfileActivity.class);
         startActivity(intent);
     }
+
+    public void switchRequest(View view){
+
+    }
 }

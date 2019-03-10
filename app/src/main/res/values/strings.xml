@@ -59,6 +59,11 @@
     <string name="add_book_success">New book added!</string>
     <string name="add_book_error">Error occurred. Please try again.</string>
     <string name="add_book_invalid_info">Please enter required fields</string>
+    <string name="books_offered">Offers</string>
+    <string name="books_requested">Requests</string>
+    <string name="review_list">Reviews</string>
+    <string name="fix_offers">Offers:</string>
+    <string name="fix_requests">Requests:</string>
 
     <!-- barcode scanner -->
     <string name="scan_the_barcode">Scan the barcode</string>
