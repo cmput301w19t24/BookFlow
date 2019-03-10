@@ -2,40 +2,42 @@ package com.example.bookflow.Model;
 
 import android.location.Location;
 
-/**
- * This class models the relationship between two users with book
- */
 public class Request {
+    private String ownerId;
+    private String borrowerId;
+    private String bookId;
+    private Location location;
+    private String status;
 
-    public Request(Borrower borrower, Owner owner, Book book) {
-        this.borrower = borrower;
-        this.owner = owner;
-        this.book = book;
-        this.location = null;
+    public Request(String ownerId, String borrowerId, String bookId) {
+        this.ownerId = ownerId;
+        this.borrowerId = borrowerId;
+        this.bookId = bookId;
+        this.status = "pending";
     }
 
-    public Borrower getBorrower() {
-        return borrower;
+    public String getOwnerId() {
+        return ownerId;
     }
 
-    public void setBorrower(Borrower borrower) {
-        this.borrower = borrower;
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 
-    public Owner getOwner() {
-        return owner;
+    public String getBorrowerId() {
+        return borrowerId;
     }
 
-    public void setOwner(Owner owner) {
-        this.owner = owner;
+    public void setBorrowerId(String borrowerId) {
+        this.borrowerId = borrowerId;
     }
 
-    public Book getBook() {
-        return book;
+    public String getBookId() {
+        return bookId;
     }
 
-    public void setBook(Book book) {
-        this.book = book;
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 
     public Location getLocation() {
@@ -46,24 +48,11 @@ public class Request {
         this.location = location;
     }
 
-    /**
-     * The borrower-side of the request
-     */
-    private Borrower borrower;
+    public String getStatus() {
+        return status;
+    }
 
-    /**
-     * The owner-side of the request
-     */
-    private Owner owner;
-
-    /**
-     * The book
-     */
-    private Book book;
-
-    /**
-     * location/meetup point of the exchange
-     */
-    private Location location;
-
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

@@ -1,20 +1,26 @@
 package com.example.bookflow.Model;
 
 public class Notification {
-    public String getSender_id() {
-        return sender_id;
+    private String senderId;
+    private String bookId;
+    private String type;
+    private String senderName;
+    private String bookTitle;
+
+    public String getSenderId() {
+        return senderId;
     }
 
-    public void setSender_id(String sender_id) {
-        this.sender_id = sender_id;
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
     }
 
-    public String getBook_id() {
-        return book_id;
+    public String getBookId() {
+        return bookId;
     }
 
-    public void setBook_id(String book_id) {
-        this.book_id = book_id;
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 
     public String getType() {
@@ -25,44 +31,40 @@ public class Notification {
         this.type = type;
     }
 
-    private String sender_id;
-    private String book_id;
-    private String type;
-    private String sender_name;
-    private String book_title;
 
-    public String getSender_name() {
-        return sender_name;
+
+    public String getSenderName() {
+        return senderName;
     }
 
-    public void setSender_name(String sender_name) {
-        this.sender_name = sender_name;
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
     }
 
-    public String getBook_title() {
-        return book_title;
+    public String getBookTitle() {
+        return bookTitle;
     }
 
-    public void setBook_title(String book_title) {
-        this.book_title = book_title;
+    public void setBookTitle(String bookTitle) {
+        this.bookTitle = bookTitle;
     }
 
-    public String getTransaction_id() {
-        return transaction_id;
+    public String getTransactionId() {
+        return transactionId;
     }
 
-    public void setTransaction_id(String transaction_id) {
-        this.transaction_id = transaction_id;
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
     }
 
-    private String transaction_id;
+    private String transactionId;
     public Notification(){}
-    public Notification(String sender_id, String book_id, String type, String transaction_id, String book_title, String sender_name) {
-        this.sender_id = sender_id;
-        this.book_id = book_id;
+    public Notification(String senderId, String bookId, String type, String transactionId, String bookTitle, String senderName) {
+        this.senderId = senderId;
+        this.bookId = bookId;
         this.type = type;
-        this.transaction_id = transaction_id;
-        this.book_title = book_title;
-        this.sender_name = sender_name;
+        this.transactionId = transactionId;
+        this.bookTitle = bookTitle;
+        this.senderName = senderName;
     }
 }

@@ -10,7 +10,6 @@ import android.widget.Toast;
 import com.example.bookflow.Model.Book;
 import com.example.bookflow.Model.Request;
 import com.example.bookflow.Model.Notification;
-import com.example.bookflow.Model.TestRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -48,14 +47,14 @@ public class BookDetailActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
 
-        // retreives book_id passed from SearchActivity
+        // retrieves book_id passed from SearchActivity
         Bundle extras = getIntent().getExtras();
         //book_id = extras.getString("book_id");
         //book_id = "-L_UVcRjH_7D3MHna9Oe";
         //owned by me
-        //book_id = "-L_WfB7zG6uE4QHbecb1";
+        book_id = "-L_WfB7zG6uE4QHbecb1";
         //owned by a@a
-        book_id = "-L__rwKWq_t63ywH4Rk1";
+        //book_id = "-L__rwKWq_t63ywH4Rk1";
 
         mDatabase = FirebaseDatabase.getInstance();
         notificationRef = mDatabase.getReference("Notifications");
@@ -117,7 +116,7 @@ public class BookDetailActivity extends BasicActivity {
                     //create request
                     DatabaseReference requestReference = mDatabase.getReference("Requests");
                     String request_id = requestReference.push().getKey();
-                    requestReference.child(request_id).setValue(new TestRequest(owner_id, borrower_id, book_id));
+                    requestReference.child(request_id).setValue(new Request(owner_id, borrower_id, book_id));
 
                     // send notification
                     DatabaseReference receiverRef = notificationRef.child(owner_id);

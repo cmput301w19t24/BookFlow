@@ -73,7 +73,7 @@ public class UserUnitTest {
         user.receiveReturnedBook(book);
         assertEquals(book.getStatus(), "AVAILABLE");
     }
-
+    /*
     @Test
     public void testAcceptRequest() {
         Owner owner = new User();
@@ -238,4 +238,5 @@ public class UserUnitTest {
         assertEquals(u.getPhoneNumber(), phone);
 
     }
+    */
 }

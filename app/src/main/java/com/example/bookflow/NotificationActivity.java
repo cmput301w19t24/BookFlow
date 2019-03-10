@@ -42,8 +42,8 @@ public class NotificationActivity extends BasicActivity {
             @Override
             protected void populateViewHolder(NotificationHolder viewHolder, Notification model, int position) {
                 String outString = "";
-                String sender = model.getSender_name();
-                String book = model.getBook_title();
+                String sender = model.getSenderName();
+                String book = model.getBookTitle();
                 if (model.getType().equals("request")) {
                     viewHolder.setNotificationType("Book Request");
                     outString = sender + " has requested " + "\"" + book + "\"";
