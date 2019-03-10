@@ -24,10 +24,6 @@
         <activity android:name=".MapsActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".NotificationActivity" />
-        <activity
-            android:name=".AddPhotoActivity"
-            android:label="@string/title_activity_add_photo"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".BasicActivity" />

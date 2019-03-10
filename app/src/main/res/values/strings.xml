@@ -61,6 +61,8 @@
     <string name="add_book_invalid_info">Please enter required fields</string>
 
     <!-- barcode scanner -->
-    <string name="please_scan_the_barcode">Scan the barcode</string>
+    <string name="scan_the_barcode">Scan the barcode</string>
+    <string name="save">save</string>
+    <string name="add_book_image">Add Book Image</string>
 
 </resources>

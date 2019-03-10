@@ -3,7 +3,7 @@
  *
  * Return the ISBN string to the caller activity with an intent.
  * To retrieve the ISBN, do the following in onActivityResult:
- *      String isbn = data.getExtra(ScanActivity.SCAN_RESULT);
+ *      String isbn = data.getStringExtra(ScanActivity.SCAN_RESULT);
  */
 
 package com.example.bookflow;

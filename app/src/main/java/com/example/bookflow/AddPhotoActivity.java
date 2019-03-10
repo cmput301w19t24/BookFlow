@@ -1,3 +1,7 @@
+/**
+ * DEPRECATED - DO NOT USE!
+ */
+
 package com.example.bookflow;
 
 import android.content.Intent;

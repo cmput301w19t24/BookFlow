@@ -15,9 +15,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -40,10 +41,12 @@ import java.io.IOException;
 
 public class AddBookActivity extends BasicActivity {
 
-    private final int RC_PHOTO_PICKER = 1;
-    private final int RC_IMAGE_CAPTURE = 2;
+    private static final int RC_SCAN = 0;
+    private static final int RC_PHOTO_PICKER = 1;
+    private static final int RC_IMAGE_CAPTURE = 2;
 
     private static final String TAG = "AddBookActivity";
+
 
     // Firebase
     private FirebaseStorage mFirebaseStorage;
@@ -55,12 +58,14 @@ public class AddBookActivity extends BasicActivity {
     private Uri mSelectedPhotoUri;
 
     // UI
-    private RelativeLayout mLoadingPanel;
     private ImageView mPhotoImageView;
     private ImageView mSaveImageView;
     private EditText mBookTitleEditText;
     private EditText mAuthorEditText;
     private EditText mIsbnEditText;
+    private ProgressBar mProgressbar;
+    private Button mScanButton;
+
 
 
     @Override
@@ -69,11 +74,19 @@ public class AddBookActivity extends BasicActivity {
         setContentView(R.layout.activity_add_book);
 
         mPhotoImageView = findViewById(R.id.add_book_image_iv);
-        mLoadingPanel = findViewById(R.id.add_book_loading_panel);
         mBookTitleEditText = findViewById(R.id.book_title_et);
         mAuthorEditText = findViewById(R.id.add_book_author_name_et);
         mIsbnEditText = findViewById(R.id.add_book_isbn_et);
         mSaveImageView = findViewById(R.id.add_book_save_iv);
+        mProgressbar = findViewById(R.id.add_book_progress_bar);
+        mScanButton = findViewById(R.id.add_book_scan_button);
+
+        mPhotoImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickAddPhotoImage(v);
+            }
+        });
 
         mSaveImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +99,15 @@ public class AddBookActivity extends BasicActivity {
             }
         });
 
-        mLoadingPanel.setVisibility(View.GONE);
+        mScanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddBookActivity.this, ScanActivity.class);
+                startActivityForResult(intent, RC_SCAN);
+            }
+        });
+
+        mProgressbar.setVisibility(View.GONE);
 
         // initialize Firebase
         mFirebaseStorage = FirebaseStorage.getInstance();
@@ -114,14 +135,14 @@ public class AddBookActivity extends BasicActivity {
                     task.getException().printStackTrace();
                     Toast.makeText(getApplicationContext(), getString(R.string.add_book_error), Toast.LENGTH_LONG).show();
                 }
-                mLoadingPanel.setVisibility(View.GONE);
+                mProgressbar.setVisibility(View.GONE);
                 
                 finish();
             }
         };
 
         if (mSelectedPhotoUri != null) {
-            mLoadingPanel.setVisibility(View.VISIBLE);
+            mProgressbar.setVisibility(View.VISIBLE);
 
             Log.d(TAG, "mSelectedPhotoUri: " + mSelectedPhotoUri.toString());
             Log.d(TAG, "mSelectedPhotoUri.getLast...: " + mSelectedPhotoUri.getLastPathSegment());
@@ -263,6 +284,13 @@ public class AddBookActivity extends BasicActivity {
                 mPhotoImageView.setImageBitmap(imageBitmap);
 
                 mSelectedPhotoUri = Uri.fromFile(tempFile);
+
+            } else if (requestCode == RC_SCAN) {
+                String isbn = data.getStringExtra(ScanActivity.SCAN_RESULT);
+                if (isbn != null) {
+                    Toast.makeText(this, "ISBN: " + isbn, Toast.LENGTH_LONG).show();
+                    mIsbnEditText.setText(isbn);
+                }
             }
         }
     }
