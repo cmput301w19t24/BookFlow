@@ -12,6 +12,7 @@ public class Book {
     private String photoUri;
     private String description;
     private String bookId;
+    private String bookInfo;
 
     public Book(){
 
@@ -142,4 +143,9 @@ public class Book {
         ACCEPTED,
         BORROWED
     }
+
+    public String getBookInfo(){
+        return this.getIsbn()+ "-" + this.getTitle()+ "-" + this.getAuthor() + "-" + this.getStatus();
+    }
+
 }
