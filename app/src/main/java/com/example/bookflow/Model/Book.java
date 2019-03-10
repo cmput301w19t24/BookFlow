@@ -28,6 +28,7 @@ public class Book {
         this.requestCount = 0;
         this.status = BookStatus.AVAILABLE;
         this.description = "";
+        this.bookInfo = isbn + "-" + title +"-" + author + "-" + status;
     }
 
     public Book(String title, String author, String isbn, String id){
@@ -144,8 +145,12 @@ public class Book {
         BORROWED
     }
 
+    public void setBookInfo(){
+        this.bookInfo = this.getIsbn()+ "-" + this.getTitle()+ "-" + this.getAuthor() + "-" + this.getStatus();
+    }
+
     public String getBookInfo(){
-        return this.getIsbn()+ "-" + this.getTitle()+ "-" + this.getAuthor() + "-" + this.getStatus();
+        return this.bookInfo;
     }
 
 }
