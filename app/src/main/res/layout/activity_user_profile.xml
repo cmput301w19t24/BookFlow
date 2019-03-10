@@ -153,21 +153,21 @@
 
             <Button
                 android:id="@+id/review_switch"
-                android:layout_width="33%"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/review_list" />
 
             <Button
                 android:id="@+id/offer_switch"
-                android:layout_width="33%"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/books_offered" />
 
             <Button
                 android:id="@+id/request_switch"
-                android:layout_width="34%"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/books_requested" />
