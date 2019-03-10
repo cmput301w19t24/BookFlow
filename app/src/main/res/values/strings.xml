@@ -41,7 +41,7 @@
     </string-array>
 
     <!-- array for pick photo dialog -->
-    <string-array name="colors_array">
+    <string-array name="pick_photo_array">
         <item>Choose From Album</item>
         <item>Take A Photo</item>
     </string-array>
@@ -50,7 +50,7 @@
     <string name="title_activity_add_photo">AddPhotoActivity</string>
     <string name="add_photo_image_button_description">Take A Photo</string>
     <string name="done">DONE</string>
-    <string name="pick_a_photo">Pick a Photo</string>
+    <string name="pick_a_photo">Pick A Photo From</string>
 
     <!-- edit user profile -->
     <string name="Introduction">Introduction</string>

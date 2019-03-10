@@ -38,26 +38,50 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 
-
+/**
+ * AddBookActivity
+ * This activity handles add book logic, and can be
+ * jumped by pressing the "add" button of the bottom bar.
+ */
 public class AddBookActivity extends BasicActivity {
 
+    /**
+     * Request Code for ScanActivity
+     */
     private static final int RC_SCAN = 0;
+
+    /**
+     * Request Code for choosing photo from album
+     */
     private static final int RC_PHOTO_PICKER = 1;
+
+    /**
+     * Request Code for taking a photo
+     */
     private static final int RC_IMAGE_CAPTURE = 2;
 
     private static final String TAG = "AddBookActivity";
 
 
-    // Firebase
+    /**
+     * Firebase
+     */
     private FirebaseStorage mFirebaseStorage;
     private FirebaseDatabase mFirebaseDatabase;
 
     private StorageReference mBookPhotoStorageReference;
     private DatabaseReference mBookDatabaseReference;
 
+    /**
+     * Uri of the selected photo. If the photo is taken
+     * with the camera, then Uri points to a
+     * temporary location where the picture is stored.
+     */
     private Uri mSelectedPhotoUri;
 
-    // UI
+    /**
+     *  UI components
+     */
     private ImageView mPhotoImageView;
     private ImageView mSaveImageView;
     private EditText mBookTitleEditText;
@@ -67,7 +91,11 @@ public class AddBookActivity extends BasicActivity {
     private Button mScanButton;
 
 
-
+    /**
+     * create the activity, and registers listeners for
+     * add photo button (image view), save button and scan button.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +108,7 @@ public class AddBookActivity extends BasicActivity {
         mSaveImageView = findViewById(R.id.add_book_save_iv);
         mProgressbar = findViewById(R.id.add_book_progress_bar);
         mScanButton = findViewById(R.id.add_book_scan_button);
+
 
         mPhotoImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,13 +147,17 @@ public class AddBookActivity extends BasicActivity {
     }
 
     /**
+     *
+     */
+
+    /**
      * save the book information to firebase. This method fires a series of async tasks
      * first check if the user has uploaded a photo. if so, upload the photo to
      * Firebase Storage, and add the URI to Book
+     *
+     * @param mybook the book object to be saved
      */
     private void saveBook(final Book mybook) {
-        //
-
         OnCompleteListener<Void> listener = new OnCompleteListener<Void>() {
             // upon completion, hide the loading panel and prompt user
             @Override
@@ -209,7 +242,7 @@ public class AddBookActivity extends BasicActivity {
     public void clickAddPhotoImage(View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.pick_a_photo)
-                .setItems(R.array.colors_array, new DialogInterface.OnClickListener() {
+                .setItems(R.array.pick_photo_array, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
 
@@ -236,6 +269,14 @@ public class AddBookActivity extends BasicActivity {
                 .show();
     }
 
+    /**
+     * handles the return of other activities, including "choose from album",
+     * "take a photo", and "scan"
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (resultCode == RESULT_OK) {
@@ -269,7 +310,6 @@ public class AddBookActivity extends BasicActivity {
                 }
 
                 // store the Bitmap to a temporary file
-
                 try {
                     FileOutputStream fos = new FileOutputStream(tempFile);
                     imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
@@ -295,6 +335,11 @@ public class AddBookActivity extends BasicActivity {
         }
     }
 
+    /**
+     * check the external storage permission before proceeding.
+     * Should be used before storing the picture to a temporary
+     * location.
+     */
     private void checkWritePermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Log.v(TAG,"Permission is revoked");
