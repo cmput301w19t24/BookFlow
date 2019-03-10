@@ -60,7 +60,6 @@ public class EditBookDetailActivity extends BasicActivity {
         mScanButton = findViewById(R.id.edit_book_scan_button);
 
 
-
         mPhotoImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

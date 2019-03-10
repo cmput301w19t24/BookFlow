@@ -11,12 +11,15 @@ public class Book {
     private int requestCount;
     private String photoUri;
     private String description;
+    private String bookId;
 
     public Book(){
 
     }
 
     public Book(String title, String author, String isbn){
+        this();
+
         this.title = title;
         this.author = author;
         this.isbn = isbn;
@@ -24,6 +27,11 @@ public class Book {
         this.requestCount = 0;
         this.status = BookStatus.AVAILABLE;
         this.description = "";
+    }
+
+    public Book(String title, String author, String isbn, String id){
+        this(title, author, isbn);
+        this.bookId = id;
     }
     
     /*setter and getter of title*/
@@ -111,13 +119,6 @@ public class Book {
     public int getCount(){
         return this.requestCount;
     }
-    
-    /*set isbn, title and author at once*/
-    public void setDescription(String isbn, String title, String author){
-        this.isbn = isbn;
-        this.title = title;
-        this.author = author;
-    }
 
     public String getDescription() {
         return description;
@@ -125,6 +126,14 @@ public class Book {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 
     public enum BookStatus {

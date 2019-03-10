@@ -105,7 +105,8 @@ public class FirebaseIO {
             String myuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             mybook.setOwnerId(myuid);
 
-            mBookDatabaseReference.push().setValue(mybook).addOnCompleteListener(listener);
+            mBookDatabaseReference.push().setValue(mybook)
+                    .addOnCompleteListener(listener);
         }
     }
 
