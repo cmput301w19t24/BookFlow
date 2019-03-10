@@ -156,9 +156,9 @@ public class SearchActivity extends BasicActivity {
         }
     }
 
-    public void searchByBookTitle(String searchText){
+    public void searchBook(String searchText,String constriant){
         Toast.makeText(SearchActivity.this, "Started Search", Toast.LENGTH_LONG).show();
-        Query firebaseSearchQuery = mUserDatabase.child("Books").orderByChild("title").startAt(searchText).endAt(searchText + "\uf8ff");
+        Query firebaseSearchQuery = mUserDatabase.child("Books").orderByChild(constriant).startAt(searchText).endAt(searchText + "\uf8ff");
         FirebaseRecyclerAdapter<Book,BookTitleViewHolder> firebaseRecyclerAdapter=
                 new FirebaseRecyclerAdapter<Book,BookTitleViewHolder>(
                         Book.class,
@@ -194,17 +194,21 @@ public class SearchActivity extends BasicActivity {
     public void search(View v){
         String searchOption = spinner.getSelectedItem().toString();
         String searchText = search_Text.getText().toString();
+        String constraint;
         switch (searchOption){
             case "search user":
                 searchUser(searchText);
                 break;
             case "search by book name":
-                searchByBookTitle(searchText);
+                constraint = "title";
+                searchBook(searchText,constraint);
                 break;
             case "search by book author":
+                constraint = "author";
                 searchByAuthor(searchText);
                 break;
             case "search by book ISBN":
+                constraint = "isbn";
                 searchByISBN(searchText);
         }
 
