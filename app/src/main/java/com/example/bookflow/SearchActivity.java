@@ -27,6 +27,7 @@ import com.google.firebase.database.Query;
 
 
 public class SearchActivity extends BasicActivity {
+    public static final String EXTRA_MESSAGE = "com.example.bookflow.MESSAGE";
     private EditText search_Text;
     private CheckBox checkAccepted;
     private CheckBox checkAvailable;
@@ -124,7 +125,7 @@ public class SearchActivity extends BasicActivity {
                         String user_id = getRef(position).getKey();
                         Log.i("userid",user_id);
                         Intent intent = new Intent(SearchActivity.this,UserProfileActivity.class);
-                        intent.putExtra("user_id",user_id);
+                        intent.putExtra(EXTRA_MESSAGE,user_id);
                         startActivity(intent);
                     }
                 });

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -49,8 +50,6 @@ public class UserProfileActivity extends BasicActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-        FirebaseUser user = mAuth.getCurrentUser();
-        uid = user.getUid();
     }
 
 
@@ -64,32 +63,31 @@ public class UserProfileActivity extends BasicActivity {
         reviewListView = (ListView) findViewById(R.id.reviewList);
         dbRef = FirebaseDatabase.getInstance().getReference();
 
+        Intent intent = getIntent();
+        String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
+        if (message != null) {
+            ImageView imageButton = findViewById(R.id.editPersonInfo);
+            imageButton.setEnabled(false);
+            imageButton.setVisibility(View.INVISIBLE);
+            uid = message;
+        } else  {
+            FirebaseUser user = mAuth.getCurrentUser();
+            uid = user.getUid();
+        }
+        setUpImageView();
+
+
         // get user information from the database
         ValueEventListener userInfoListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                FirebaseUser user = mAuth.getCurrentUser();
 
-                for (DataSnapshot eachUser: dataSnapshot.getChildren()) {
-                    String getUid = eachUser.child("uid").getValue().toString();
-                    if (getUid.equals(uid)) {
-                        email = eachUser.child("email").getValue().toString();
-                        phoneNum = eachUser.child("phoneNumber").getValue().toString();
-                        username = eachUser.child("username").getValue().toString();
-                        selfIntro = eachUser.child("selfIntro").getValue().toString();
-                        break;
-                    }
-                }
+                DataSnapshot targetUser = dataSnapshot.child(uid);
+                email = targetUser.child("email").getValue().toString();
+                phoneNum = targetUser.child("phoneNumber").getValue().toString();
+                username = targetUser.child("username").getValue().toString();
+                selfIntro = targetUser.child("selfIntro").getValue().toString();
 
-                // download user image from storage and update
-                StorageReference storageRef = storage.getReference().child("users").child(uid);
-                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        ImageView userImage = findViewById(R.id.userPicture);
-                        Glide.with(UserProfileActivity.this).load(uri).into(userImage);
-                    }
-                });
 
                 setupTextView(username, selfIntro, email, phoneNum);
             }
@@ -178,6 +176,19 @@ public class UserProfileActivity extends BasicActivity {
 
         textView = findViewById(R.id.phoneToBeChange);
         textView.setText(phone);
+    }
+
+
+    private void setUpImageView() {
+        // download user image from storage and update
+        StorageReference storageRef = storage.getReference().child("users").child(uid);
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                ImageView userImage = findViewById(R.id.userPicture);
+                Glide.with(UserProfileActivity.this).load(uri).into(userImage);
+            }
+        });
     }
 
 

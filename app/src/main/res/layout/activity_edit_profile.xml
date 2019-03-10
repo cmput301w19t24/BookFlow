@@ -28,9 +28,9 @@
             android:background="@color/common_google_signin_btn_text_dark_disabled"
             android:clickable="true"
             android:contentDescription="@string/placeholder"
+            android:focusable="true"
             android:padding="0dp"
-            app:srcCompat="@drawable/login_user_icon"
-            android:focusable="true" />
+            app:srcCompat="@drawable/login_user_icon" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -191,9 +191,11 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
         android:focusable="true"
-        android:text="@string/confirm"
         android:onClick="confirm_button"
+        android:text="@string/confirm"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />

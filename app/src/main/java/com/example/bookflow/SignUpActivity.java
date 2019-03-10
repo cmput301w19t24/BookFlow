@@ -162,7 +162,6 @@ public class SignUpActivity extends BasicActivity {
         if (requestCode == PICK_FROM_ALBUM && resultCode == RESULT_OK) {
             profile.setImageURI(data.getData());
             imageUri = data.getData();
-            int test1 = 0;
         }
     }
 }
