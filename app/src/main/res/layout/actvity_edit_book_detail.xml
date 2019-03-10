@@ -46,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/authorName"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textAutoComplete" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -60,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/bookName"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="text" />
             </android.support.design.widget.TextInputLayout>
 
             <RelativeLayout
@@ -74,7 +74,7 @@
                     android:layout_width="276dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/ISBN"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="number" />
 
                 <Button
                     android:id="@+id/edit_book_scan_button"
@@ -97,7 +97,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="133dp"
                     android:hint="@string/book_detail"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textMultiLine" />
             </android.support.design.widget.TextInputLayout>
 
             <ImageView

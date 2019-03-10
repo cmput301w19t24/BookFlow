@@ -71,6 +71,8 @@
     <string name="save">save</string>
     <string name="book_detail">Book detail</string>
     <string name="scan">scan</string>
+    <string name="edit_book_success">Edit book success!</string>
+    <string name="edit_book_error">Edit book failed. Try again :(</string>
 
     <!-- edit book -->
 
