@@ -51,6 +51,7 @@ public class PhotoUtility {
                             break;
                             case 1: {
                                 // take a photo
+                                checkCameraPermission(act);
                                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                                 if (intent.resolveActivity(act.getPackageManager()) != null) {
                                     act.startActivityForResult(intent, RC_IMAGE_CAPTURE);
@@ -64,7 +65,7 @@ public class PhotoUtility {
     }
 
     public static Uri bitmapToUri(Activity act, Bitmap bitmap) {
-        checkWritePermission(act);
+        checkWriteExternalPermission(act);
 
         // create a temporary file
         File tempDir= Environment.getExternalStorageDirectory();
@@ -97,10 +98,22 @@ public class PhotoUtility {
      * Should be used before storing the picture to a temporary
      * location.
      */
-    private static void checkWritePermission(Activity act){
-        if (ContextCompat.checkSelfPermission(act, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+    private static void checkWriteExternalPermission(Activity act){
+        if (ContextCompat.checkSelfPermission(act, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             Log.v(TAG,"Permission is revoked");
-            ActivityCompat.requestPermissions(act, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            ActivityCompat.requestPermissions(act, new String[]{Manifest.permission.CAMERA}, 1);
+        }
+    }
+
+    /**
+     * check the external storage permission before proceeding.
+     * Should be used before storing the picture to a temporary
+     * location.
+     */
+    private static void checkCameraPermission(Activity act){
+        if (ContextCompat.checkSelfPermission(act, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            Log.v(TAG,"Permission is revoked");
+            ActivityCompat.requestPermissions(act, new String[]{Manifest.permission.CAMERA}, 1);
         }
     }
 

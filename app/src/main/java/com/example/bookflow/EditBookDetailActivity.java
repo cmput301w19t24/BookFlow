@@ -12,11 +12,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.example.bookflow.Model.Book;
+import com.example.bookflow.Util.FirebaseIO;
 
 public class EditBookDetailActivity extends BasicActivity {
 
-    private static final int RC_IMAGE_CAPTURE = 0;
-    private static final int RC_PHOTO_PICKER = 1;
+    private FirebaseIO mFirebaseIO;
 
     private ImageView mPhotoImageView;
     private ImageView mSaveImageView;
@@ -31,6 +31,9 @@ public class EditBookDetailActivity extends BasicActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.actvity_edit_book_detail);
+
+        // Firebase
+        mFirebaseIO = FirebaseIO.getInstance();
 
         // UI
         mPhotoImageView = findViewById(R.id.edit_book_image_iv);
