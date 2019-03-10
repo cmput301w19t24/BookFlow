@@ -20,6 +20,7 @@ public class NotificationActivity extends BasicActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_notification);
 
         mAuth = FirebaseAuth.getInstance();
@@ -44,6 +45,7 @@ public class NotificationActivity extends BasicActivity {
                 String sender = model.getSender_name();
                 String book = model.getBook_title();
                 if (model.getType().equals("request")) {
+                    viewHolder.setNotificationType("Book Request");
                     outString = sender + " has requested " + "\"" + book + "\"";
                 }
 
