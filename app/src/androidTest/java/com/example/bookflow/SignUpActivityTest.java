@@ -1,11 +1,13 @@
 package com.example.bookflow;
 
 import android.app.Activity;
+import android.media.Image;
 import android.support.test.rule.ActivityTestRule;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,6 +18,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
+import java.nio.charset.Charset;
+import java.util.Random;
+import java.util.UUID;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 
@@ -40,40 +46,42 @@ public class SignUpActivityTest extends ActivityTestRule<SignUpActivity> {
     }
 
     @Test
-    public void clickSignup(){
-        LoginActivity activity = (LoginActivity) solo.getCurrentActivity();
+    public void clickSignUpFail1(){
+        SignUpActivity activity = (SignUpActivity) solo.getCurrentActivity();
 
-        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
-        TextView signup = (TextView)solo.getView("signup");
+        solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
+        String uuid = UUID.randomUUID().toString();
+        String generatedString = uuid.replace("-", "").substring(0,6);
+
+        solo.enterText((EditText) solo.getView(R.id.email), generatedString+"@ualberta.ca");
+        solo.enterText((EditText) solo.getView(R.id.password), "123456");
+        solo.enterText((EditText) solo.getView(R.id.repassword), "1345690");
+        Button signup = (Button)solo.getView("signup");
         solo.clickOnView(signup);
         solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
     }
 
     @Test
-    public void clickLogin(){
-        LoginActivity activity = (LoginActivity) solo.getCurrentActivity();
+    public void clickSignUp(){
+        SignUpActivity activity = (SignUpActivity) solo.getCurrentActivity();
+        solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
 
-        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
-        solo.clearEditText((EditText) solo.getView(R.id.email));
-        solo.clearEditText((EditText) solo.getView(R.id.password));
-        solo.enterText((EditText) solo.getView(R.id.email), "shengyao@ualberta.ca");
+        // generate email address
+        String uuid = UUID.randomUUID().toString();
+        String generatedString = uuid.replace("-", "").substring(0,6);
+        // fill in information
+        solo.enterText((EditText) solo.getView(R.id.email), generatedString+"@ualberta.ca");
         solo.enterText((EditText) solo.getView(R.id.password), "123456");
-        Button loginbtn = (Button)solo.getView("login");
-        solo.clickOnView(loginbtn);
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-    }
+        solo.enterText((EditText) solo.getView(R.id.repassword), "123456");
+        solo.enterText((EditText) solo.getView(R.id.id), "test_intent");
+        solo.enterText((EditText) solo.getView(R.id.phone), "780456890");
+        ImageView addicon = (ImageView)solo.getView("img_profile");
+        solo.clickOnView(addicon);
+        // click button
+        Button signup = (Button)solo.getView("signup");
+        solo.clickOnView(signup);
+        solo.waitForText("Signed Up",1,10000);
 
-    @Test
-    public void rememberLogin(){
-        LoginActivity activity = (LoginActivity) solo.getCurrentActivity();
-        solo.clearEditText((EditText) solo.getView(R.id.email));
-        solo.clearEditText((EditText) solo.getView(R.id.password));
-        solo.enterText((EditText) solo.getView(R.id.email), "shengyao@ualberta.ca");
-        solo.enterText((EditText) solo.getView(R.id.password), "123456");
-        Button loginbtn = (Button)solo.getView("login");
-        solo.clickOnView(loginbtn);
-        CheckBox checkBox = (CheckBox) solo.getView(R.id.checkBox);
-        solo.clickOnView(checkBox);
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
     }
 
