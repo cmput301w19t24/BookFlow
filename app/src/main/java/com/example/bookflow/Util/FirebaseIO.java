@@ -1,16 +1,19 @@
 package com.example.bookflow.Util;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.bookflow.Model.Book;
+import com.example.bookflow.Model.User;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -51,6 +54,16 @@ public class FirebaseIO {
         mBookDatabaseReference = mFirebaseDatabase.getReference().child("Books");
     }
 
+    /**
+     * get book async
+     * @param bookid
+     * @param listener
+     */
+    public void getBook(String bookid, ValueEventListener listener) {
+        mBookDatabaseReference
+                .child(bookid)
+                .addListenerForSingleValueEvent(listener);
+    }
 
 
     /**
@@ -109,6 +122,18 @@ public class FirebaseIO {
             mBookDatabaseReference.push().setValue(mybook)
                     .addOnCompleteListener(listener);
         }
+    }
+
+    public Bitmap getPhoto(Uri uri) {
+        return null;
+    }
+
+    public Bitmap getPhoto(Book book) {
+        return null;
+    }
+
+    public Bitmap getPhoto(User user) {
+        return null;
     }
 
 

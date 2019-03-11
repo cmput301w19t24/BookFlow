@@ -68,7 +68,7 @@ public class UserProfileActivity extends BasicActivity {
     protected void onStart() {
         super.onStart();
         reviewListView = (ListView) findViewById(R.id.reviewList);
-        offerListView = (ListView) findViewById(R.id.offerList);
+//        offerListView = (ListView) findViewById(R.id.offerList);
         requestListView = (ListView) findViewById(R.id.requestList);
         dbRef = FirebaseDatabase.getInstance().getReference();
 
@@ -83,7 +83,6 @@ public class UserProfileActivity extends BasicActivity {
         } else  {
             FirebaseUser user = mAuth.getCurrentUser();
             uid = user.getUid();
-            //uid = "N9XCw1ToQJcWlkbIJ7CuXSaZ0MQ2";
         }
 
         setUpImageView();
@@ -97,6 +96,7 @@ public class UserProfileActivity extends BasicActivity {
      */
     private void prepareReviewList(@NonNull DataSnapshot eachReview) {
         // prepare uuid, rating, comments
+        String test1 = eachReview.child("rating").getValue().toString();
         String comments = eachReview.child("comments").getValue().toString();
         int rating = Integer.parseInt(eachReview.child("rating").getValue().toString());
 
