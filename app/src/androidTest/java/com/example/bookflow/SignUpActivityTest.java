@@ -19,24 +19,20 @@ import org.junit.Test;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 
-public class LoginActivityTest extends ActivityTestRule<LoginActivity> {
+public class SignUpActivityTest extends ActivityTestRule<SignUpActivity> {
 
     private Solo solo;
-    private FirebaseAuth mAuth;
 
-
-    public LoginActivityTest(){
-        super(LoginActivity.class, false, true);
+    public SignUpActivityTest(){
+        super(SignUpActivity.class, false, true);
     }
 
     @Rule
-    public ActivityTestRule<LoginActivity> rule =
-            new ActivityTestRule<>(LoginActivity.class, false, true);
+    public ActivityTestRule<SignUpActivity> rule =
+            new ActivityTestRule<>(SignUpActivity.class, false, true);
     @Before
     public void setUp() throws Exception{
         solo = new Solo(getInstrumentation(), rule.getActivity());
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword("shengyao@ualberta.ca", "123456");
     }
     @Test
     public void start() throws Exception{
