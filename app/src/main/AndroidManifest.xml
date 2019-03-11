@@ -25,7 +25,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".NotificationActivity" />
         <activity android:name=".UserProfileActivity" />
-        <activity android:name=".SearchActivity" />
+        <activity android:name=".SearchActivity"
+                  android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name=".BasicActivity" />
         <activity android:name=".EditBookDetailActivity" />
         <activity
