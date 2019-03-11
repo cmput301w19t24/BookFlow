@@ -9,6 +9,9 @@ public class Request {
     private Location location;
     private String status;
 
+    public Request(){
+    }
+
     public Request(String ownerId, String borrowerId, String bookId) {
         this.ownerId = ownerId;
         this.borrowerId = borrowerId;
