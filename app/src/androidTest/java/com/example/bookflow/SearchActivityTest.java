@@ -53,10 +53,34 @@ public class SearchActivityTest extends ActivityTestRule<SearchActivity> {
 
 
 //    @Test
+//    public void checkBookIsbnSearch(){
+//        solo.assertCurrentActivity("Wrong Activity", SearchActivity.class);
+//        solo.clickOnView(solo.getView(R.id.spinner));
+//        solo.pressSpinnerItem(0,1);
+//        solo.enterText((EditText) solo.getView(R.id.searchText), "9788");
+//        solo.clickOnView(solo.getView(R.id.goSearch));
+//        solo.waitForText("9788711222102");
+//        solo.waitForText("George's Marvelous Medicine");
+//        solo.waitForText("Roald Dahl");
+//    }
+//
+//    @Test
+//    public void checkBookAuthorSearch(){
+//        solo.assertCurrentActivity("Wrong Activity", SearchActivity.class);
+//        solo.clickOnView(solo.getView(R.id.spinner));
+//        solo.pressSpinnerItem(0,1);
+//        solo.enterText((EditText) solo.getView(R.id.searchText), "Roald");
+//        solo.clickOnView(solo.getView(R.id.goSearch));
+//        solo.waitForText("9788711222102");
+//        solo.waitForText("George's Marvelous Medicine");
+//        solo.waitForText("Roald Dahl");
+//    }
+//
+//    @Test
 //    public void checkBookNameSearch(){
 //        solo.assertCurrentActivity("Wrong Activity", SearchActivity.class);
 //        solo.clickOnView(solo.getView(R.id.spinner));
-//        solo.pressSpinnerItem(0,2);
+//        solo.pressSpinnerItem(0,1);
 //        solo.enterText((EditText) solo.getView(R.id.searchText), "Geo");
 //        solo.clickOnView(solo.getView(R.id.goSearch));
 //        solo.waitForText("9788711222102");
