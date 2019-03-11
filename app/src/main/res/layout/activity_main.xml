@@ -13,117 +13,171 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="67dp" />
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center_vertical|center_horizontal"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+    <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:gravity="center_vertical|center_horizontal"-->
+        <!--android:orientation="vertical"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/guideline4"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="1.0"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:layout_constraintVertical_bias="0.0">-->
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintBottom_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary">
+            android:layout_marginStart="50dp"
+            android:fontFamily="sans-serif-black"
+            android:text="   BookFlow"
+            android:textAlignment="center"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:fontFamily="sans-serif-black"
-                android:text="   BookFlow"
-                android:textAlignment="center"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:contentDescription="TODO"
+            app:srcCompat="@drawable/isbn_icon" />
+    </android.support.v7.widget.Toolbar>
 
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="45dp"
-                android:layout_height="30dp"
-                android:layout_weight="1"
-                android:contentDescription="TODO"
-                app:srcCompat="@drawable/isbn_icon" />
-        </android.support.v7.widget.Toolbar>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/common_google_signin_btn_text_dark_pressed"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@id/myBookList"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar2"
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:background="@color/common_google_signin_btn_text_dark_pressed">
+        <TextView
+            android:id="@+id/title_mybook"
+            android:layout_width="320dp"
+            android:layout_height="30dp"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/my_books"
+            android:textAlignment="textStart"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="12dp" />
 
-            <TextView
-                android:id="@+id/title_mybook"
-                android:layout_width="320dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:text="@string/my_books"
-                android:textAlignment="textStart"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:textSize="24sp" />
+        <!--<Spinner-->
+        <!--android:id="@+id/spBook"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:entries="@array/mainSelection"-->
+        <!--android:fontFamily="sans-serif-medium"-->
+        <!--android:textAlignment="textStart"-->
+        <!--android:textColor="@color/colorPrimaryDark"-->
+        <!--android:textSize="18dp"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/searchText" />-->
 
-            <TextView
-                android:id="@+id/title_viewmore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:fontFamily="sans-serif-medium"
-                android:onClick="seeMoreBooks"
-                android:text="@string/more"
-                android:textAlignment="textStart"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </android.support.v7.widget.Toolbar>
+        <!--<TextView-->
+        <!--android:id="@+id/title_viewmore"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:clickable="true"-->
+        <!--android:fontFamily="sans-serif-medium"-->
+        <!--android:onClick="seeMoreBooks"-->
+        <!--android:text="@string/more"-->
+        <!--android:textAlignment="textStart"-->
+        <!--android:textColor="@color/colorPrimaryDark"-->
+        <!--android:textSize="18sp"-->
+        <!--android:textStyle="bold" />-->
+    </android.support.v7.widget.Toolbar>
 
-        <ListView
-            android:id="@+id/myBookList"
-            android:layout_width="wrap_content"
-            android:layout_height="269dp"
-            android:textFilterEnabled="false" />
+    <ListView
+        android:id="@+id/myBookList"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:textFilterEnabled="false"
+        app:layout_constraintBottom_toTopOf="@+id/toolbar3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar2" />
 
-        <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar3"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:background="@color/common_google_signin_btn_text_dark_pressed">
-                <TextView
-                    android:id="@+id/title_myborrow"
-                    android:layout_width="320dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="@string/my_borrows"
-                    android:textAlignment="textStart"
-                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                    android:textSize="24sp" />
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar3"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/common_google_signin_btn_text_dark_pressed"
+        android:clickable="true"
+        android:onClick="seeBorrowList"
+        app:layout_constraintBottom_toBottomOf="@id/guideline4"
+        app:layout_constraintTop_toBottomOf="@id/myBookList">
 
-            <TextView
-                android:id="@+id/title2_viewmore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:fontFamily="sans-serif-medium"
-                android:onClick="seeMoreBorrows"
-                android:text="@string/more"
-                android:textAlignment="textStart"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-            </android.support.v7.widget.Toolbar>
+        <TextView
+            android:id="@+id/title_myborrow"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/my_borrows"
+            android:textAlignment="textStart"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="24sp" />
 
-        <ListView
-            android:id="@+id/myBorrowList"
-            android:layout_width="wrap_content"
-            android:layout_height="270dp"
-            android:textFilterEnabled="false" />
+        <!--<Spinner-->
+        <!--android:id="@+id/spBorrow"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:entries="@array/mainSelection"-->
+        <!--android:fontFamily="sans-serif-medium"-->
+        <!--android:textAlignment="textStart"-->
+        <!--android:textColor="@color/colorPrimaryDark"-->
+        <!--android:textSize="18dp"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/searchText" />-->
 
-    </LinearLayout>
+        <!--<TextView-->
+        <!--android:id="@+id/title2_viewmore"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:clickable="true"-->
+        <!--android:fontFamily="sans-serif-medium"-->
+        <!--android:onClick="seeMoreBorrows"-->
+        <!--android:text="@string/more"-->
+        <!--android:textAlignment="textStart"-->
+        <!--android:textColor="@color/colorPrimaryDark"-->
+        <!--android:textSize="18sp"-->
+        <!--android:textStyle="bold" />-->
+    </android.support.v7.widget.Toolbar>
+
+    <!--<ListView-->
+        <!--android:id="@+id/myBorrowList"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:textFilterEnabled="false"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.0"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/toolbar3"-->
+        <!--app:layout_constraintVertical_bias="0.0" />-->
+
+    <!--</LinearLayout>-->
     <android.support.constraint.Guideline
         android:id="@+id/guideline4"
         android:layout_width="wrap_content"

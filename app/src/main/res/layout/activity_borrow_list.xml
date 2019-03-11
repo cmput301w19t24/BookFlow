@@ -13,47 +13,94 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="67dp" />
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center_vertical|center_horizontal"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintBottom_toTopOf="parent">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary">
+            android:layout_marginStart="50dp"
+            android:fontFamily="sans-serif-black"
+            android:text="   BookFlow"
+            android:textAlignment="center"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-black"
-                android:text="My Borrows"
-                android:textAlignment="center"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-        </android.support.v7.widget.Toolbar>
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:contentDescription="TODO"
+            app:srcCompat="@drawable/isbn_icon" />
+    </android.support.v7.widget.Toolbar>
 
-        <ListView
-            android:id="@+id/myBorrowList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textFilterEnabled="false" />
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/common_google_signin_btn_text_dark_pressed"
+        android:clickable="true"
+        android:onClick="seeMoreBooks"
+        app:layout_constraintBottom_toTopOf="@id/myBookList"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/title_mybook"
+            android:layout_width="320dp"
+            android:layout_height="30dp"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/my_books"
+            android:textAlignment="textStart"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="12dp" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <ListView
+        android:id="@+id/myBorrowList"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:textFilterEnabled="false"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_bor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar3" />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar3"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/common_google_signin_btn_text_dark_pressed"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@id/myBorrowList"
+        app:layout_constraintTop_toBottomOf="@id/toolbar2">
+
+        <TextView
+            android:id="@+id/title_myborrow"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/my_borrows"
+            android:textAlignment="textStart"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="24sp" />
+    </android.support.v7.widget.Toolbar>
+
     <android.support.constraint.Guideline
-        android:id="@+id/guideline4"
+        android:id="@+id/guideline_bor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.94" />
+
 </android.support.constraint.ConstraintLayout>
