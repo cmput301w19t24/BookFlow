@@ -20,7 +20,7 @@ public class NotificationActivity extends BasicActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+    /////
         setContentView(R.layout.activity_notification);
 
         mAuth = FirebaseAuth.getInstance();

@@ -199,7 +199,7 @@ public class SearchActivity extends BasicActivity {
                 searchUser(searchText);
                 break;
             case "search by book name":
-                searchByBookTitle(searchText);
+                //searchByBookTitle(searchText);
                 break;
             case "search by book author":
                 searchByAuthor(searchText);

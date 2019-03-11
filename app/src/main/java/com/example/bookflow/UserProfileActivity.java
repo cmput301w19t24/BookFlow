@@ -5,18 +5,24 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.bookflow.Model.Book;
 import com.example.bookflow.Model.Review;
 import com.example.bookflow.Model.ReviewList;
 import com.example.bookflow.Model.User;
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseListOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -42,7 +49,7 @@ public class UserProfileActivity extends BasicActivity {
     private DatabaseReference dbRef;
     private String email, phoneNum, username, selfIntro, uid, photo;
     private ReviewList reviewList = new ReviewList();
-    private ListView reviewListView;
+    private ListView reviewListView, requestListView, offerListView;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -61,8 +68,11 @@ public class UserProfileActivity extends BasicActivity {
     protected void onStart() {
         super.onStart();
         reviewListView = (ListView) findViewById(R.id.reviewList);
+        offerListView = (ListView) findViewById(R.id.offerList);
+        requestListView = (ListView) findViewById(R.id.requestList);
         dbRef = FirebaseDatabase.getInstance().getReference();
 
+        // determine whether it's yourself visiting your profile or other user visiting your profile
         Intent intent = getIntent();
         String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
         if (message != null) {
@@ -74,57 +84,10 @@ public class UserProfileActivity extends BasicActivity {
             FirebaseUser user = mAuth.getCurrentUser();
             uid = user.getUid();
         }
+
         setUpImageView();
-
-
-        // get user information from the database
-        ValueEventListener userInfoListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                DataSnapshot targetUser = dataSnapshot.child(uid);
-                email = targetUser.child("email").getValue().toString();
-                phoneNum = targetUser.child("phoneNumber").getValue().toString();
-                username = targetUser.child("username").getValue().toString();
-                selfIntro = targetUser.child("selfIntro").getValue().toString();
-
-
-                setupTextView(username, selfIntro, email, phoneNum);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w("listener cancelled", databaseError.toException());
-            }
-        };
-
-        // get all reviews from database
-        ValueEventListener reviewsListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot eachReview: dataSnapshot.getChildren()){
-                    if (uid.equals(eachReview.child("reviewee").getValue().toString())){
-                        prepareReviewList(eachReview);
-                    }
-                }
-                ArrayList<String> stringList = reviewList.toStringArray();
-                if (stringList.size() == 0) {
-                    stringList.add("No Review");
-                }
-                ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(UserProfileActivity.this,
-                        R.layout.review_list_adapter, stringList);
-                reviewListView.setAdapter(adapter1);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w("listener cancelled", databaseError.toException());
-            }
-        };
-
-        // activate listeners
-        dbRef.child("Users").addListenerForSingleValueEvent(userInfoListener);
-        dbRef.child("Reviews").addListenerForSingleValueEvent(reviewsListener);
+        setUpBasicInfo();
+        setUpReviewList();
     }
 
     /**
@@ -157,13 +120,65 @@ public class UserProfileActivity extends BasicActivity {
     }
 
 
-    /**
-     * setupTextView just fill text views with corresponding data
-     * @param name  the user name string
-     * @param intro the self introduction string
-     * @param email the email string
-     * @param phone the phone number string
-     */
+    private void setUpBasicInfo() {
+        // get user information from the database
+        ValueEventListener userInfoListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                DataSnapshot targetUser = dataSnapshot.child(uid);
+                email = targetUser.child("email").getValue().toString();
+                phoneNum = targetUser.child("phoneNumber").getValue().toString();
+                username = targetUser.child("username").getValue().toString();
+                selfIntro = targetUser.child("selfIntro").getValue().toString();
+
+
+                setupTextView(username, selfIntro, email, phoneNum);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("listener cancelled", databaseError.toException());
+            }
+        };
+        dbRef.child("Users").addListenerForSingleValueEvent(userInfoListener);
+    }
+
+    private void setUpReviewList() {
+        // get all reviews from database
+        ValueEventListener reviewsListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot eachReview: dataSnapshot.getChildren()){
+                    if (uid.equals(eachReview.child("reviewee").getValue().toString())){
+                        prepareReviewList(eachReview);
+                    }
+                }
+                ArrayList<String> stringList = reviewList.toStringArray();
+                if (stringList.size() == 0) {
+                    stringList.add("No Review");
+                }
+                ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(UserProfileActivity.this,
+                        R.layout.review_list_adapter, stringList);
+                reviewListView.setAdapter(adapter1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("listener cancelled", databaseError.toException());
+            }
+        };
+        dbRef.child("Reviews").addListenerForSingleValueEvent(reviewsListener);
+    }
+
+    private void setUpOfferList() {
+            ;
+    }
+
+    private void setUpRequestList() {
+        ;
+    }
+
     private void setupTextView(String name, String intro, String email, String phone) {
         TextView textView = findViewById(R.id.profileName);
         textView.setText(name);
@@ -177,7 +192,6 @@ public class UserProfileActivity extends BasicActivity {
         textView = findViewById(R.id.phoneToBeChange);
         textView.setText(phone);
     }
-
 
     private void setUpImageView() {
         // download user image from storage and update
@@ -202,6 +216,38 @@ public class UserProfileActivity extends BasicActivity {
     }
 
     public void switchRequest(View view){
+        LinearLayout layout = findViewById(R.id.reviewsLayout);
+        layout.setVisibility(LinearLayout.GONE);
 
+        layout = findViewById(R.id.offerLayout);
+        layout.setVisibility(LinearLayout.GONE);
+
+        layout = findViewById(R.id.requestLayout);
+        layout.setVisibility(LinearLayout.VISIBLE);
+        setUpRequestList();
+    }
+
+    public void switchReview(View view){
+        LinearLayout layout = findViewById(R.id.reviewsLayout);
+        layout.setVisibility(LinearLayout.VISIBLE);
+
+        layout = findViewById(R.id.offerLayout);
+        layout.setVisibility(LinearLayout.GONE);
+
+        layout = findViewById(R.id.requestLayout);
+        layout.setVisibility(LinearLayout.GONE);
+        setUpReviewList();
+    }
+
+    public void switchOffer(View view){
+        LinearLayout layout = findViewById(R.id.reviewsLayout);
+        layout.setVisibility(LinearLayout.GONE);
+
+        layout = findViewById(R.id.offerLayout);
+        layout.setVisibility(LinearLayout.VISIBLE);
+
+        layout = findViewById(R.id.requestLayout);
+        layout.setVisibility(LinearLayout.GONE);
+        setUpOfferList();
     }
 }
