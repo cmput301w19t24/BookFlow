@@ -46,12 +46,12 @@ public class SignUpActivityTest extends ActivityTestRule<SignUpActivity> {
     }
 
     @Test
-    public void clickSignUpFail1(){
+    public void clickSignUpFail(){
         SignUpActivity activity = (SignUpActivity) solo.getCurrentActivity();
 
         solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
         String uuid = UUID.randomUUID().toString();
-        String generatedString = uuid.replace("-", "").substring(0,6);
+        String generatedString = uuid.replace("-", "").substring(0,8);
 
         solo.enterText((EditText) solo.getView(R.id.email), generatedString+"@ualberta.ca");
         solo.enterText((EditText) solo.getView(R.id.password), "123456");
@@ -73,10 +73,8 @@ public class SignUpActivityTest extends ActivityTestRule<SignUpActivity> {
         solo.enterText((EditText) solo.getView(R.id.email), generatedString+"@ualberta.ca");
         solo.enterText((EditText) solo.getView(R.id.password), "123456");
         solo.enterText((EditText) solo.getView(R.id.repassword), "123456");
-        solo.enterText((EditText) solo.getView(R.id.id), "test_intent");
+        solo.enterText((EditText) solo.getView(R.id.id), "testintent");
         solo.enterText((EditText) solo.getView(R.id.phone), "780456890");
-        ImageView addicon = (ImageView)solo.getView("img_profile");
-        solo.clickOnView(addicon);
         // click button
         Button signup = (Button)solo.getView("signup");
         solo.clickOnView(signup);
