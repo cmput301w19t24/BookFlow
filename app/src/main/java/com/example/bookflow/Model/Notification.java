@@ -37,8 +37,6 @@ public class Notification {
         this.type = type;
     }
 
-
-
     public String getSenderName() {
         return senderName;
     }

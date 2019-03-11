@@ -38,7 +38,6 @@ public class SignUpActivity extends BasicActivity {
 
     private EditText id, email, password, repassword,phone;
     private ImageView profile;
-    private Button btn;
     private static final int PICK_FROM_ALBUM = 10;
     private Uri imageUri = null;
     private FirebaseAuth mAuth;
