@@ -20,7 +20,16 @@ import com.example.bookflow.Util.PhotoUtility;
 import com.example.bookflow.Util.ScanUtility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
+/**
+ * Activity responsible for editing the book detail.
+ * This activity should be started by other activity
+ * with an intent containing the book id which can be
+ * retrieved by key "bookid".
+ */
 public class EditBookDetailActivity extends BasicActivity {
 
     private static final String TAG = "EditBookDetailActivity";
@@ -34,29 +43,34 @@ public class EditBookDetailActivity extends BasicActivity {
     private EditText mBookTitleEditText;
     private EditText mAuthorEditText;
     private EditText mIsbnEditText;
-    private EditText mDetailEditText;
+    private EditText mDescriptionEditText;
     private ProgressBar mProgressbar;
     private Button mScanButton;
+
+    private String mBookId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.actvity_edit_book_detail);
 
-        // Firebase
+        /* initialize Firebase */
         mFirebaseIO = FirebaseIO.getInstance();
 
-        // UI
+        /* initialize UI elements */
         mPhotoImageView = findViewById(R.id.edit_book_image_iv);
         mSaveImageView = findViewById(R.id.edit_book_save_iv);
         mBookTitleEditText = findViewById(R.id.edit_book_title_et);
         mAuthorEditText = findViewById(R.id.edit_book_author_name_et);
         mIsbnEditText = findViewById(R.id.edit_book_isbn_et);
-        mDetailEditText = findViewById(R.id.edit_book_detail_it);
+        mDescriptionEditText = findViewById(R.id.edit_book_description_it);
         mProgressbar = findViewById(R.id.edit_book_progress_bar);
         mScanButton = findViewById(R.id.edit_book_scan_button);
 
+        mProgressbar.setVisibility(View.GONE);
 
+
+        /* register listeners */
         mPhotoImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,12 +114,61 @@ public class EditBookDetailActivity extends BasicActivity {
             }
         });
 
-        mProgressbar.setVisibility(View.GONE);
+
+        /* populate existing book info to edit views */
+        mBookId = getIntent().getStringExtra("bookid");
+        mFirebaseIO.getBook(mBookId, new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Book thisBook = dataSnapshot.getValue(Book.class);
+                propagateBookToView(thisBook);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         // ask for permission
         PhotoUtility.checkCameraPermission(this);
         PhotoUtility.checkWriteExternalPermission(this);
     }
+
+    private void propagateBookToView(Book book) {
+        if (book == null) {
+            Log.e(TAG, "book is null!");
+            return;
+        }
+
+        String title = book.getTitle();
+        if (title != null) {
+            mBookTitleEditText.setText(title);
+        }
+
+        String author = book.getAuthor();
+        if (author != null) {
+            mAuthorEditText.setText(author);
+        }
+
+        String isbn = book.getIsbn();
+        if (isbn != null) {
+            mIsbnEditText.setText(isbn);
+        }
+
+        String description = book.getDescription();
+        if (description != null) {
+            mDescriptionEditText.setText(description);
+        }
+
+        // populate book photo
+        Glide.with(mPhotoImageView.getContext())
+                .load(book.getPhotoUri())
+                .into(mPhotoImageView);
+
+    }
+
 
     /**
      * handles the return of other activities, including "choose from album",
@@ -160,7 +223,7 @@ public class EditBookDetailActivity extends BasicActivity {
         String bookTitle = mBookTitleEditText.getText().toString().trim();
         String author = mAuthorEditText.getText().toString().trim();
         String isbn = mIsbnEditText.getText().toString().trim();
-        String detail = mDetailEditText.getText().toString().trim();
+        String detail = mDescriptionEditText.getText().toString().trim();
 
         if (bookTitle.equals("") || author.equals("") || isbn.equals("")) {
             Toast.makeText(this, getString(R.string.add_book_invalid_info), Toast.LENGTH_SHORT).show();
