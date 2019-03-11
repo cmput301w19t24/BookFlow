@@ -21,6 +21,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+/**
+ * Utility class that handles photo-related tasks
+ */
 public class PhotoUtility {
 
     private static String TAG = "PhotoUtility";
