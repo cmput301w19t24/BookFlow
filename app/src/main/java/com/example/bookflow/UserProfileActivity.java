@@ -135,7 +135,7 @@ public class UserProfileActivity extends BasicActivity {
                 email = targetUser.child("email").getValue().toString();
                 phoneNum = targetUser.child("phoneNumber").getValue().toString();
                 username = targetUser.child("username").getValue().toString();
-                selfIntro = targetUser.child("selfIntro").getValue().toString();
+                selfIntro = targetUser.child("selfintro").getValue().toString();
 
 
                 setupTextView(username, selfIntro, email, phoneNum);

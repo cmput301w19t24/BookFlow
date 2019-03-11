@@ -137,8 +137,7 @@ public class SignUpActivity extends BasicActivity {
                                         public void onComplete(@NonNull Task<Uri> task) {
                                             String imageurl = task.toString();
                                             user.setImageurl(imageurl);
-                                        }
-                                    });
+                                        }                                    });
                                 } else {
                                     Toast.makeText(SignUpActivity.this, "Failed to add icon", Toast.LENGTH_SHORT).show();
                                 }

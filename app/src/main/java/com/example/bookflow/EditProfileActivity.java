@@ -135,13 +135,20 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void updateStorage() {
-        StorageReference storageRef = storage.getReference().child("users").child(userUid);
+        StorageReference storageRef;
+        try {
+            storageRef = storage.getReference().child("users").child(userUid);
+        } catch (Exception e) {
+            return ;
+        }
+
         storageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 // file deleted
             }
         });
+
         storageRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
