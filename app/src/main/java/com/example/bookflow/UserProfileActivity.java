@@ -67,23 +67,24 @@ public class UserProfileActivity extends BasicActivity {
     @Override
     protected void onStart() {
         super.onStart();
-//        reviewListView = (ListView) findViewById(R.id.reviewList);
-//        offerListView = (ListView) findViewById(R.id.offerList);
-//        requestListView = (ListView) findViewById(R.id.requestList);
-//        dbRef = FirebaseDatabase.getInstance().getReference();
-//
-//        // determine whether it's yourself visiting your profile or other user visiting your profile
-//        Intent intent = getIntent();
-//        String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
-//        if (message != null) {
-//            ImageView imageButton = findViewById(R.id.editPersonInfo);
-//            imageButton.setEnabled(false);
-//            imageButton.setVisibility(View.INVISIBLE);
-//            uid = message;
-//        } else  {
-//            FirebaseUser user = mAuth.getCurrentUser();
-//            uid = user.getUid();
-//        }
+        reviewListView = (ListView) findViewById(R.id.reviewList);
+        offerListView = (ListView) findViewById(R.id.offerList);
+        requestListView = (ListView) findViewById(R.id.requestList);
+        dbRef = FirebaseDatabase.getInstance().getReference();
+
+        // determine whether it's yourself visiting your profile or other user visiting your profile
+        Intent intent = getIntent();
+        String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
+        if (message != null) {
+            ImageView imageButton = findViewById(R.id.editPersonInfo);
+            imageButton.setEnabled(false);
+            imageButton.setVisibility(View.INVISIBLE);
+            uid = message;
+        } else  {
+            FirebaseUser user = mAuth.getCurrentUser();
+            uid = user.getUid();
+            //uid = "N9XCw1ToQJcWlkbIJ7CuXSaZ0MQ2";
+        }
 
         setUpImageView();
         setUpBasicInfo();
@@ -96,7 +97,6 @@ public class UserProfileActivity extends BasicActivity {
      */
     private void prepareReviewList(@NonNull DataSnapshot eachReview) {
         // prepare uuid, rating, comments
-        String test1 = eachReview.child("rating").getValue().toString();
         String comments = eachReview.child("comments").getValue().toString();
         int rating = Integer.parseInt(eachReview.child("rating").getValue().toString());
 
