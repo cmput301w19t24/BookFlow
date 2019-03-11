@@ -34,6 +34,10 @@ public class PhotoUtility {
      */
     public static int RC_IMAGE_CAPTURE = 1;
 
+    /**
+     * fires a dialog that allows the user to choose from album or pick a photo with camera.
+     * @param act the activity the calls this function.
+     */
     public static void showPickPhotoDialog(final Activity act) {
         AlertDialog.Builder builder = new AlertDialog.Builder(act);
         builder.setTitle(R.string.pick_a_photo)
@@ -64,8 +68,17 @@ public class PhotoUtility {
                 .show();
     }
 
+    /**
+     * convert a bitmap to an URI by storing the bitmap to a
+     * temporary space.
+     * @param act the activity that calls this function.
+     * @param bitmap the bitmap to be converted
+     * @return a URI pointed to the temporary store location.
+     */
     public static Uri bitmapToUri(Activity act, Bitmap bitmap) {
-        checkWriteExternalPermission(act);
+        if (!checkWriteExternalPermission(act)) {
+            return null;
+        }
 
         // create a temporary file
         File tempDir= Environment.getExternalStorageDirectory();
@@ -93,28 +106,38 @@ public class PhotoUtility {
         return Uri.fromFile(tempFile);
     }
 
+
     /**
      * check the external storage permission before proceeding.
      * Should be used before storing the picture to a temporary
      * location.
+     * @param act the Activity that calls this function
+     * @return a boolean indicating if the permission is currently invoked.
      */
-    public static void checkWriteExternalPermission(Activity act){
+    public static boolean checkWriteExternalPermission(Activity act){
         if (ContextCompat.checkSelfPermission(act, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Log.v(TAG,"Permission is revoked");
             ActivityCompat.requestPermissions(act, new String[]{Manifest.permission.CAMERA}, 1);
+            return false;
         }
+        return true;
     }
 
     /**
      * check the external storage permission before proceeding.
      * Should be used before storing the picture to a temporary
      * location.
+     *
+     * @param act the Activity that calls this function
+     * @return a boolean indicating if the permission is currently invoked.
      */
-    public static void checkCameraPermission(Activity act){
+    public static boolean checkCameraPermission(Activity act){
         if (ContextCompat.checkSelfPermission(act, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             Log.v(TAG,"Permission is revoked");
             ActivityCompat.requestPermissions(act, new String[]{Manifest.permission.CAMERA}, 1);
+            return false;
         }
+        return true;
     }
 
 }

@@ -92,7 +92,7 @@
                 android:layout_marginBottom="8dp">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/add_book_detail_it"
+                    android:id="@+id/add_book_description_et"
                     android:layout_width="match_parent"
                     android:layout_height="133dp"
                     android:hint="@string/book_detail"

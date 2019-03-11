@@ -1,9 +1,13 @@
 package com.example.bookflow;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +30,10 @@ public class BookDetailActivity extends BasicActivity {
     private TextView isbnField;
     private TextView statusField;
     private ImageView bookImage;
+    private TextView commentField;
+    private Button requestButton;
+    private ImageButton editButton;
+    private Button viewRequestsButton;
 
     private String book_id;
     private String owner_id;
@@ -33,10 +41,11 @@ public class BookDetailActivity extends BasicActivity {
     private String title;
     private String author;
     private String isbn;
-    private String status;
+    private String book_status;
     private String borrower_name;
     private String username;
     private String photoUri;
+    private String comments;
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference requestRef;
@@ -55,7 +64,6 @@ public class BookDetailActivity extends BasicActivity {
         Bundle extras = getIntent().getExtras();
         book_id = extras.getString("book_id");
 
-
         mDatabase = FirebaseDatabase.getInstance();
         notificationRef = mDatabase.getReference("Notifications");
         requestRef = mDatabase.getReference("Requests");
@@ -63,11 +71,11 @@ public class BookDetailActivity extends BasicActivity {
         titleField = findViewById(R.id.bookName);
         authorField = findViewById(R.id.author);
         isbnField = findViewById(R.id.isbn);
-        statusField = findViewById(R.id.status);
+        statusField = findViewById(R.id.book_status);
         bookImage = findViewById(R.id.bookImage);
+        commentField = findViewById(R.id.book_comments);
 
         mAuth = FirebaseAuth.getInstance();
-
 
         ValueEventListener bookListener = new ValueEventListener() {
             @Override
@@ -93,7 +101,6 @@ public class BookDetailActivity extends BasicActivity {
                 catch (Exception e){
                     isbn = "Not Found";
                 }
-                //status = dataSnapshot.child("status").getValue().toString();
                 try {
                     owner_id = dataSnapshot.child("ownerId").getValue().toString();
                 }
@@ -107,15 +114,47 @@ public class BookDetailActivity extends BasicActivity {
                     photoUri = "https://firebasestorage.googleapis.com/v0/b/bookflow-9db6f.appspot.com" +
                             "/o/book_photos%2Fimage%3A144622?alt=media&token=c41c954c-b6c2-4451-9210-bd98200e90fd";
                 }
+
+                try {
+                    comments = dataSnapshot.child("description").getValue().toString();
+                }
+                catch (Exception e) {
+                    comments = "";
+                }
+
+                try {
+                    book_status= dataSnapshot.child("status").getValue().toString();
+
+                }
+                catch(Exception e){
+                    book_status = "Not Found";
+                }
+
+
                 //Log.e("ahhhhhh", owner_id);
 
                 titleField.setText(title);
-                authorField.setText(author);
-                isbnField.setText(isbn);
+                authorField.setText("by " + author);
+                isbnField.setText("ISBN: " + isbn);
+                statusField.setText(book_status);
+                commentField.setText(comments);
                 Glide.with(BookDetailActivity.this)
                         .load(photoUri)
                         .into(bookImage);
-                //statusField.setText(status);
+
+                if(book_status.equals("AVAILABLE")|| book_status.equals("REQUESTED")) {
+                    statusField.setTextColor(Color.parseColor("#7CFC00"));
+                }
+                String curUser = mAuth.getCurrentUser().getUid();
+
+                if(curUser.equals(owner_id)) {
+                    requestButton = findViewById(R.id.requestButton);
+                    editButton = findViewById(R.id.edit_book_button);
+                    viewRequestsButton = findViewById(R.id.view_requests_button);
+                    requestButton.setVisibility(View.GONE);
+                    editButton.setVisibility(View.VISIBLE);
+                    viewRequestsButton.setVisibility(View.VISIBLE);
+                }
 
             }
 
@@ -125,6 +164,9 @@ public class BookDetailActivity extends BasicActivity {
             }
         };
         mDatabase.getReference().child("Books").child(book_id).addListenerForSingleValueEvent(bookListener);
+
+
+
 
     }
 
@@ -167,6 +209,13 @@ public class BookDetailActivity extends BasicActivity {
                     Toast.LENGTH_SHORT);
             toast.show();
         }
+    }
+
+    public void edit(View v) {
+        Intent intent = new Intent(BookDetailActivity.this, EditBookDetailActivity.class);
+        intent.putExtra("bookid",book_id);
+        Log.e("bookid", book_id);
+        startActivity(intent);
     }
 
 }

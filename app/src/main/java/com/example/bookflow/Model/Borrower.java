@@ -42,6 +42,6 @@ public interface Borrower {
     /**
      * hand over a book by scanning ISBN
      */
-    void borrowerHandOverBook();
+    void borrowerHandOverBook(Book book);
 
 }

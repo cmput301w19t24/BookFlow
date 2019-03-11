@@ -1,18 +1,11 @@
 package com.example.bookflow;
 
-import android.Manifest;
-import android.content.DialogInterface;
+
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,20 +19,8 @@ import com.example.bookflow.Model.Book;
 import com.example.bookflow.Util.FirebaseIO;
 import com.example.bookflow.Util.PhotoUtility;
 import com.example.bookflow.Util.ScanUtility;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseError;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 
 /**
@@ -68,6 +49,7 @@ public class AddBookActivity extends BasicActivity {
     private EditText mBookTitleEditText;
     private EditText mAuthorEditText;
     private EditText mIsbnEditText;
+    private EditText mDescriptionEditText;
     private ProgressBar mProgressbar;
     private Button mScanButton;
 
@@ -88,6 +70,7 @@ public class AddBookActivity extends BasicActivity {
         mBookTitleEditText = findViewById(R.id.add_book_title_et);
         mAuthorEditText = findViewById(R.id.add_book_author_name_et);
         mIsbnEditText = findViewById(R.id.add_book_isbn_et);
+        mDescriptionEditText = findViewById(R.id.add_book_description_et);
         mSaveImageView = findViewById(R.id.add_book_save_iv);
         mProgressbar = findViewById(R.id.add_book_progress_bar);
         mScanButton = findViewById(R.id.add_book_scan_button);
@@ -150,13 +133,17 @@ public class AddBookActivity extends BasicActivity {
         String bookTitle = mBookTitleEditText.getText().toString().trim();
         String author = mAuthorEditText.getText().toString().trim();
         String isbn = mIsbnEditText.getText().toString().trim();
+        String description = mDescriptionEditText.getText().toString().trim();
 
         if (bookTitle.equals("") || author.equals("") || isbn.equals("")) {
             Toast.makeText(this, getString(R.string.add_book_invalid_info), Toast.LENGTH_SHORT).show();
             return null;
         }
 
-        return new Book(bookTitle, author, isbn);
+        Book book = new Book(bookTitle, author, isbn);
+        book.setDescription(description);
+
+        return book;
     }
 
     /**
@@ -175,23 +162,25 @@ public class AddBookActivity extends BasicActivity {
                 Uri imgUri = data.getData();
                 Log.d(TAG, imgUri.toString());
 
+                mSelectedPhotoUri = imgUri;
+
                 // display photo on the image view
                 Glide.with(mPhotoImageView.getContext())
                         .load(imgUri)
                         .into(mPhotoImageView);
-
-                mSelectedPhotoUri = imgUri;
 
             } else if (requestCode == PhotoUtility.RC_IMAGE_CAPTURE) {
                 Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
 
                 Uri imgUri = PhotoUtility.bitmapToUri(this, imageBitmap);
 
-                Glide.with(mPhotoImageView.getContext())
-                        .load(imageBitmap)
-                        .into(mPhotoImageView);
+                if (imgUri != null) {
+                    mSelectedPhotoUri = imgUri;
 
-                mSelectedPhotoUri = imgUri;
+                    Glide.with(mPhotoImageView.getContext())
+                            .load(imageBitmap)
+                            .into(mPhotoImageView);
+                }
 
             } else if (requestCode == ScanUtility.RC_SCAN) {
                 String isbn = data.getStringExtra(ScanActivity.SCAN_RESULT);
