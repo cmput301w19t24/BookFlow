@@ -47,7 +47,7 @@
         android:layout_height="45dp"
         android:background="@color/common_google_signin_btn_text_dark_pressed"
         android:clickable="true"
-        android:onClick="seeMoreBooks"
+        android:onClick="seeBookList"
         app:layout_constraintBottom_toTopOf="@id/myBookList"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 

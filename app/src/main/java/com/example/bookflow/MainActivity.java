@@ -74,6 +74,7 @@ public class MainActivity extends BasicActivity {
 
     private void bookList() {
         myBookList = (ListView) findViewById(R.id.myBookList);
+        // add user's book to adapter
         query.orderByChild("ownerId").equalTo(uid).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

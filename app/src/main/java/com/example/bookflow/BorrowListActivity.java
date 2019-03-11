@@ -76,6 +76,7 @@ public class BorrowListActivity extends BasicActivity {
 
     private void borrowList() {
         myBorrowList = (ListView) findViewById(R.id.myBorrowList);
+        // add user's borrows to adapter
         query.orderByChild("borrowerId").equalTo(uid).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -110,8 +111,8 @@ public class BorrowListActivity extends BasicActivity {
         });
     }
 
-
-    public void seeMoreBooks(View moreBookView) {
+    // to
+    public void seeBookList(View BookListView) {
         Intent intent_booklist = new Intent(this, MainActivity.class);
         startActivity(intent_booklist);
     }

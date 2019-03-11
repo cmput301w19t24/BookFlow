@@ -18,11 +18,11 @@ public class User implements Owner,Borrower{
     private String imageurl; // user icon
     private String selfIntro;
 
-    public String getSelfintro() {
+    public String getSelfIntro() {
         return selfIntro;
     }
-    public void setSelfintro(String selfintro) {
-        this.selfIntro = selfintro;
+    public void setSelfIntro(String selfIntro) {
+        this.selfIntro = selfIntro;
     }
 
     private ArrayList<Book> ownedBooks = new ArrayList<Book>();
