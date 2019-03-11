@@ -49,6 +49,7 @@ public class AddBookActivity extends BasicActivity {
     private EditText mBookTitleEditText;
     private EditText mAuthorEditText;
     private EditText mIsbnEditText;
+    private EditText mDescriptionEditText;
     private ProgressBar mProgressbar;
     private Button mScanButton;
 
@@ -69,6 +70,7 @@ public class AddBookActivity extends BasicActivity {
         mBookTitleEditText = findViewById(R.id.add_book_title_et);
         mAuthorEditText = findViewById(R.id.add_book_author_name_et);
         mIsbnEditText = findViewById(R.id.add_book_isbn_et);
+        mDescriptionEditText = findViewById(R.id.add_book_description_et);
         mSaveImageView = findViewById(R.id.add_book_save_iv);
         mProgressbar = findViewById(R.id.add_book_progress_bar);
         mScanButton = findViewById(R.id.add_book_scan_button);
@@ -131,13 +133,17 @@ public class AddBookActivity extends BasicActivity {
         String bookTitle = mBookTitleEditText.getText().toString().trim();
         String author = mAuthorEditText.getText().toString().trim();
         String isbn = mIsbnEditText.getText().toString().trim();
+        String description = mDescriptionEditText.getText().toString().trim();
 
         if (bookTitle.equals("") || author.equals("") || isbn.equals("")) {
             Toast.makeText(this, getString(R.string.add_book_invalid_info), Toast.LENGTH_SHORT).show();
             return null;
         }
 
-        return new Book(bookTitle, author, isbn);
+        Book book = new Book(bookTitle, author, isbn);
+        book.setDescription(description);
+
+        return book;
     }
 
     /**
