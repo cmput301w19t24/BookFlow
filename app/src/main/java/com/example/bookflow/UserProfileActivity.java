@@ -68,7 +68,7 @@ public class UserProfileActivity extends BasicActivity {
     protected void onStart() {
         super.onStart();
         reviewListView = (ListView) findViewById(R.id.reviewList);
-//        offerListView = (ListView) findViewById(R.id.offerList);
+        offerListView = (ListView) findViewById(R.id.offerList);
         requestListView = (ListView) findViewById(R.id.requestList);
         dbRef = FirebaseDatabase.getInstance().getReference();
 
@@ -85,6 +85,11 @@ public class UserProfileActivity extends BasicActivity {
             uid = user.getUid();
         }
 
+//        try {
+//            wait(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         setUpImageView();
         setUpBasicInfo();
         setUpReviewList();
@@ -193,9 +198,15 @@ public class UserProfileActivity extends BasicActivity {
         textView.setText(phone);
     }
 
-    private void setUpImageView() {
+    public void setUpImageView() {
         // download user image from storage and update
-        StorageReference storageRef = storage.getReference().child("users").child(uid);
+        StorageReference storageRef;
+        try {
+            storageRef = storage.getReference().child("users").child(uid);
+        } catch (Exception e) {
+            return ;
+        }
+
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {

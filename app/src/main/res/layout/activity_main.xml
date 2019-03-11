@@ -8,7 +8,7 @@
     tools:context=".MainActivity" >
 
     <include
-        android:id="@+id/include"
+        android:id="@+id/include_main"
         layout="@layout/activity_basic"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="67dp" />

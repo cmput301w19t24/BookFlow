@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 
 
 public class EditProfileActivity extends AppCompatActivity {
-    private TextView username, email, selfIntro,phone;
+    private TextView username, selfIntro,phone;
     private String userUid;
     private ImageView userIcon;
     private Uri imageUri;
@@ -49,7 +49,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
         userIcon = findViewById(R.id.edit_profile_img);
         username = findViewById(R.id.edit_username);
-        email = findViewById(R.id.edit_email);
         phone = findViewById(R.id.edit_phone);
         selfIntro = findViewById(R.id.edit_self_intro);
 
@@ -76,7 +75,6 @@ public class EditProfileActivity extends AppCompatActivity {
         ValueEventListener userInfoListener2 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String emailHint = "";
                 String phoneHint = "";
                 String nameHint = "";
                 String introHint = "";
@@ -84,7 +82,6 @@ public class EditProfileActivity extends AppCompatActivity {
                 for (DataSnapshot eachUser: dataSnapshot.getChildren()) {
                     String getUid = eachUser.child("uid").getValue().toString();
                     if (getUid.equals(userUid)) {
-                        emailHint = eachUser.child("email").getValue().toString();
                         phoneHint = eachUser.child("phoneNumber").getValue().toString();
                         nameHint = eachUser.child("username").getValue().toString();
                         introHint = eachUser.child("selfIntro").getValue().toString();
@@ -94,7 +91,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
                 username.setText(nameHint);
                 selfIntro.setText(introHint);
-                email.setText(emailHint);
                 phone.setText(phoneHint);
             }
 
@@ -169,7 +165,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
         String usernameStr = username.getText().toString();
         String introStr = selfIntro.getText().toString();
-        String emailStr = email.getText().toString();
         String phoneStr = phone.getText().toString();
 
         boolean valid = true;
@@ -189,14 +184,6 @@ public class EditProfileActivity extends AppCompatActivity {
             valid = false;
         }
 
-        // check if email is valid
-        String emailPat = "[0-9a-z]+@[0-9a-z]+.[a-z]+";
-        if (!Pattern.matches(emailPat, emailStr)) {
-            email.setError("Invalid email address");
-            email = null;
-            valid = false;
-        }
-
         // check if phone is valid
         String phonePat = "[0-9]+";
         if (!Pattern.matches(phonePat, phoneStr)) {
@@ -212,10 +199,9 @@ public class EditProfileActivity extends AppCompatActivity {
         String uid = user.getUid();
         dbRef.child("Users").child(uid).child("username").setValue(usernameStr);
         dbRef.child("Users").child(uid).child("selfIntro").setValue(introStr);
-        dbRef.child("Users").child(uid).child("email").setValue(emailStr);
         dbRef.child("Users").child(uid).child("phoneNumber").setValue(phoneStr);
 
-        Intent intent = new Intent(EditProfileActivity.this, MainActivity.class);
+        Intent intent = new Intent(EditProfileActivity.this, UserProfileActivity.class);
         startActivity(intent);
     }
 }
