@@ -133,7 +133,9 @@
             android:text="@string/my_borrows"
             android:textAlignment="textStart"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="6dp" />
 
         <!--<Spinner-->
         <!--android:id="@+id/spBorrow"-->

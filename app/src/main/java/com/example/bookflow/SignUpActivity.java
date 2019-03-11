@@ -62,7 +62,7 @@ public class SignUpActivity extends BasicActivity {
 
         boolean valid = true;
 //        regex
-        String usernamePat = "^([a-z0-9]{3,20})$";
+        String usernamePat = "^([a-z0-9A-Z]{3,20})$";
         if (!Pattern.matches(usernamePat, id.getText().toString())) {
             id.setError("username should more 6 and less than 20 characters with only letters or numbers");
             id = null;
@@ -102,46 +102,49 @@ public class SignUpActivity extends BasicActivity {
 
         if (!valid)
             return;
-        // if the user did not upload an icon
-        if (imageUri==null) {
-            Toast.makeText(SignUpActivity.this, "Please upload an icon", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        // if the user did not upload an icon
+//        if (imageUri==null) {
+//            Toast.makeText(SignUpActivity.this, "Please upload an icon", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         mAuth.createUserWithEmailAndPassword(email.getText().toString(),password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    Toast.makeText(SignUpActivity.this, "Signed Up", Toast.LENGTH_SHORT).show();
                     final String uid = mAuth.getCurrentUser().getUid();
                     final StorageReference storageRef = storage.getReference("users").child(uid);
-                    storageRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(SignUpActivity.this, "Signed Up", Toast.LENGTH_SHORT).show();
-                                storageRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                    // store the user's profile to database and storage
-                                    @Override
-                                    public void onComplete(@NonNull Task<Uri> task) {
-                                        String imageurl = task.toString();
-                                        User user = new User();
-                                        user.setUsername(id.getText().toString());
-                                        user.setEmail(email.getText().toString());
-                                        user.setPhoneNumber(phone.getText().toString());
-                                        user.setImageurl(imageurl);
-                                        user.setUid(uid);
-                                        user.setSelfintro("No introduction");
+                    final User user = new User();
+                    if (imageUri!=null) {
+                        storageRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    storageRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                        // store the user's profile to database and storage
+                                        @Override
+                                        public void onComplete(@NonNull Task<Uri> task) {
+                                            String imageurl = task.toString();
+                                            user.setImageurl(imageurl);
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(SignUpActivity.this, "Failed to add icon", Toast.LENGTH_SHORT).show();
+                                }
 
-                                        FirebaseDatabase.getInstance().getReference().child("Users").child(uid).setValue(user);
-                                        Intent intent_main = new Intent(SignUpActivity.this, MainActivity.class);
-                                        startActivity(intent_main);
-                                    }
-                                });
-                            } else {
-                                Toast.makeText(SignUpActivity.this, "Failed to add icon", Toast.LENGTH_SHORT).show();
                             }
-                        }
-                    });
-
+                        });
+                    }
+                    // store user information to firebase
+                    user.setUsername(id.getText().toString());
+                    user.setEmail(email.getText().toString());
+                    user.setPhoneNumber(phone.getText().toString());
+                    user.setUid(uid);
+                    user.setSelfintro("No introduction");
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(uid).setValue(user);
+                    // start main activity
+                    Intent intent_main = new Intent(SignUpActivity.this, MainActivity.class);
+                    startActivity(intent_main);
                 } else {
                     task.getException().printStackTrace();
                     Toast.makeText(SignUpActivity.this, "Email address already registered.", Toast.LENGTH_SHORT).show();

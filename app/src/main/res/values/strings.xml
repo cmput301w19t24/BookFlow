@@ -82,6 +82,7 @@
     <string name="scan">scan</string>
     <string name="edit_book_success">Edit book success!</string>
     <string name="edit_book_error">Edit book failed. Try again :(</string>
+    <string name="we_need_write_permission">We need write permission to complete this actioin.</string>
 
     <!-- edit book -->
 
