@@ -44,7 +44,7 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
 
-    // for Gride: the image loading library
+    // for Glide: the image loading library
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     // for intent testing
