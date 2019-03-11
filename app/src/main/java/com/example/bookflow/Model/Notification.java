@@ -6,6 +6,7 @@ public class Notification {
     private String type;
     private String senderName;
     private String bookTitle;
+    private String transactionId;
 
     public String getSenderId() {
         return senderId;
@@ -57,7 +58,6 @@ public class Notification {
         this.transactionId = transactionId;
     }
 
-    private String transactionId;
     public Notification(){}
     public Notification(String senderId, String bookId, String type, String transactionId, String bookTitle, String senderName) {
         this.senderId = senderId;
