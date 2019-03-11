@@ -1,3 +1,8 @@
+/**
+ * author: Yuhan Ye
+ * date: 2019/3/11
+ * version: 1.0
+ */
 package com.example.bookflow;
 
 import android.content.Context;
@@ -28,7 +33,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-
+/**
+ * Search page
+ * User could search user, search book by author, title and isbn
+ * There are also filters for book status so that user could search for books available
+ */
 public class SearchActivity extends BasicActivity {
     public static final String EXTRA_MESSAGE = "com.example.bookflow.MESSAGE";
     private EditText search_Text;
@@ -92,15 +101,30 @@ public class SearchActivity extends BasicActivity {
         boolean isCheckedBorrowed = false;
     }
 
-    // User Holder class
+
+    /**
+     * User view holder class for search user
+     */
     public static class UserViewHolder extends RecyclerView.ViewHolder{
         View mView;
 
+        /**
+         * Constructor for view holder
+         * @param itemView
+         */
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
         }
 
+        /**
+         * get view element and set details
+         * @param ctx current context
+         * @param userName
+         * @param userEmail
+         * @param userPhoneNumber
+         * @param userImage
+         */
         public void setDetails(Context ctx, String userName, String userEmail, String userPhoneNumber, String userImage){
             TextView user_name = (TextView)mView.findViewById(R.id.searchDetail1);
             TextView user_email = (TextView)mView.findViewById(R.id.searchDetail2);
@@ -113,7 +137,10 @@ public class SearchActivity extends BasicActivity {
         }
     }
 
-    // search user function
+    /**
+     * search User function
+     * @param searchText input keyword of User to search
+     */
     public void searchUser(String searchText){
         Toast.makeText(SearchActivity.this, "Started Search", Toast.LENGTH_LONG).show();
         Query firebaseUserSearchQuery = mUserDatabase.child("Users").orderByChild("username").startAt(searchText).endAt(searchText + "\uf8ff");
@@ -129,10 +156,21 @@ public class SearchActivity extends BasicActivity {
                 return new UserViewHolder(view);
             }
 
+            /**
+             * bind content to view holder
+             * @param holder user view holder
+             * @param position position in the view list
+             * @param model User model
+             */
             @Override
             protected void onBindViewHolder(@NonNull UserViewHolder holder, final int position, @NonNull User model) {
                 holder.setDetails(getApplicationContext(),model.getUsername(),model.getEmail(),model.getPhoneNumber(),model.getImageurl());
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    /**
+                     * item click on method
+                     * jump to user profile page
+                     * @param v
+                     */
                     @Override
                     public void onClick(View v) {
                         String user_id = getRef(position).getKey();
@@ -146,7 +184,6 @@ public class SearchActivity extends BasicActivity {
 
         };
         recyclerView.setAdapter(firebaseUserRecyclerAdapter);
-
         try{
             firebaseBookRecyclerAdapter.stopListening();
         }catch(Exception e){
@@ -156,15 +193,29 @@ public class SearchActivity extends BasicActivity {
         firebaseUserRecyclerAdapter.startListening();
     }
 
-    // Book Holder class
+    /**
+     * Book view holder class
+      */
     public static class BookViewHolder extends RecyclerView.ViewHolder{
         View mView;
 
+        /**
+         * basic constructor
+         * @param itemView
+         */
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
         }
 
+        /**
+         * get view element and set details
+         * @param ctx current context
+         * @param isbn
+         * @param title
+         * @param author
+         * @param bookImage
+         */
         public void setDetails(Context ctx, String isbn, String title, String author, String bookImage){
             TextView book_isbn = (TextView)mView.findViewById(R.id.searchDetail1);
             TextView book_title = (TextView)mView.findViewById(R.id.searchDetail2);
@@ -177,6 +228,11 @@ public class SearchActivity extends BasicActivity {
         }
     }
 
+    /**
+     * search book function
+     * @param searchText keyword input of User to search
+     * @param constriant option constraint for search
+     */
     public void searchBook(String searchText,String constriant){
         Toast.makeText(SearchActivity.this, "Started Search", Toast.LENGTH_LONG).show();
         Query firebaseSearchQuery = mUserDatabase.child("Books").orderByChild(constriant).startAt(searchText).endAt(searchText + "\uf8ff");
@@ -191,10 +247,21 @@ public class SearchActivity extends BasicActivity {
                         return new BookViewHolder(view);
                     }
 
+                    /**
+                     * bind content to book view holder
+                     * @param holder book view holder
+                     * @param position position in view list
+                     * @param model book model class
+                     */
                     @Override
                     protected void onBindViewHolder(@NonNull BookViewHolder holder, final int position, @NonNull Book model) {
                         holder.setDetails(getApplicationContext(),model.getIsbn(),model.getTitle(),model.getAuthor(),model.getPhotoUri());
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            /**
+                             * item click on method
+                             * jump to book detail page
+                             * @param v
+                             */
                             @Override
                             public void onClick(View v) {
                                 String book_id = getRef(position).getKey();
@@ -215,6 +282,11 @@ public class SearchActivity extends BasicActivity {
         firebaseBookRecyclerAdapter.startListening();
     }
 
+    /**
+     * search button "GO" click on method
+     * get user input and filter options
+     * @param v
+     */
     public void search(View v){
         String searchOption = spinner.getSelectedItem().toString();
         String searchText = search_Text.getText().toString();
