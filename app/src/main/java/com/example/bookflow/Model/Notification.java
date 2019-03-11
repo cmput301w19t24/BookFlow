@@ -1,11 +1,17 @@
 package com.example.bookflow.Model;
-
+/**
+ * Notification
+ * This class models the notifications
+ * sent between users whenever a book is
+ * requested, or a book is accepted
+ */
 public class Notification {
     private String senderId;
     private String bookId;
     private String type;
     private String senderName;
     private String bookTitle;
+    private String transactionId;
 
     public String getSenderId() {
         return senderId;
@@ -57,7 +63,6 @@ public class Notification {
         this.transactionId = transactionId;
     }
 
-    private String transactionId;
     public Notification(){}
     public Notification(String senderId, String bookId, String type, String transactionId, String bookTitle, String senderName) {
         this.senderId = senderId;

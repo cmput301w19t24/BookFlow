@@ -29,6 +29,10 @@ public class LoginActivity extends BasicActivity {
     private SharedPreferences.Editor loginPrefsEditor;
     private Boolean saveLogin;
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,15 +48,16 @@ public class LoginActivity extends BasicActivity {
         loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
         loginPrefsEditor = loginPreferences.edit();
 
+        // check if remembered from last time
         checkRemem();
-
+        // if login button is clicked
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loggedIn();
             }
         });
-
+        // if sign up button is clicked
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,8 +67,14 @@ public class LoginActivity extends BasicActivity {
 
     }
 
+    /**
+     * check if email and password is remembered from last time
+     */
     private void checkRemem() {
         saveLogin = loginPreferences.getBoolean("saveLogin", false);
+        /**
+         * if yes, set texts
+         */
         if (saveLogin == true) {
             email.setText(loginPreferences.getString("email", ""));
             password.setText(loginPreferences.getString("password", ""));
@@ -71,6 +82,9 @@ public class LoginActivity extends BasicActivity {
         }
     }
 
+    /**
+     * login method
+     */
     private void loggedIn() {
         // regex
         boolean valid = true;

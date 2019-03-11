@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
 
 public class SignUpActivity extends BasicActivity {
 
-
     private EditText id, email, password, repassword,phone;
     private ImageView profile;
     private Button btn;
@@ -35,6 +34,10 @@ public class SignUpActivity extends BasicActivity {
     private FirebaseAuth mAuth;
     private FirebaseStorage storage;
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +55,10 @@ public class SignUpActivity extends BasicActivity {
         });
     }
 
+    /**
+     * Sign up method, when "sign up" button is clicked
+     * @param v
+     */
     public void signUp(View v) {
         id = findViewById(R.id.id);
         password = findViewById(R.id.password);
@@ -61,13 +68,14 @@ public class SignUpActivity extends BasicActivity {
         btn = findViewById(R.id.signup);
 
         boolean valid = true;
-//        regex
-        String usernamePat = "^([a-z0-9]{3,20})$";
+        // regex username
+        String usernamePat = "^([a-z0-9A-Z]{3,20})$";
         if (!Pattern.matches(usernamePat, id.getText().toString())) {
             id.setError("username should more 6 and less than 20 characters with only letters or numbers");
             id = null;
             valid = false;
         }
+        // regex password
         String passwordPat = "^(.{6,20})$";
         if (!password.getText().toString().equals(repassword.getText().toString())) {
             password.setError("Password not match!");
@@ -87,12 +95,14 @@ public class SignUpActivity extends BasicActivity {
                 valid = false;
             }
         }
+        // regex email
         String emailPat = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
         if (!Pattern.matches(emailPat, email.getText().toString())) {
             email.setError("Invalid email address");
             email = null;
             valid = false;
         }
+        // regex phone
         String phonePat = "[0-9]+";
         if (!Pattern.matches(phonePat, phone.getText().toString())) {
             phone.setError("Invalid phone number");
@@ -102,46 +112,48 @@ public class SignUpActivity extends BasicActivity {
 
         if (!valid)
             return;
-        // if the user did not upload an icon
-        if (imageUri==null) {
-            Toast.makeText(SignUpActivity.this, "Please upload an icon", Toast.LENGTH_SHORT).show();
-            return;
-        }
+
+        // sign up to firebase
         mAuth.createUserWithEmailAndPassword(email.getText().toString(),password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    // pop up message saying "signed up"
+                    Toast.makeText(SignUpActivity.this, "Signed Up", Toast.LENGTH_SHORT).show();
+                    // get necessary info
                     final String uid = mAuth.getCurrentUser().getUid();
                     final StorageReference storageRef = storage.getReference("users").child(uid);
-                    storageRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(SignUpActivity.this, "Signed Up", Toast.LENGTH_SHORT).show();
-                                storageRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                    // store the user's profile to database and storage
-                                    @Override
-                                    public void onComplete(@NonNull Task<Uri> task) {
-                                        String imageurl = task.toString();
-                                        User user = new User();
-                                        user.setUsername(id.getText().toString());
-                                        user.setEmail(email.getText().toString());
-                                        user.setPhoneNumber(phone.getText().toString());
-                                        user.setImageurl(imageurl);
-                                        user.setUid(uid);
-                                        user.setSelfintro("No introduction");
+                    final User user = new User();
 
-                                        FirebaseDatabase.getInstance().getReference().child("Users").child(uid).setValue(user);
-                                        Intent intent_main = new Intent(SignUpActivity.this, MainActivity.class);
-                                        startActivity(intent_main);
-                                    }
-                                });
-                            } else {
-                                Toast.makeText(SignUpActivity.this, "Failed to add icon", Toast.LENGTH_SHORT).show();
+                    // add user icon
+                    if (imageUri!=null) {
+                        storageRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    storageRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                        // store the user's profile to database and storage
+                                        @Override
+                                        public void onComplete(@NonNull Task<Uri> task) {
+                                            String imageurl = task.toString();
+                                            user.setImageurl(imageurl);
+                                        }                                    });
+                                } else {
+                                    Toast.makeText(SignUpActivity.this, "Failed to add icon", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
-                    });
-
+                        });
+                    }
+                    // store user information to firebase
+                    user.setUsername(id.getText().toString());
+                    user.setEmail(email.getText().toString());
+                    user.setPhoneNumber(phone.getText().toString());
+                    user.setUid(uid);
+                    user.setSelfIntro("No introduction");
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(uid).setValue(user);
+                    // start main activity
+                    Intent intent_main = new Intent(SignUpActivity.this, MainActivity.class);
+                    startActivity(intent_main);
                 } else {
                     task.getException().printStackTrace();
                     Toast.makeText(SignUpActivity.this, "Email address already registered.", Toast.LENGTH_SHORT).show();
@@ -150,12 +162,21 @@ public class SignUpActivity extends BasicActivity {
         });
     }
 
+    /**
+     * upload image from the album
+     */
     private void upload() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
     }
 
+    /**
+     * get image data
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == PICK_FROM_ALBUM && resultCode == RESULT_OK) {

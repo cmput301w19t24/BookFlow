@@ -21,19 +21,19 @@ import org.w3c.dom.Text;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 
-public class MainActivityTest extends ActivityTestRule<MainActivity> {
+public class BorrowListActivityTest extends ActivityTestRule<BorrowListActivity> {
 
     private Solo solo;
     private FirebaseAuth mAuth;
 
 
-    public MainActivityTest(){
-        super(MainActivity.class, false, true);
+    public BorrowListActivityTest(){
+        super(BorrowListActivity.class, false, true);
     }
 
     @Rule
-    public ActivityTestRule<MainActivity> rule =
-            new ActivityTestRule<>(MainActivity.class, false, true);
+    public ActivityTestRule<BorrowListActivity> rule =
+            new ActivityTestRule<>(BorrowListActivity.class, false, true);
     @Before
     public void setUp() throws Exception{
         solo = new Solo(getInstrumentation(), rule.getActivity());
@@ -47,19 +47,19 @@ public class MainActivityTest extends ActivityTestRule<MainActivity> {
 
     @Test
     public void clickMyBorrows(){
-        MainActivity activity = (MainActivity) solo.getCurrentActivity();
-
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        TextView myBorrows = (TextView)solo.getView("title_myborrow");
-        solo.clickOnView(myBorrows);
+        BorrowListActivity activity = (BorrowListActivity) solo.getCurrentActivity();
+        // see my borrows listview
         solo.assertCurrentActivity("Wrong Activity", BorrowListActivity.class);
+        TextView myBooks = (TextView)solo.getView("title_mybook");
+        solo.clickOnView(myBooks);
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
     }
 
     @Test
     public void clickItem(){
-        MainActivity activity = (MainActivity) solo.getCurrentActivity();
+        BorrowListActivity activity = (BorrowListActivity) solo.getCurrentActivity();
 
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", BorrowListActivity.class);
         solo.clickInList(0);
         solo.assertCurrentActivity("Wrong Activity", BookDetailActivity.class);
     }

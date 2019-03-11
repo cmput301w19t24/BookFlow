@@ -2,20 +2,16 @@ package com.example.bookflow;
 
 import android.app.Activity;
 import android.support.test.rule.ActivityTestRule;
-import android.util.Log;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
-
-import com.google.firebase.auth.FirebaseAuth;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
+import java.util.UUID;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 
@@ -40,40 +36,47 @@ public class SignUpActivityTest extends ActivityTestRule<SignUpActivity> {
     }
 
     @Test
-    public void clickSignup(){
-        LoginActivity activity = (LoginActivity) solo.getCurrentActivity();
+    public void clickSignUpFail(){
+        SignUpActivity activity = (SignUpActivity) solo.getCurrentActivity();
+        solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
 
-        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
-        TextView signup = (TextView)solo.getView("signup");
+        // generate random email address
+        String uuid = UUID.randomUUID().toString();
+        String generatedString = uuid.replace("-", "").substring(0,8);
+
+        // incomplete information filled
+        solo.enterText((EditText) solo.getView(R.id.email), generatedString+"@ualberta.ca");
+        solo.enterText((EditText) solo.getView(R.id.password), "123456");
+        solo.enterText((EditText) solo.getView(R.id.repassword), "1345690");
+        Button signup = (Button)solo.getView("signup");
         solo.clickOnView(signup);
+
+        // shouldn't successfully sign up, and should remain in this page
         solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
     }
 
     @Test
-    public void clickLogin(){
-        LoginActivity activity = (LoginActivity) solo.getCurrentActivity();
+    public void clickSignUp(){
+        SignUpActivity activity = (SignUpActivity) solo.getCurrentActivity();
+        solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
 
-        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
-        solo.clearEditText((EditText) solo.getView(R.id.email));
-        solo.clearEditText((EditText) solo.getView(R.id.password));
-        solo.enterText((EditText) solo.getView(R.id.email), "shengyao@ualberta.ca");
-        solo.enterText((EditText) solo.getView(R.id.password), "123456");
-        Button loginbtn = (Button)solo.getView("login");
-        solo.clickOnView(loginbtn);
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-    }
+        // generate email address
+        String uuid = UUID.randomUUID().toString();
+        String generatedString = uuid.replace("-", "").substring(0,6);
 
-    @Test
-    public void rememberLogin(){
-        LoginActivity activity = (LoginActivity) solo.getCurrentActivity();
-        solo.clearEditText((EditText) solo.getView(R.id.email));
-        solo.clearEditText((EditText) solo.getView(R.id.password));
-        solo.enterText((EditText) solo.getView(R.id.email), "shengyao@ualberta.ca");
+        // fill in information
+        solo.enterText((EditText) solo.getView(R.id.email), generatedString+"@ualberta.ca");
         solo.enterText((EditText) solo.getView(R.id.password), "123456");
-        Button loginbtn = (Button)solo.getView("login");
-        solo.clickOnView(loginbtn);
-        CheckBox checkBox = (CheckBox) solo.getView(R.id.checkBox);
-        solo.clickOnView(checkBox);
+        solo.enterText((EditText) solo.getView(R.id.repassword), "123456");
+        solo.enterText((EditText) solo.getView(R.id.id), "testintent");
+        solo.enterText((EditText) solo.getView(R.id.phone), "780456890");
+
+        // click on sign up button
+        Button signup = (Button)solo.getView("signup");
+        solo.clickOnView(signup);
+        solo.waitForText("Signed Up",1,10000);
+
+        // successfully signed up
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
     }
 

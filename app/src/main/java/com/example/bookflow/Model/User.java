@@ -16,13 +16,13 @@ public class User implements Owner,Borrower{
     private String email;
     private String phoneNumber;
     private String imageurl; // user icon
-    private String selfintro;
+    private String selfIntro;
 
-    public String getSelfintro() {
-        return selfintro;
+    public String getSelfIntro() {
+        return selfIntro;
     }
-    public void setSelfintro(String selfintro) {
-        this.selfintro = selfintro;
+    public void setSelfIntro(String selfIntro) {
+        this.selfIntro = selfIntro;
     }
 
     private ArrayList<Book> ownedBooks = new ArrayList<Book>();

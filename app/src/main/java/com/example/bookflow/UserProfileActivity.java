@@ -68,7 +68,7 @@ public class UserProfileActivity extends BasicActivity {
     protected void onStart() {
         super.onStart();
         reviewListView = (ListView) findViewById(R.id.reviewList);
-//        offerListView = (ListView) findViewById(R.id.offerList);
+        offerListView = (ListView) findViewById(R.id.offerList);
         requestListView = (ListView) findViewById(R.id.requestList);
         dbRef = FirebaseDatabase.getInstance().getReference();
 
@@ -85,6 +85,11 @@ public class UserProfileActivity extends BasicActivity {
             uid = user.getUid();
         }
 
+//        try {
+//            wait(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         setUpImageView();
         setUpBasicInfo();
         setUpReviewList();
@@ -119,7 +124,9 @@ public class UserProfileActivity extends BasicActivity {
         reviewList.addReview(review);
     }
 
-
+    /**
+     * setup Username, user self intro, user email and user phone.
+     */
     private void setUpBasicInfo() {
         // get user information from the database
         ValueEventListener userInfoListener = new ValueEventListener() {
@@ -144,6 +151,9 @@ public class UserProfileActivity extends BasicActivity {
         dbRef.child("Users").addListenerForSingleValueEvent(userInfoListener);
     }
 
+    /**
+     * setup the list of all reviews
+     */
     private void setUpReviewList() {
         // get all reviews from database
         ValueEventListener reviewsListener = new ValueEventListener() {
@@ -171,14 +181,27 @@ public class UserProfileActivity extends BasicActivity {
         dbRef.child("Reviews").addListenerForSingleValueEvent(reviewsListener);
     }
 
+    /**
+     * setup the list of all books offered
+     */
     private void setUpOfferList() {
             ;
     }
 
+    /**
+     * setup the list of all books requested
+     */
     private void setUpRequestList() {
         ;
     }
 
+    /**
+     * display informations on textview
+     * @param name username
+     * @param intro self intro
+     * @param email user email
+     * @param phone user phone number
+     */
     private void setupTextView(String name, String intro, String email, String phone) {
         TextView textView = findViewById(R.id.profileName);
         textView.setText(name);
@@ -193,9 +216,18 @@ public class UserProfileActivity extends BasicActivity {
         textView.setText(phone);
     }
 
-    private void setUpImageView() {
+    /**
+     * download image from firebase storage and load it into the image view
+     */
+    public void setUpImageView() {
         // download user image from storage and update
-        StorageReference storageRef = storage.getReference().child("users").child(uid);
+        StorageReference storageRef;
+        try {
+            storageRef = storage.getReference().child("users").child(uid);
+        } catch (Exception e) {
+            return ;
+        }
+
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -204,7 +236,6 @@ public class UserProfileActivity extends BasicActivity {
             }
         });
     }
-
 
     /**
      * This is onClick method for button "edit profile"
@@ -215,6 +246,10 @@ public class UserProfileActivity extends BasicActivity {
         startActivity(intent);
     }
 
+    /**
+     * onClick method of request button
+     * @param view button view
+     */
     public void switchRequest(View view){
         Button button = findViewById(R.id.review_switch);
         button.setBackgroundResource(R.drawable.normal_button);
@@ -236,6 +271,10 @@ public class UserProfileActivity extends BasicActivity {
         setUpRequestList();
     }
 
+    /**
+     * onClick method of Review button
+     * @param view button view
+     */
     public void switchReview(View view){
         Button button = findViewById(R.id.review_switch);
         button.setBackgroundResource(R.drawable.red_button);
@@ -257,6 +296,10 @@ public class UserProfileActivity extends BasicActivity {
         setUpReviewList();
     }
 
+    /**
+     * onClick method of Offer button
+     * @param view button view
+     */
     public void switchOffer(View view){
         Button button = findViewById(R.id.review_switch);
         button.setBackgroundResource(R.drawable.normal_button);

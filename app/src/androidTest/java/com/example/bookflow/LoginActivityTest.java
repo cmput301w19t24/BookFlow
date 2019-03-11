@@ -22,8 +22,6 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 public class LoginActivityTest extends ActivityTestRule<LoginActivity> {
 
     private Solo solo;
-    private FirebaseAuth mAuth;
-
 
     public LoginActivityTest(){
         super(LoginActivity.class, false, true);
@@ -35,8 +33,6 @@ public class LoginActivityTest extends ActivityTestRule<LoginActivity> {
     @Before
     public void setUp() throws Exception{
         solo = new Solo(getInstrumentation(), rule.getActivity());
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword("shengyao@ualberta.ca", "123456");
     }
     @Test
     public void start() throws Exception{
@@ -64,7 +60,23 @@ public class LoginActivityTest extends ActivityTestRule<LoginActivity> {
         solo.enterText((EditText) solo.getView(R.id.password), "123456");
         Button loginbtn = (Button)solo.getView("login");
         solo.clickOnView(loginbtn);
+        solo.waitForText("Login Successfully",1,10000);
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+    }
+
+    @Test
+    public void clickLoginFail(){
+        LoginActivity activity = (LoginActivity) solo.getCurrentActivity();
+
+        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
+        solo.clearEditText((EditText) solo.getView(R.id.email));
+        solo.clearEditText((EditText) solo.getView(R.id.password));
+        solo.enterText((EditText) solo.getView(R.id.email), "shengyao@ualberta.ca");
+        solo.enterText((EditText) solo.getView(R.id.password), "1234679");
+        Button loginbtn = (Button)solo.getView("login");
+        solo.clickOnView(loginbtn);
+        solo.waitForText("Login Failed",1,10000);
+        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
     }
 
     @Test

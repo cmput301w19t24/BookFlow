@@ -1,7 +1,12 @@
 package com.example.bookflow.Model;
 
 import android.location.Location;
-
+/**
+ * Request
+ * This class models a request between the
+ * owner of a book and a potential borrower
+ * of a book
+ */
 public class Request {
     private String ownerId;
     private String borrowerId;
