@@ -18,6 +18,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+/**
+ * A utility class that encapsulates the interaction with
+ * the Firebase Storage and Firebase Realtime Database.
+ *
+ * This is a singleton class.
+ */
 public class FirebaseIO {
 
     private static final String TAG = "FirebaseIO";
@@ -34,6 +40,10 @@ public class FirebaseIO {
     private DatabaseReference mBookDatabaseReference;
 
 
+    /**
+     * Get the unique instance of the FirebaseIO object.
+     * @return
+     */
     public static FirebaseIO getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new FirebaseIO();
@@ -43,7 +53,8 @@ public class FirebaseIO {
     }
 
     /**
-     * Initialize Firebase
+     * Initialize Firebase storage and database, setup proper
+     * references.
      */
     private FirebaseIO() {
 
@@ -55,7 +66,8 @@ public class FirebaseIO {
     }
 
     /**
-     * get book async
+     * get book async. User needs to provide a ViwEventListener that handles
+     * logic when book is available.
      * @param bookid
      * @param listener
      */
@@ -126,18 +138,4 @@ public class FirebaseIO {
                     .addOnCompleteListener(listener);
         }
     }
-
-    public Bitmap getPhoto(Uri uri) {
-        return null;
-    }
-
-    public Bitmap getPhoto(Book book) {
-        return null;
-    }
-
-    public Bitmap getPhoto(User user) {
-        return null;
-    }
-
-
 }
