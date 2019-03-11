@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -21,11 +22,12 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 @RunWith(AndroidJUnit4.class)
 
 public class BasicActivityTest  extends ActivityTestRule<BasicActivity> {
-
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private Solo solo;
 
     public BasicActivityTest() {
         super(BasicActivity.class);
+        mAuth.signInWithEmailAndPassword("jinming4@ualberta.ca","112233");
     }
 
 
@@ -43,12 +45,12 @@ public class BasicActivityTest  extends ActivityTestRule<BasicActivity> {
         Activity activity = rule.getActivity();
     }
 
-//    @Test
-//    public void checkMainPage(){
-//        solo.assertCurrentActivity("Wrong Activity", BasicActivity.class);
-//        solo.clickOnView(solo.getView(R.id.main_page_button));
-//        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-//    }
+    @Test
+    public void checkMainPage(){
+        solo.assertCurrentActivity("Wrong Activity", BasicActivity.class);
+        solo.clickOnView(solo.getView(R.id.main_page_button));
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+    }
 
     @Test
     public void checkSearchPage(){
