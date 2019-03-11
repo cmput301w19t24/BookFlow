@@ -33,7 +33,8 @@
             android:label="ScanActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".BookDetailActivity" />
-        <activity android:name=".AddBookActivity" />
+        <activity android:name=".AddBookActivity"
+            android:exported="true" />
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar"
