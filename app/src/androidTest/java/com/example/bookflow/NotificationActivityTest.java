@@ -16,11 +16,11 @@ import org.junit.Test;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 
-public class RequestActivityTest extends ActivityTestRule<SearchActivity> {
+public class NotificationActivityTest extends ActivityTestRule<SearchActivity> {
     private Solo solo;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    public RequestActivityTest() {
+    public NotificationActivityTest() {
         super(SearchActivity.class);
         mAuth.signInWithEmailAndPassword("shengyao@ualberta.ca", "123456");
     }
@@ -39,7 +39,7 @@ public class RequestActivityTest extends ActivityTestRule<SearchActivity> {
         Activity activity = rule.getActivity();
     }
     @Test
-    public void searchAndRequestBook(){
+    public void sendRequestCheckNotification(){
         solo.assertCurrentActivity("Wrong Activity", SearchActivity.class);
         View view1 = solo.getView(Spinner.class, 0);
         solo.clickOnView(view1);
@@ -53,8 +53,12 @@ public class RequestActivityTest extends ActivityTestRule<SearchActivity> {
         solo.clickInRecyclerView(0);
         solo.assertCurrentActivity("Wrong Activity", BookDetailActivity.class);
         solo.clickOnView(solo.getView(R.id.requestButton));
+        // switch accounts
+        mAuth.signInWithEmailAndPassword("homer@gmail.com", "password");
+        solo.clickOnView(solo.getView(R.id.notification_button));
+        solo.assertCurrentActivity("Wrong Activity", NotificationActivity.class);
+        solo.waitForText("shengyao");
     }
-
     @After
     public void tearDown() throws Exception{
         solo.finishOpenedActivities();
