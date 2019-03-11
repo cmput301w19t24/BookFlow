@@ -47,7 +47,7 @@ import java.util.UUID;
  */
 public class UserProfileActivity extends BasicActivity {
     private DatabaseReference dbRef;
-    private String email, phoneNum, username, selfIntro, uid, photo;
+    private String email, phoneNum, username, selfIntro, uid;
     private ReviewList reviewList = new ReviewList();
     private ListView reviewListView, requestListView, offerListView;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -140,7 +140,7 @@ public class UserProfileActivity extends BasicActivity {
                 selfIntro = targetUser.child("selfIntro").getValue().toString();
 
 
-                setupTextView(username, selfIntro, email, phoneNum);
+                setUpTextView(username, selfIntro, email, phoneNum);
             }
 
             @Override
@@ -202,7 +202,7 @@ public class UserProfileActivity extends BasicActivity {
      * @param email user email
      * @param phone user phone number
      */
-    private void setupTextView(String name, String intro, String email, String phone) {
+    private void setUpTextView(String name, String intro, String email, String phone) {
         TextView textView = findViewById(R.id.profileName);
         textView.setText(name);
 
@@ -219,7 +219,7 @@ public class UserProfileActivity extends BasicActivity {
     /**
      * download image from firebase storage and load it into the image view
      */
-    public void setUpImageView() {
+    private void setUpImageView() {
         // download user image from storage and update
         StorageReference storageRef;
         try {

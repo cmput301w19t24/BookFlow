@@ -4,6 +4,7 @@
  */
 package com.example.bookflow.Model;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -13,6 +14,7 @@ public class Review {
     private User reviewer;
     private User reviewee;
     private String comments;
+    private String date;
     private int rating;
     private UUID uuid;
 
@@ -30,6 +32,10 @@ public class Review {
 
     public User getReviewee() {
         return reviewee;
+    }
+
+    public void setDate(Date date) {
+        this.date = date.toString();
     }
 
     public UUID getUUID() {
