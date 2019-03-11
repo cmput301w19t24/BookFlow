@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.bookflow.R;
 
@@ -89,6 +90,8 @@ public class PhotoUtility {
             tempFile = File.createTempFile("temp", ".jpg", tempDir);
         } catch (IOException e) {
             e.printStackTrace();
+            Toast.makeText(act, act.getString(R.string.we_need_write_permission), Toast.LENGTH_LONG)
+                    .show();
             return null;
         }
 
