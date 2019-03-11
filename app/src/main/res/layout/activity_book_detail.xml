@@ -16,7 +16,7 @@
         android:id="@+id/isbn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="weloifjwoeifj"
+        android:text="5462342346662346"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +57,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/isbn" />
+        app:layout_constraintTop_toBottomOf="@+id/book_status" />
 
     <ImageView
         android:id="@+id/bookImage"
@@ -85,18 +85,43 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!--<ImageButton-->
-        <!--android:id="@+id/edit_book_button"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginEnd="16dp"-->
+    <TextView
+        android:id="@+id/book_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accepted"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/isbn" />
 
-        <!--android:backgroundTint="@android:color/white"-->
-        <!--app:layout_constraintBottom_toTopOf="@+id/bookImage"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent"-->
-        <!--app:srcCompat="@drawable/ic_baseline_edit_24px" />-->
+    <ImageButton
+        android:id="@+id/edit_book_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        android:onClick="edit"
+        android:backgroundTint="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/bookImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_edit_24px" />
 
+    <Button
+        android:id="@+id/view_requests_button"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="View Requests"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/bookImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </android.support.constraint.ConstraintLayout>
