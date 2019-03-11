@@ -216,6 +216,15 @@ public class UserProfileActivity extends BasicActivity {
     }
 
     public void switchRequest(View view){
+        Button button = findViewById(R.id.review_switch);
+        button.setBackgroundResource(R.drawable.normal_button);
+
+        button = findViewById(R.id.offer_switch);
+        button.setBackgroundResource(R.drawable.normal_button);
+
+        button = findViewById(R.id.request_switch);
+        button.setBackgroundResource(R.drawable.red_button);
+
         LinearLayout layout = findViewById(R.id.reviewsLayout);
         layout.setVisibility(LinearLayout.GONE);
 
@@ -228,6 +237,15 @@ public class UserProfileActivity extends BasicActivity {
     }
 
     public void switchReview(View view){
+        Button button = findViewById(R.id.review_switch);
+        button.setBackgroundResource(R.drawable.red_button);
+
+        button = findViewById(R.id.offer_switch);
+        button.setBackgroundResource(R.drawable.normal_button);
+
+        button = findViewById(R.id.request_switch);
+        button.setBackgroundResource(R.drawable.normal_button);
+
         LinearLayout layout = findViewById(R.id.reviewsLayout);
         layout.setVisibility(LinearLayout.VISIBLE);
 
@@ -240,6 +258,15 @@ public class UserProfileActivity extends BasicActivity {
     }
 
     public void switchOffer(View view){
+        Button button = findViewById(R.id.review_switch);
+        button.setBackgroundResource(R.drawable.normal_button);
+
+        button = findViewById(R.id.offer_switch);
+        button.setBackgroundResource(R.drawable.red_button);
+
+        button = findViewById(R.id.request_switch);
+        button.setBackgroundResource(R.drawable.normal_button);
+
         LinearLayout layout = findViewById(R.id.reviewsLayout);
         layout.setVisibility(LinearLayout.GONE);
 
