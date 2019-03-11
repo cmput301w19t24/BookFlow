@@ -56,6 +56,7 @@ public class UserProfileActivityTest extends ActivityTestRule<UserProfileActivit
 
     @Test
     public void checkProfileEdit() {
+        /* update the user information and see if they are changed */
         onView(withId(R.id.editPersonInfo)).perform(click());
 
         onView(withId(R.id.edit_username)).perform(

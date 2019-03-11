@@ -21,8 +21,8 @@ public class User implements Owner,Borrower{
     public String getSelfintro() {
         return selfIntro;
     }
-    public void setSelfintro(String selfintro) {
-        this.selfIntro = selfintro;
+    public void setSelfintro(String selfIntro) {
+        this.selfIntro = selfIntro;
     }
 
     private ArrayList<Book> ownedBooks = new ArrayList<Book>();
