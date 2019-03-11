@@ -31,15 +31,15 @@ public class UserUnitTest {
     }
 
 
-    @Test
-    public void testDeleteBook(){
-        User user = new User();
-        Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
-        user.addBook(book);
-        assertEquals(user.getOwnedBooks().get(0),book);
-        user.deleteBook(book);
-        assertTrue(user.getOwnedBooks().size() == 0);
-    }
+//    @Test
+//    public void testDeleteBook(){
+//        User user = new User();
+//        Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
+//        user.addBook(book);
+//        assertEquals(user.getOwnedBooks().get(0),book);
+//        user.deleteBook(book);
+//        assertTrue(user.getOwnedBooks().size() == 0);
+//    }
 
     @Test
     public void testViewRequest(){
@@ -48,13 +48,13 @@ public class UserUnitTest {
 
     //todo lsy
 
-    @Test
-    public void testReceiveReturnedBook() {
-        Owner user = new User();
-        Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
-        user.receiveReturnedBook(book);
-        assertEquals(book.getStatus(), "AVAILABLE");
-    }
+//    @Test
+//    public void testReceiveReturnedBook() {
+//        Owner user = new User();
+//        Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
+//        user.receiveReturnedBook(book);
+//        assertEquals(book.getStatus(), "AVAILABLE");
+//    }
     /*
     @Test
     public void testAcceptRequest() {
