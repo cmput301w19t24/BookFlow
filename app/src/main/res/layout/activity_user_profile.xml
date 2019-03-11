@@ -211,7 +211,9 @@
                 android:id="@+id/fixOffers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/fix_offers" />
+                android:text="@string/fix_offers"
+                android:textColor="#000000"
+                android:textSize="18sp" />
 
             <ListView
                 android:id="@+id/offerList"
@@ -230,7 +232,9 @@
                 android:id="@+id/fixRequests"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/fix_requests" />
+                android:text="@string/fix_requests"
+                android:textColor="#000000"
+                android:textSize="18sp" />
 
             <ListView
                 android:id="@+id/requestList"

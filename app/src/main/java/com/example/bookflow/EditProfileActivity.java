@@ -39,6 +39,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private DatabaseReference dbRef;
     private static final int PICK_FROM_ALBUM = 10;
+    private boolean iconChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +122,7 @@ public class EditProfileActivity extends AppCompatActivity {
         if (requestCode == PICK_FROM_ALBUM && resultCode == RESULT_OK) {
             imageUri = data.getData();
             Glide.with(EditProfileActivity.this).load(imageUri).into(userIcon);
+            iconChanged = true;
         }
     }
 
@@ -160,7 +162,10 @@ public class EditProfileActivity extends AppCompatActivity {
      */
     public void confirm_button(View view) {
 
-        updateStorage();
+        if (iconChanged) {
+            updateStorage();
+        }
+
 
         String usernameStr = username.getText().toString();
         String introStr = selfIntro.getText().toString();
