@@ -1,3 +1,13 @@
+/**
+ * SignUpActivityTest Class
+ *
+ * Copyright 2019 Shengyao Lu
+ *
+ * @author shengyao
+ * @version 1.0
+ * @created 2019-03-01
+ */
+
 package com.example.bookflow;
 
 import android.app.Activity;

@@ -1,3 +1,12 @@
+/**
+ * MainActivity Class
+ *
+ * Copyright 2019 Shengyao Lu
+ *
+ * @author shengyao
+ * @version 1.0
+ * @created 2019-03-01
+ */
 package com.example.bookflow;
 import com.bumptech.glide.Glide;
 import com.example.bookflow.Model.Book;
@@ -25,6 +34,9 @@ import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 
+/**
+ * Main Activity Class
+ */
 public class MainActivity extends BasicActivity {
 
     private static ListView myBookList;
@@ -58,6 +70,10 @@ public class MainActivity extends BasicActivity {
         }
     }
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +88,9 @@ public class MainActivity extends BasicActivity {
         bookList();
     }
 
+    /**
+     * view book list method
+     */
     private void bookList() {
         myBookList = (ListView) findViewById(R.id.myBookList);
         // add user's book to adapter

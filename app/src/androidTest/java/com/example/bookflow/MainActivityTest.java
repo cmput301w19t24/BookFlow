@@ -1,14 +1,18 @@
+/**
+ * MainActivityTest Class
+ *
+ * Copyright 2019 Shengyao Lu
+ *
+ * @author shengyao
+ * @version 1.0
+ * @created 2019-03-01
+ */
+
 package com.example.bookflow;
 
 import android.app.Activity;
 import android.support.test.rule.ActivityTestRule;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.robotium.solo.Solo;
@@ -17,7 +21,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.w3c.dom.Text;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 
