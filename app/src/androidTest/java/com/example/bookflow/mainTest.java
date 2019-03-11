@@ -1,16 +1,17 @@
 package com.example.bookflow;
 
+import android.support.test.rule.ActivityTestRule;
+
 import org.junit.Rule;
 
-import androidx.test.espresso.intent.rule.IntentsTestRule;
 
 public class mainTest {
 
 //    public mainTest() {}
 
     @Rule
-    public IntentsTestRule<MainActivity> intentsTestRule =
-            new IntentsTestRule<>(MainActivity.class);
+    public ActivityTestRule<MainActivity> intentsTestRule =
+            new ActivityTestRule<>(MainActivity.class);
 
 
 

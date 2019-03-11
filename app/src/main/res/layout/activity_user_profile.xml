@@ -206,15 +206,6 @@
             android:orientation="vertical"
             android:visibility="visible">
 
-            <TextView
-                android:id="@+id/fixReviews"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="@string/review"
-                android:textColor="#000000"
-                android:textSize="18sp" />
-
             <ListView
                 android:id="@+id/reviewList"
                 android:layout_width="match_parent"
@@ -230,15 +221,6 @@
             android:orientation="vertical"
             android:visibility="visible">
 
-            <TextView
-                android:id="@+id/fixOffers"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="@string/fix_offers"
-                android:textColor="#000000"
-                android:textSize="18sp" />
-
             <ListView
                 android:id="@+id/offerList"
                 android:layout_width="match_parent"
@@ -252,15 +234,6 @@
             android:background="@drawable/triangle"
             android:orientation="vertical"
             android:visibility="visible">
-
-            <TextView
-                android:id="@+id/fixRequests"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="@string/fix_requests"
-                android:textColor="#000000"
-                android:textSize="18sp" />
 
             <ListView
                 android:id="@+id/requestList"
