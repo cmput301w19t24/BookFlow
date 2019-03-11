@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
 
 public class SignUpActivity extends BasicActivity {
 
-
     private EditText id, email, password, repassword,phone;
     private ImageView profile;
     private Button btn;
@@ -35,6 +34,10 @@ public class SignUpActivity extends BasicActivity {
     private FirebaseAuth mAuth;
     private FirebaseStorage storage;
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +55,10 @@ public class SignUpActivity extends BasicActivity {
         });
     }
 
+    /**
+     * Sign up method, when "sign up" button is clicked
+     * @param v
+     */
     public void signUp(View v) {
         id = findViewById(R.id.id);
         password = findViewById(R.id.password);
@@ -61,13 +68,14 @@ public class SignUpActivity extends BasicActivity {
         btn = findViewById(R.id.signup);
 
         boolean valid = true;
-//        regex
+        // regex username
         String usernamePat = "^([a-z0-9A-Z]{3,20})$";
         if (!Pattern.matches(usernamePat, id.getText().toString())) {
             id.setError("username should more 6 and less than 20 characters with only letters or numbers");
             id = null;
             valid = false;
         }
+        // regex password
         String passwordPat = "^(.{6,20})$";
         if (!password.getText().toString().equals(repassword.getText().toString())) {
             password.setError("Password not match!");
@@ -87,12 +95,14 @@ public class SignUpActivity extends BasicActivity {
                 valid = false;
             }
         }
+        // regex email
         String emailPat = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
         if (!Pattern.matches(emailPat, email.getText().toString())) {
             email.setError("Invalid email address");
             email = null;
             valid = false;
         }
+        // regex phone
         String phonePat = "[0-9]+";
         if (!Pattern.matches(phonePat, phone.getText().toString())) {
             phone.setError("Invalid phone number");
@@ -102,19 +112,20 @@ public class SignUpActivity extends BasicActivity {
 
         if (!valid)
             return;
-//        // if the user did not upload an icon
-//        if (imageUri==null) {
-//            Toast.makeText(SignUpActivity.this, "Please upload an icon", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
+
+        // sign up to firebase
         mAuth.createUserWithEmailAndPassword(email.getText().toString(),password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    // pop up message saying "signed up"
                     Toast.makeText(SignUpActivity.this, "Signed Up", Toast.LENGTH_SHORT).show();
+                    // get necessary info
                     final String uid = mAuth.getCurrentUser().getUid();
                     final StorageReference storageRef = storage.getReference("users").child(uid);
                     final User user = new User();
+
+                    // add user icon
                     if (imageUri!=null) {
                         storageRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                             @Override
@@ -131,7 +142,6 @@ public class SignUpActivity extends BasicActivity {
                                 } else {
                                     Toast.makeText(SignUpActivity.this, "Failed to add icon", Toast.LENGTH_SHORT).show();
                                 }
-
                             }
                         });
                     }
@@ -153,12 +163,21 @@ public class SignUpActivity extends BasicActivity {
         });
     }
 
+    /**
+     * upload image from the album
+     */
     private void upload() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
     }
 
+    /**
+     * get image data
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == PICK_FROM_ALBUM && resultCode == RESULT_OK) {
