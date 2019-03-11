@@ -27,7 +27,12 @@ public class UserUnitTest {
         User user = new User();
         Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
         user.addBook(book);
-        assertEquals(user.viewOwnedBooks().get(0),user.getOwnedBooks().get(0));
+        Book book2 = new Book("George's Marvelous Medicine", "Ronald Dahl", "9788711222102");
+        user.addBook(book2);
+        assertEquals(user.viewOwnedBooks().size(),2);
+        assertEquals(user.viewOwnedBooks().get(0),book);
+        assertEquals(user.viewOwnedBooks().get(1),book2);
+
     }
 
 
