@@ -1,43 +1,42 @@
 package com.example.bookflow;
 
-import static org.junit.Assert.*;
-
-import android.app.Activity;
+import android.support.test.filters.LargeTest;
+import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
-
-import android.support.test.runner.AndroidJUnit4;
 
 import com.robotium.solo.Solo;
 
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import androidx.test.rule.ActivityTestRule;
+import org.junit.Rule;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+
 
 @RunWith(AndroidJUnit4.class)
+@LargeTest
 public class AddBookActivityTest extends ActivityTestRule<AddBookActivity> {
+
     private Solo solo;
 
     public AddBookActivityTest() {
-        super(AddBookActivity.class, false, true);
+        super(AddBookActivity.class);
     }
 
     @Rule
     public ActivityTestRule<AddBookActivity> rule =
-            new ActivityTestRule<>(AddBookActivity.class, false, true);
+            new ActivityTestRule<>(AddBookActivity.class, false, false);
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws Exception{
+
         solo = new Solo(getInstrumentation(), rule.getActivity());
     }
 
@@ -52,6 +51,8 @@ public class AddBookActivityTest extends ActivityTestRule<AddBookActivity> {
 
         ImageView addbook = (ImageView) solo.getView("add_book_save_iv");
         solo.clickOnView(addbook);
+
+        onView(withText("hello")).check(matches(isDisplayed()));
 
     }
 
