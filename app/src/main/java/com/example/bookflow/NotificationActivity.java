@@ -5,22 +5,30 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.example.bookflow.Model.Notification;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 public class NotificationActivity extends BasicActivity {
     private FirebaseAuth mAuth;
     private FirebaseRecyclerAdapter<Notification, NotificationHolder> myFirebaseRecyclerAdapter;
+    private String photoUri;
 
 
     @Override
@@ -68,11 +76,16 @@ public class NotificationActivity extends BasicActivity {
                 String outString = "";
                 String sender = model.getSenderName();
                 String book = model.getBookTitle();
+                String sender_id = model.getSenderId();
+                String path = "users/" + sender_id;
+                StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(path);
+
                 if (model.getType().equals("request")) {
                     holder.setNotificationType("Book Request");
                     outString = sender + " has requested " + "\"" + book + "\"";
                 }
                 holder.setNotificationText(outString);
+                holder.setNotificationSenderIcon(imageRef);
             }
         };
         recyclerView.setAdapter(myFirebaseRecyclerAdapter);
@@ -92,24 +105,4 @@ public class NotificationActivity extends BasicActivity {
             myFirebaseRecyclerAdapter.stopListening();
         }
     }
-
-
-
-//        FirebaseRecyclerAdapter<com.example.bookflow.Model.Notification, NotificationHolder> adapter = new FirebaseRecyclerAdapter<com.example.bookflow.Model.Notification, NotificationHolder>(com.example.bookflow.Model.Notification.class, R.layout.notification_list_item, NotificationHolder.class, notificationRef) {
-//            @Override
-//            protected void populateViewHolder(NotificationHolder viewHolder, Notification model, int position) {
-//                String outString = "";
-//                String sender = model.getSenderName();
-//                String book = model.getBookTitle();
-//                if (model.getType().equals("request")) {
-//                    viewHolder.setNotificationType("Book Request");
-//                    outString = sender + " has requested " + "\"" + book + "\"";
-//                }
-//
-//                viewHolder.setNotificationText(outString);
-//            }
-//        };
-//        recyclerView.setAdapter(adapter);
-
-
 }

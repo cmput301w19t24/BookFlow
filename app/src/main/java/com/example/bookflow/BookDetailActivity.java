@@ -24,8 +24,9 @@ public class BookDetailActivity extends BasicActivity {
     private TextView titleField;
     private TextView authorField;
     private TextView isbnField;
-    private TextView statusField;
+    //private TextView statusField;
     private ImageView bookImage;
+    private TextView commentField;
 
     private String book_id;
     private String owner_id;
@@ -37,6 +38,7 @@ public class BookDetailActivity extends BasicActivity {
     private String borrower_name;
     private String username;
     private String photoUri;
+    private String comments;
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference requestRef;
@@ -63,8 +65,9 @@ public class BookDetailActivity extends BasicActivity {
         titleField = findViewById(R.id.bookName);
         authorField = findViewById(R.id.author);
         isbnField = findViewById(R.id.isbn);
-        statusField = findViewById(R.id.status);
+        //statusField = findViewById(R.id.status);
         bookImage = findViewById(R.id.bookImage);
+        commentField = findViewById(R.id.book_comments);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -107,11 +110,20 @@ public class BookDetailActivity extends BasicActivity {
                     photoUri = "https://firebasestorage.googleapis.com/v0/b/bookflow-9db6f.appspot.com" +
                             "/o/book_photos%2Fimage%3A144622?alt=media&token=c41c954c-b6c2-4451-9210-bd98200e90fd";
                 }
+
+                try {
+                    comments = dataSnapshot.child("description").getValue().toString();
+                }
+                catch (Exception e) {
+                    comments = "";
+                }
+
                 //Log.e("ahhhhhh", owner_id);
 
                 titleField.setText(title);
-                authorField.setText(author);
-                isbnField.setText(isbn);
+                authorField.setText("by " + author);
+                isbnField.setText("ISBN: " + isbn);
+                commentField.setText(comments);
                 Glide.with(BookDetailActivity.this)
                         .load(photoUri)
                         .into(bookImage);
