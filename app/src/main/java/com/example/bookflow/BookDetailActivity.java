@@ -25,6 +25,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
+/**
+ * This class is for the book details page
+ * this displays a picture of the book and
+ * a book description
+ * an owner can edit their book here
+ * a borrower can request a book here
+ */
+
 public class BookDetailActivity extends BasicActivity {
     private TextView titleField;
     private TextView authorField;
@@ -170,6 +179,11 @@ public class BookDetailActivity extends BasicActivity {
 
     }
 
+    /**
+     * When the request button is clicked, this function creates a request
+     * and sends a notification to the owner of the book
+     */
+
     public void request(View v) {
         FirebaseUser user = mAuth.getCurrentUser();
         borrower_id = user.getUid();
@@ -210,6 +224,12 @@ public class BookDetailActivity extends BasicActivity {
             toast.show();
         }
     }
+
+    /**
+     * when the edit button is clicked, this transitions
+     * user to the edit book page where they can edit
+     * the book description
+     */
 
     public void edit(View v) {
         Intent intent = new Intent(BookDetailActivity.this, EditBookDetailActivity.class);

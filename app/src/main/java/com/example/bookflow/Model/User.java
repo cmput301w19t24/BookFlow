@@ -18,10 +18,10 @@ public class User implements Owner,Borrower{
     private String imageurl; // user icon
     private String selfIntro;
 
-    public String getSelfintro() {
+    public String getSelfIntro() {
         return selfIntro;
     }
-    public void setSelfintro(String selfIntro) {
+    public void setSelfIntro(String selfIntro) {
         this.selfIntro = selfIntro;
     }
 

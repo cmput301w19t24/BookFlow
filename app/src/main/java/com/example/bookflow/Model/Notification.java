@@ -1,5 +1,10 @@
 package com.example.bookflow.Model;
-
+/**
+ * Notification
+ * This class models the notifications
+ * sent between users whenever a book is
+ * requested, or a book is accepted
+ */
 public class Notification {
     private String senderId;
     private String bookId;

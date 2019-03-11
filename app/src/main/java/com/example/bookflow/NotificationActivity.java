@@ -24,6 +24,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+/**
+ * This class is for the notifications page
+ * received accept or request notifications
+ * are displayed in a recycler view, along
+ * with the senders icon
+ */
 
 public class NotificationActivity extends BasicActivity {
     private FirebaseAuth mAuth;
