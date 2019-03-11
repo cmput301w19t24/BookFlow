@@ -1,7 +1,5 @@
 package com.example.bookflow.Model;
 
-import android.net.Uri;
-
 public class Book {
     private String title;
     private String author;
@@ -12,14 +10,30 @@ public class Book {
     private String borrowerId;
     private int requestCount;
     private String photoUri;
-    
+    private String description;
+    private String bookId;
+    private String bookInfo;
+
+    public Book(){
+
+    }
+
     public Book(String title, String author, String isbn){
+        this();
+
         this.title = title;
         this.author = author;
         this.isbn = isbn;
         this.rating = 0;
         this.requestCount = 0;
         this.status = BookStatus.AVAILABLE;
+        this.description = "";
+        this.bookInfo = isbn + "-" + title +"-" + author + "-" + status;
+    }
+
+    public Book(String title, String author, String isbn, String id){
+        this(title, author, isbn);
+        this.bookId = id;
     }
     
     /*setter and getter of title*/
@@ -107,12 +121,21 @@ public class Book {
     public int getCount(){
         return this.requestCount;
     }
-    
-    /*set isbn, title and author at once*/
-    public void setDescription(String isbn, String title, String author){
-        this.isbn = isbn;
-        this.title = title;
-        this.author = author;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 
     public enum BookStatus {
@@ -121,4 +144,13 @@ public class Book {
         ACCEPTED,
         BORROWED
     }
+
+    public void setBookInfo(){
+        this.bookInfo = this.getIsbn()+ "-" + this.getTitle()+ "-" + this.getAuthor() + "-" + this.getStatus();
+    }
+
+    public String getBookInfo(){
+        return this.bookInfo;
+    }
+
 }

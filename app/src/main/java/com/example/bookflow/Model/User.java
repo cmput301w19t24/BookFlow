@@ -16,6 +16,14 @@ public class User implements Owner,Borrower{
     private String email;
     private String phoneNumber;
     private String imageurl; // user icon
+    private String selfintro;
+
+    public String getSelfintro() {
+        return selfintro;
+    }
+    public void setSelfintro(String selfintro) {
+        this.selfintro = selfintro;
+    }
 
     private ArrayList<Book> ownedBooks = new ArrayList<Book>();
     private ArrayList<Book> borrowedBooks= new ArrayList<Book>();
@@ -47,18 +55,8 @@ public class User implements Owner,Borrower{
     }
 
     @Override
-    public String getBookDescription(String ISBN) {
-        return null;
-    }
-
-    @Override
     public ArrayList<Book> viewOwnedBooks() {
         return ownedBooks;
-    }
-
-    @Override
-    public void editBookDescription(Book book ,String title,String author, String ISBN) {
-        book.setDescription(ISBN,title,author);
     }
 
     @Override

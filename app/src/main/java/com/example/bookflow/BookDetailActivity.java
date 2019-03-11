@@ -4,9 +4,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.bookflow.Model.Book;
 import com.example.bookflow.Model.Request;
 import com.example.bookflow.Model.Notification;
@@ -23,6 +25,7 @@ public class BookDetailActivity extends BasicActivity {
     private TextView authorField;
     private TextView isbnField;
     private TextView statusField;
+    private ImageView bookImage;
 
     private String book_id;
     private String owner_id;
@@ -33,6 +36,7 @@ public class BookDetailActivity extends BasicActivity {
     private String status;
     private String borrower_name;
     private String username;
+    private String photoUri;
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference requestRef;
@@ -52,9 +56,7 @@ public class BookDetailActivity extends BasicActivity {
         //book_id = extras.getString("book_id");
         //book_id = "-L_UVcRjH_7D3MHna9Oe";
         //owned by me
-        book_id = "-L_WfB7zG6uE4QHbecb1";
-        //owned by a@a
-        //book_id = "-L__rwKWq_t63ywH4Rk1";
+        book_id = "-L_dbgIyVgjwCy6AfejK";
 
         mDatabase = FirebaseDatabase.getInstance();
         notificationRef = mDatabase.getReference("Notifications");
@@ -64,6 +66,7 @@ public class BookDetailActivity extends BasicActivity {
         authorField = findViewById(R.id.author);
         isbnField = findViewById(R.id.isbn);
         statusField = findViewById(R.id.status);
+        bookImage = findViewById(R.id.bookImage);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -77,11 +80,16 @@ public class BookDetailActivity extends BasicActivity {
                 isbn = dataSnapshot.child("isbn").getValue().toString();
                 //status = dataSnapshot.child("status").getValue().toString();
                 owner_id = dataSnapshot.child("ownerId").getValue().toString();
+                photoUri = dataSnapshot.child("photoUri").getValue().toString();
                 //Log.e("ahhhhhh", owner_id);
 
                 titleField.setText(title);
                 authorField.setText(author);
                 isbnField.setText(isbn);
+
+                Glide.with(BookDetailActivity.this)
+                        .load(photoUri)
+                        .into(bookImage);
                 //statusField.setText(status);
 
             }
