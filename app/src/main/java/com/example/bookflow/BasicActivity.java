@@ -1,5 +1,9 @@
+/**
+ * author: Yuhan Ye
+ * date: 2019/3/11
+ * version: 1.0
+ */
 package com.example.bookflow;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,6 +19,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.function.ToDoubleBiFunction;
 
+/**
+ * Basic model Activity page
+ * implement main page button, search page button, add button, notification page button and profile button
+ * extended by most activity pages in our project
+ */
 public class BasicActivity extends AppCompatActivity {
     ImageButton mainPageButton;
     @Override
@@ -23,6 +32,10 @@ public class BasicActivity extends AppCompatActivity {
         setContentView(R.layout.activity_basic);
     }
 
+    /**
+     * main page button click on method
+     * @param v main page button view
+     */
     public void clickMainPageButton(View v){
         if(!(this.getClass() == MainActivity.class)){
             Intent intent = new Intent(this, MainActivity.class);
@@ -32,6 +45,10 @@ public class BasicActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * search page button click on method
+     * @param v main page button view
+     */
     public void clickSearchPageButton(View v){
         if(!(this.getClass() == SearchActivity.class)) {
             Intent intent = new Intent(this, SearchActivity.class);
@@ -49,8 +66,10 @@ public class BasicActivity extends AppCompatActivity {
         }
     }
 
-
-
+    /**
+     * notification page button click on method
+     * @param v main page button view
+     */
     public void clickNotificationButton(View v){
         if(!(this.getClass() == NotificationActivity.class)) {
             Intent intent = new Intent(this, NotificationActivity.class);
@@ -59,7 +78,10 @@ public class BasicActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * profile page button click on method
+     * @param v main page button view
+     */
     public void clickProfileButton(View v){
         if(!(this.getClass() == UserProfileActivity.class)) {
             Intent intent = new Intent(this, UserProfileActivity.class);
@@ -67,6 +89,11 @@ public class BasicActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This function is to get current activity.
+     * User won't jump to a new current page if he is already in that page
+     * @return current activity
+     */
     /*https://blog.csdn.net/linh0911111026/article/details/78895253 */
     public static Activity getCurrentActivity () {
         try {
@@ -100,8 +127,4 @@ public class BasicActivity extends AppCompatActivity {
         }
         return null;
     }
-
-
-
-
 }
