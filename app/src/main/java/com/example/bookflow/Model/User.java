@@ -61,7 +61,7 @@ public class User implements Owner,Borrower{
 
     @Override
     public void deleteBook(Book book) {
-
+        ownedBooks.remove(book);
     }
 
     @Override
@@ -79,12 +79,14 @@ public class User implements Owner,Borrower{
 
     @Override
     public void ownerHandOverBook(Book book) {
-
+        book.setStatus(Book.BookStatus.BORROWED);
+        // TODO: update data to firebase
     }
 
     @Override
     public void receiveReturnedBook(Book book) {
-
+        book.setStatus(Book.BookStatus.AVAILABLE);
+        // TODO: update data to firebase
     }
 
     @Override
@@ -94,7 +96,9 @@ public class User implements Owner,Borrower{
 
     @Override
     public void requestBook(Book book) {
-
+        book.setStatus(Book.BookStatus.REQUESTED);
+        // TODO: send notification
+        // TODO: update data to firebase
     }
 
     @Override
@@ -109,11 +113,14 @@ public class User implements Owner,Borrower{
 
     @Override
     public void receiveAcceptedBook(Book book) {
-
+        book.setStatus(Book.BookStatus.BORROWED);
+        // TODO: update data to firebase
     }
 
     @Override
-    public void borrowerHandOverBook() {
+    public void borrowerHandOverBook(Book book) {
+        book.setStatus(Book.BookStatus.AVAILABLE);
+        // TODO: update data to firebase
 
     }
 

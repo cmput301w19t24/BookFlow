@@ -38,7 +38,7 @@ public class UserUnitTest {
         user.addBook(book);
         assertEquals(user.getOwnedBooks().get(0),book);
         user.deleteBook(book);
-        assertTrue(user.getOwnedBooks().size() == 0);
+        assertEquals(0, user.getOwnedBooks().size());
     }
 
     @Test
@@ -53,8 +53,9 @@ public class UserUnitTest {
         Owner user = new User();
         Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
         user.receiveReturnedBook(book);
-        assertEquals(book.getStatus(), "AVAILABLE");
+        assertEquals(book.getStatus(), Book.BookStatus.AVAILABLE);
     }
+
     /*
     @Test
     public void testAcceptRequest() {
