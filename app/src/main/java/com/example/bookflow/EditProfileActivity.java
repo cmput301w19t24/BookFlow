@@ -29,7 +29,10 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.regex.Pattern;
 
-
+/**
+ * This activity is for user to edit their user name, user phone and user self intro and picture
+ * only yourself can edit your profile, other cannot see the button
+ */
 public class EditProfileActivity extends AppCompatActivity {
     private TextView username, selfIntro,phone;
     private String userUid;
@@ -104,13 +107,14 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     /**
-     * Choose your icon
+     * Choose your icon from album
      */
     private void update() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
     }
+
 
 
     @Override
@@ -123,6 +127,9 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * download user image from storage and load into image view
+     */
     private void changeImageView() {
         // download user image from storage and update
         StorageReference storageRef = storage.getReference().child("users").child(userUid);
@@ -134,6 +141,9 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * delete the old image and put a new image in, they have the same file name
+     */
     private void updateStorage() {
         StorageReference storageRef;
         try {
