@@ -35,14 +35,14 @@ public class MainActivity extends BasicActivity {
     private static ListView myBookList;
     private static ListView myBorrowList;
     private MyAdapter adpBook;
-    private FirebaseListAdapter adapterBook;
-    private FirebaseListAdapter adapterBorrow;
+    private MyAdapter adpBorrow;
     private FirebaseDatabase database;
     private FirebaseAuth mAuth;
     private String uid;
+    private Query query;
 
+    // class of Adapter
     class MyAdapter extends ArrayAdapter<Book> {
-
         MyAdapter(Context c, ArrayList<Book> books) {
             super(c,R.layout.main_listitem, books);
         }
@@ -72,8 +72,12 @@ public class MainActivity extends BasicActivity {
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         uid = mAuth.getCurrentUser().getUid();
+        query = database.getReference().child("Books");
+
         ArrayList<Book> books = new ArrayList<>();
+        ArrayList<Book> borrows = new ArrayList<>();
         adpBook = new MyAdapter(this,books);
+        adpBorrow = new MyAdapter(this,borrows);
 
         bookList();
         borrowList();
@@ -81,9 +85,6 @@ public class MainActivity extends BasicActivity {
 
     private void bookList() {
         myBookList = (ListView) findViewById(R.id.myBookList);
-//        Query query = database.getReference().child("Users").child(uid).child("myBooks");
-
-        Query query = database.getReference().child("Books");
         query.orderByChild("ownerId").equalTo(uid).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -99,27 +100,6 @@ public class MainActivity extends BasicActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
-        FirebaseListOptions<Book> options = new FirebaseListOptions.Builder<Book>()
-                .setLayout(R.layout.main_listitem)
-                .setLifecycleOwner(MainActivity.this)
-                .setQuery(query,Book.class).build();
-
-//        FirebaseRecyclerAdapter;
-        adapterBook = new FirebaseListAdapter<Book>(options) {
-            @Override
-            protected void populateView(@NonNull View v, @NonNull Book model, int position) {
-                TextView mauthor = v.findViewById(R.id.iauthor);
-                TextView mtitle = v.findViewById(R.id.ititle);
-                ImageView mphoto = v.findViewById(R.id.iphoto);
-
-                Book book = (Book) model;
-                mauthor.setText(book.getAuthor());
-                mtitle.setText(book.getTitle());
-                Glide.with(MainActivity.this).load(book.getPhotoUri()).into(mphoto);
-            }
-        };
-//        myBookList.setAdapter(adapterBook);
-//        adpBook.notifyDataSetChanged();
         myBookList.setAdapter(adpBook);
         myBookList.setClickable(true);
         myBookList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -132,7 +112,8 @@ public class MainActivity extends BasicActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent_detail = new Intent(MainActivity.this, BookDetailActivity.class);
-                intent_detail.putExtra("position",position);
+                String book_id = adpBook.getItem(position).getBookId();
+                intent_detail.putExtra("book_id",book_id);
                 startActivity(intent_detail);
             }
         });
@@ -140,25 +121,38 @@ public class MainActivity extends BasicActivity {
 
     private void borrowList() {
         myBorrowList = (ListView) findViewById(R.id.myBorrowList);
-        Query query = database.getReference().child("Users").child(uid).child("myBorrows");
-        FirebaseListOptions<Book> options = new FirebaseListOptions.Builder<Book>()
-                .setLayout(R.layout.main_listitem)
-                .setLifecycleOwner(MainActivity.this)
-                .setQuery(query,Book.class).build();
-        adapterBorrow = new FirebaseListAdapter<Book>(options) {
+        query.orderByChild("borrowerId").equalTo(uid).addChildEventListener(new ChildEventListener() {
             @Override
-            protected void populateView(@NonNull View v, @NonNull Book model, int position) {
-                TextView mauthor = v.findViewById(R.id.iauthor);
-                TextView mtitle = v.findViewById(R.id.ititle);
-                ImageView mphoto = v.findViewById(R.id.iphoto);
-
-                Book book = (Book) model;
-                mauthor.setText(book.getAuthor());
-                mtitle.setText(book.getTitle());
-                Glide.with(MainActivity.this).load(book.getPhotoUri()).into(mphoto);
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                System.out.println("Added " + " " +dataSnapshot.getValue());
+                adpBorrow.add(dataSnapshot.getValue(Book.class));
             }
-        };
-        myBorrowList.setAdapter(adapterBorrow);
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) { }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
+        myBorrowList.setAdapter(adpBorrow);
+        myBorrowList.setClickable(true);
+        myBorrowList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /**
+             * @param parent
+             * @param view
+             * @param position
+             * @param id
+             */
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent_detail = new Intent(MainActivity.this, BookDetailActivity.class);
+                String book_id = adpBorrow.getItem(position).getBookId();
+                intent_detail.putExtra("book_id",book_id);
+                startActivity(intent_detail);
+            }
+        });
     }
 
 //    @Override

@@ -25,24 +25,24 @@
 
             <TextView
                 android:id="@+id/iauthor"
-                android:layout_width="wrap_content"
+                android:layout_width="318dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif"
                 android:padding="3dp"
-                android:layout_marginTop="10dp"
                 android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/ititle"
-                android:padding="3dp"
+                android:layout_width="318dp"
+                android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
+                android:padding="3dp"
+                android:textColor="@color/design_default_color_primary"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/design_default_color_primary"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
     </LinearLayout>

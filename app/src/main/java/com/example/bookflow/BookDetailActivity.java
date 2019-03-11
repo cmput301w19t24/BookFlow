@@ -53,10 +53,10 @@ public class BookDetailActivity extends BasicActivity {
 
         // retrieves book_id passed from SearchActivity
         Bundle extras = getIntent().getExtras();
-        //book_id = extras.getString("book_id");
+        book_id = extras.getString("book_id");
         //book_id = "-L_UVcRjH_7D3MHna9Oe";
         //owned by me
-        book_id = "-L_dbgIyVgjwCy6AfejK";
+//        book_id = "-L_dbgIyVgjwCy6AfejK";
 
         mDatabase = FirebaseDatabase.getInstance();
         notificationRef = mDatabase.getReference("Notifications");

@@ -92,7 +92,6 @@ public class AddBookActivity extends BasicActivity {
         mProgressbar = findViewById(R.id.add_book_progress_bar);
         mScanButton = findViewById(R.id.add_book_scan_button);
 
-
         mPhotoImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
