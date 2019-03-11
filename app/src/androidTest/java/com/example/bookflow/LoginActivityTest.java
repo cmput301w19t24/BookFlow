@@ -22,8 +22,6 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 public class LoginActivityTest extends ActivityTestRule<LoginActivity> {
 
     private Solo solo;
-    private FirebaseAuth mAuth;
-
 
     public LoginActivityTest(){
         super(LoginActivity.class, false, true);
@@ -35,8 +33,6 @@ public class LoginActivityTest extends ActivityTestRule<LoginActivity> {
     @Before
     public void setUp() throws Exception{
         solo = new Solo(getInstrumentation(), rule.getActivity());
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword("shengyao@ualberta.ca", "123456");
     }
     @Test
     public void start() throws Exception{
