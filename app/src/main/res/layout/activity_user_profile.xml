@@ -156,6 +156,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="switchReview"
                 android:text="@string/review_list" />
 
             <Button
@@ -163,6 +164,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="switchOffer"
                 android:text="@string/books_offered" />
 
             <Button
@@ -170,6 +172,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="switchRequest"
                 android:text="@string/books_requested" />
 
         </LinearLayout>
@@ -179,7 +182,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/fixReviews"
@@ -200,7 +204,8 @@
             android:id="@+id/offerLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/fixOffers"
@@ -209,7 +214,7 @@
                 android:text="@string/fix_offers" />
 
             <ListView
-                android:id="@+id/offersList"
+                android:id="@+id/offerList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
@@ -218,7 +223,8 @@
             android:id="@+id/requestLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/fixRequests"

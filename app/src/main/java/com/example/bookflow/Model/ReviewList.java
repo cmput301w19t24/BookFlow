@@ -19,7 +19,9 @@ public class ReviewList {
     public ArrayList<String> toStringArray() {
         ArrayList<String> strList = new ArrayList<String>();
         for (Review eachReview: rList) {
-            strList.add(eachReview.toString());
+            if (!strList.contains(eachReview.toString())) {
+                strList.add(eachReview.toString());
+            }
         }
         return strList;
     }
