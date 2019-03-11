@@ -1,3 +1,13 @@
+/**
+ * BorrowListActivity Class
+ *
+ * Copyright 2019 Shengyao Lu
+ *
+ * @author shengyao
+ * @version 1.0
+ * @created 2019-03-01
+ */
+
 package com.example.bookflow;
 
 import android.content.Context;
@@ -40,6 +50,13 @@ public class BorrowListActivity extends BasicActivity {
             super(c,R.layout.main_listitem, books);
         }
 
+        /**
+         *
+         * @param position
+         * @param v
+         * @param parent
+         * @return
+         */
         @Override
         public View getView(int position, View v, ViewGroup parent) {
             Book book = this.getItem(position);
@@ -58,6 +75,10 @@ public class BorrowListActivity extends BasicActivity {
         }
     }
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +132,7 @@ public class BorrowListActivity extends BasicActivity {
         });
     }
 
-    // to
+    // to main activity
     public void seeBookList(View BookListView) {
         Intent intent_booklist = new Intent(this, MainActivity.class);
         startActivity(intent_booklist);
