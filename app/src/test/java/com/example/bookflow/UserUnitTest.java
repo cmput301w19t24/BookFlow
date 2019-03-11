@@ -32,7 +32,6 @@ public class UserUnitTest {
         assertEquals(user.viewOwnedBooks().size(),2);
         assertEquals(user.viewOwnedBooks().get(0),book);
         assertEquals(user.viewOwnedBooks().get(1),book2);
-
     }
 
 

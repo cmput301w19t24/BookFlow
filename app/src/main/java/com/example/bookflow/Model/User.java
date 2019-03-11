@@ -15,22 +15,15 @@ public class User implements Owner,Borrower{
     private String password;
     private String email;
     private String phoneNumber;
-    private String imageurl; // user icon
+    private String imageurl;
     private String selfIntro;
-
-    public String getSelfIntro() {
-        return selfIntro;
-    }
-    public void setSelfIntro(String selfIntro) {
-        this.selfIntro = selfIntro;
-    }
 
     private ArrayList<Book> ownedBooks = new ArrayList<Book>();
     private ArrayList<Book> borrowedBooks= new ArrayList<Book>();
     private ArrayList<Request>  requests= new ArrayList<Request>();
     private ReviewList reviews;
 
-    public User(){
+    public User() {
 
     }
 
@@ -39,6 +32,12 @@ public class User implements Owner,Borrower{
         this.password = password;
     }
 
+    public String getSelfIntro() {
+        return selfIntro;
+    }
+    public void setSelfIntro(String selfIntro) {
+        this.selfIntro = selfIntro;
+    }
 
     public ArrayList<Book> getOwnedBooks(){
         return ownedBooks;
