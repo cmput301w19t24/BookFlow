@@ -49,6 +49,10 @@ public class EditBookDetailActivity extends BasicActivity {
 
     private String mBookId;
 
+    /**
+     * initialize UI elements, firebase and register listeners
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +91,10 @@ public class EditBookDetailActivity extends BasicActivity {
                     mProgressbar.setVisibility(View.VISIBLE);
 
                     mFirebaseIO.saveBook(mybook, mSelectedPhotoUri, new OnCompleteListener<Void>() {
-                        // upon completion, hide the loading panel and prompt user
+                        /**
+                         * upon completion, hide the loading panel and prompt user
+                         * @param task
+                         */
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
@@ -136,6 +143,10 @@ public class EditBookDetailActivity extends BasicActivity {
         PhotoUtility.checkWriteExternalPermission(this);
     }
 
+    /**
+     * propagate the existing book info to the text views
+     * @param book the book to be propagated
+     */
     private void propagateBookToView(Book book) {
         if (book == null) {
             Log.e(TAG, "book is null!");

@@ -1,9 +1,5 @@
 /**
- * ScanActivity: scan the barcode on-the-fly with the rear camera.
- *
- * Return the ISBN string to the caller activity with an intent.
- * To retrieve the ISBN, do the following in onActivityResult:
- *      String isbn = data.getStringExtra(ScanActivity.SCAN_RESULT);
+
  */
 
 package com.example.bookflow;
@@ -20,6 +16,7 @@ import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.example.bookflow.Util.PhotoUtility;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -27,6 +24,13 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
+/**
+ *  Scan the barcode on-the-fly with the rear camera.
+ *
+ *  Return the ISBN string to the caller activity with an intent.
+ *  To retrieve the ISBN, do the following in onActivityResult:
+ *       String isbn = data.getStringExtra(ScanActivity.SCAN_RESULT);
+ */
 public class ScanActivity extends AppCompatActivity {
 
     protected static final String SCAN_RESULT = "scan_result";
@@ -38,6 +42,10 @@ public class ScanActivity extends AppCompatActivity {
     private BarcodeDetector mBarcodeDetector;
 
 
+    /**
+     * Initialize UI elements, barcode detector, camera source and camera view.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +72,7 @@ public class ScanActivity extends AppCompatActivity {
                         ActivityCompat.requestPermissions(ScanActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
                         return;
                     }
+                    PhotoUtility.checkCameraPermission(ScanActivity.this);
                     mCameraSource.start(mCameraView.getHolder());
                 } catch (IOException ie) {
                     Log.e(TAG, ie.getMessage());
@@ -86,6 +95,12 @@ public class ScanActivity extends AppCompatActivity {
             public void release() {
             }
 
+            /**
+             * callback function that is invoked when new detections are available.
+             * Only retrieve the first detection and return to the previous activity
+             * with an intent that holds the result ISBN code as a string.
+             * @param detections
+             */
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
 

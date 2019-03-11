@@ -156,23 +156,25 @@ public class AddBookActivity extends BasicActivity {
                 Uri imgUri = data.getData();
                 Log.d(TAG, imgUri.toString());
 
+                mSelectedPhotoUri = imgUri;
+
                 // display photo on the image view
                 Glide.with(mPhotoImageView.getContext())
                         .load(imgUri)
                         .into(mPhotoImageView);
-
-                mSelectedPhotoUri = imgUri;
 
             } else if (requestCode == PhotoUtility.RC_IMAGE_CAPTURE) {
                 Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
 
                 Uri imgUri = PhotoUtility.bitmapToUri(this, imageBitmap);
 
-                Glide.with(mPhotoImageView.getContext())
-                        .load(imageBitmap)
-                        .into(mPhotoImageView);
+                if (imgUri != null) {
+                    mSelectedPhotoUri = imgUri;
 
-                mSelectedPhotoUri = imgUri;
+                    Glide.with(mPhotoImageView.getContext())
+                            .load(imageBitmap)
+                            .into(mPhotoImageView);
+                }
 
             } else if (requestCode == ScanUtility.RC_SCAN) {
                 String isbn = data.getStringExtra(ScanActivity.SCAN_RESULT);
