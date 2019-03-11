@@ -1,5 +1,11 @@
 package com.example.bookflow.Model;
 
+/**
+ * The book model class. It contains information about a book, including
+ * title, author of the book, ISBN number, photoURI, description and book info.
+ * It also contains book status information including current status, ownerID
+ * and borrower ID.
+ */
 public class Book {
     private String title;
     private String author;
