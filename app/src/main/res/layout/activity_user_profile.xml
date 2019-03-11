@@ -24,10 +24,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:layout_weight="1"
-        android:background="@null"
+        android:background="@drawable/simple_black_border"
         android:contentDescription="@string/placeholder"
         android:onClick="editProfile"
+        android:padding="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/userInfoDetail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/edit_icon" />
@@ -102,12 +105,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:orientation="horizontal">
+            android:background="@drawable/round_border"
+            android:orientation="horizontal"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp">
 
             <TextView
                 android:id="@+id/fixEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
                 android:text="@string/email"
                 android:textColor="#000000"
                 android:textSize="18sp" />
@@ -126,12 +133,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:orientation="horizontal">
+            android:background="@drawable/round_border"
+            android:orientation="horizontal"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp">
 
             <TextView
                 android:id="@+id/fixPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
                 android:text="@string/phone"
                 android:textColor="#000000"
                 android:textSize="18sp" />
@@ -153,27 +164,36 @@
 
             <Button
                 android:id="@+id/review_switch"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/red_button"
                 android:onClick="switchReview"
-                android:text="@string/review_list" />
+                android:text="@string/review_list"
+                android:textColor="#000000" />
 
             <Button
                 android:id="@+id/offer_switch"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/normal_button"
                 android:onClick="switchOffer"
-                android:text="@string/books_offered" />
+                android:text="@string/books_offered"
+                android:textColor="#000000" />
 
             <Button
                 android:id="@+id/request_switch"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/normal_button"
                 android:onClick="switchRequest"
-                android:text="@string/books_requested" />
+                android:text="@string/books_requested"
+                android:textColor="#000000" />
 
         </LinearLayout>
 
@@ -181,7 +201,8 @@
             android:id="@+id/reviewsLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
+            android:layout_margin="0dp"
+            android:background="@drawable/triangle"
             android:orientation="vertical"
             android:visibility="visible">
 
@@ -189,6 +210,7 @@
                 android:id="@+id/fixReviews"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:text="@string/review"
                 android:textColor="#000000"
                 android:textSize="18sp" />
@@ -204,6 +226,7 @@
             android:id="@+id/offerLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/triangle"
             android:orientation="vertical"
             android:visibility="visible">
 
@@ -211,6 +234,7 @@
                 android:id="@+id/fixOffers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:text="@string/fix_offers"
                 android:textColor="#000000"
                 android:textSize="18sp" />
@@ -225,6 +249,7 @@
             android:id="@+id/requestLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/triangle"
             android:orientation="vertical"
             android:visibility="visible">
 
@@ -232,6 +257,7 @@
                 android:id="@+id/fixRequests"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:text="@string/fix_requests"
                 android:textColor="#000000"
                 android:textSize="18sp" />
