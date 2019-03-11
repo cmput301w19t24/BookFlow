@@ -39,7 +39,8 @@ public class SearchActivity extends BasicActivity {
     private DatabaseReference mUserDatabase;
     private Spinner spinner;
     private RecyclerView recyclerView;
-    FirebaseRecyclerAdapter<User,UserViewHolder> firebaseRecyclerAdapter;
+    FirebaseRecyclerAdapter<User,UserViewHolder> firebaseUserRecyclerAdapter;
+    FirebaseRecyclerAdapter<Book, BookViewHolder> firebaseBookRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,11 +116,11 @@ public class SearchActivity extends BasicActivity {
     // search user function
     public void searchUser(String searchText){
         Toast.makeText(SearchActivity.this, "Started Search", Toast.LENGTH_LONG).show();
-        Query firebaseSearchQuery = mUserDatabase.child("Users").orderByChild("username").startAt(searchText).endAt(searchText + "\uf8ff");
+        Query firebaseUserSearchQuery = mUserDatabase.child("Users").orderByChild("username").startAt(searchText).endAt(searchText + "\uf8ff");
 
         FirebaseRecyclerOptions<User> options = new FirebaseRecyclerOptions.Builder<User>()
-                .setQuery(firebaseSearchQuery,User.class).build();
-        firebaseRecyclerAdapter=
+                .setQuery(firebaseUserSearchQuery,User.class).build();
+        firebaseUserRecyclerAdapter=
         new FirebaseRecyclerAdapter<User, UserViewHolder>(options) {
             @NonNull
             @Override
@@ -144,15 +145,22 @@ public class SearchActivity extends BasicActivity {
             }
 
         };
-        recyclerView.setAdapter(firebaseRecyclerAdapter);
-        firebaseRecyclerAdapter.startListening();
+        recyclerView.setAdapter(firebaseUserRecyclerAdapter);
+
+        try{
+            firebaseBookRecyclerAdapter.stopListening();
+        }catch(Exception e){
+
+        }
+
+        firebaseUserRecyclerAdapter.startListening();
     }
 
-    // BookName Holder class
-    public static class BookTitleViewHolder extends RecyclerView.ViewHolder{
+    // Book Holder class
+    public static class BookViewHolder extends RecyclerView.ViewHolder{
         View mView;
 
-        public BookTitleViewHolder(@NonNull View itemView) {
+        public BookViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
         }
@@ -169,66 +177,63 @@ public class SearchActivity extends BasicActivity {
         }
     }
 
-//    public void searchBook(String searchText,String constriant){
-//        Toast.makeText(SearchActivity.this, "Started Search", Toast.LENGTH_LONG).show();
-//        Query firebaseSearchQuery = mUserDatabase.child("Books").orderByChild(constriant).startAt(searchText).endAt(searchText + "\uf8ff");
-//        FirebaseRecyclerAdapter<Book,BookTitleViewHolder> firebaseRecyclerAdapter=
-//                new FirebaseRecyclerAdapter<Book,BookTitleViewHolder>(
-//                        Book.class,
-//                        R.layout.searchitem,
-//                        BookTitleViewHolder.class,
-//                        firebaseSearchQuery
-//                ) {
-//                    @NonNull
-//                    @Override
-//                    public BookTitleViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-//                        return null;
-//                    }
-//
-//                    @Override
-//                    protected void onBindViewHolder(@NonNull BookTitleViewHolder holder, final int position, @NonNull Book model) {
-//                        holder.setDetails(getApplicationContext(),model.getIsbn(),model.getTitle(),model.getAuthor(),model.getPhotoUri());
-//                        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                String book_id = getRef(position).getKey();
-//                                Intent intent = new Intent(SearchActivity.this,BookDetailActivity.class);
-//                                intent.putExtra("book_id",book_id);
-//                                startActivity(intent);
-//                            }
-//                        });
-//                    }
-//
-//                };
-//        recyclerView.setAdapter(firebaseRecyclerAdapter);
-//    }
+    public void searchBook(String searchText,String constriant){
+        Toast.makeText(SearchActivity.this, "Started Search", Toast.LENGTH_LONG).show();
+        Query firebaseSearchQuery = mUserDatabase.child("Books").orderByChild(constriant).startAt(searchText).endAt(searchText + "\uf8ff");
+        FirebaseRecyclerOptions<Book> options = new FirebaseRecyclerOptions.Builder<Book>()
+                .setQuery(firebaseSearchQuery,Book.class).build();
+        firebaseBookRecyclerAdapter=
+                new FirebaseRecyclerAdapter<Book, BookViewHolder>(options) {
+                    @NonNull
+                    @Override
+                    public BookViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+                        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.searchitem,viewGroup,false);
+                        return new BookViewHolder(view);
+                    }
 
+                    @Override
+                    protected void onBindViewHolder(@NonNull BookViewHolder holder, final int position, @NonNull Book model) {
+                        holder.setDetails(getApplicationContext(),model.getIsbn(),model.getTitle(),model.getAuthor(),model.getPhotoUri());
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String book_id = getRef(position).getKey();
+                                Intent intent = new Intent(SearchActivity.this,BookDetailActivity.class);
+                                intent.putExtra("book_id",book_id);
+                                startActivity(intent);
+                            }
+                        });
+                    }
 
+                };
+        recyclerView.setAdapter(firebaseBookRecyclerAdapter);
+        try {
+            firebaseUserRecyclerAdapter.stopListening();
+        }catch(Exception e){
 
-
-    public void searchByAuthor(String searchText){}
-    public void searchByISBN(String searchText){}
-
+        }
+        firebaseBookRecyclerAdapter.startListening();
+    }
 
     public void search(View v){
         String searchOption = spinner.getSelectedItem().toString();
         String searchText = search_Text.getText().toString();
-        String constraint;
+        String constraint = "title";
         switch (searchOption){
             case "search user":
                 searchUser(searchText);
                 break;
             case "search by book name":
                 constraint = "title";
-                //searchBook(searchText,constraint);
+                searchBook(searchText,constraint);
                 break;
             case "search by book author":
                 constraint = "author";
-                //searchByAuthor(searchText);
+                searchBook(searchText,constraint);
                 break;
             case "search by book ISBN":
                 constraint = "isbn";
-                //searchByISBN(searchText);
+                searchBook(searchText,constraint);
         }
 
     }
