@@ -30,16 +30,6 @@ public class UserUnitTest {
         assertEquals(user.viewOwnedBooks().get(0),user.getOwnedBooks().get(0));
     }
 
-    @Test
-    public void testEditBookDescription(){
-        User user = new User();
-        Book book = new Book("frankenstein", "Mary Shelley", "9780440927174");
-        user.addBook(book);
-        user.editBookDescription(book,"a book","tt","123456");
-        assertEquals(book.getAuthor(),"tt");
-        assertEquals(book.getIsbn(),"123456");
-        assertEquals(book.getTitle(),"a book");
-    }
 
     @Test
     public void testDeleteBook(){

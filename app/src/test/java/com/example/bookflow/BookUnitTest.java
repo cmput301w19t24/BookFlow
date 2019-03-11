@@ -65,12 +65,4 @@ public class BookUnitTest {
         assertEquals(Book.BookStatus.ACCEPTED, book1.getStatus());
     }
 
-    
-    @Test
-    public void testSetDescription(){
-        book1.setDescription("9876543210", "My New Story", "New Jinming");
-        assertEquals("9876543210", book1.getIsbn());
-        assertEquals("My New Story", book1.getTitle());
-        assertEquals("New Jinming", book1.getAuthor());
-    }
 }

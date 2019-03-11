@@ -63,18 +63,18 @@ public class UserProfileActivity extends BasicActivity {
         reviewListView = (ListView) findViewById(R.id.reviewList);
         dbRef = FirebaseDatabase.getInstance().getReference();
 
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
-        if (message != null) {
-            ImageView imageButton = findViewById(R.id.editPersonInfo);
-            imageButton.setEnabled(false);
-            imageButton.setVisibility(View.INVISIBLE);
-            uid = message;
-        } else  {
-            FirebaseUser user = mAuth.getCurrentUser();
-            uid = user.getUid();
-        }
-        setUpImageView();
+//        Intent intent = getIntent();
+//        String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
+//        if (message != null) {
+//            ImageView imageButton = findViewById(R.id.editPersonInfo);
+//            imageButton.setEnabled(false);
+//            imageButton.setVisibility(View.INVISIBLE);
+//            uid = message;
+//        } else  {
+//            FirebaseUser user = mAuth.getCurrentUser();
+//            uid = user.getUid();
+//        }
+//        setUpImageView();
 
 
         // get user information from the database

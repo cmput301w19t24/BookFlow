@@ -61,7 +61,11 @@ public class FirebaseIO {
      * @param mybook the book object to be saved
      */
     public void saveBook(final Book mybook, Uri localUri, OnCompleteListener<Void> listener) {
-
+        FirebaseAuth mAuth;
+        String uid;
+        mAuth = FirebaseAuth.getInstance();
+        uid = mAuth.getCurrentUser().getUid();
+        final DatabaseReference myRef = mFirebaseDatabase.getReference().child("Users").child(uid).child("myBooks");
 
         if (localUri != null) {
 
@@ -97,7 +101,10 @@ public class FirebaseIO {
                     mybook.setOwnerId(myuid);
 
                     DatabaseReference bookRef = mBookDatabaseReference.push();
-                    mybook.setBookId(bookRef.getKey());
+                    String bookId = bookRef.getKey();
+                    mybook.setBookId(bookId);
+                    DatabaseReference userbookRef = myRef.child(bookId);
+                    userbookRef.setValue(mybook);
                     return bookRef.setValue(mybook);
                 }
             }).addOnCompleteListener(listener);

@@ -100,8 +100,6 @@ public class SignUpActivity extends BasicActivity {
             valid = false;
         }
 
-
-
         if (!valid)
             return;
         // if the user did not upload an icon
