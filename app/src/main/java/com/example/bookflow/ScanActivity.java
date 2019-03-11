@@ -68,11 +68,9 @@ public class ScanActivity extends AppCompatActivity {
 
                 try {
                     // check CAMERA permission
-                    if (ActivityCompat.checkSelfPermission(ScanActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(ScanActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
+                    if (!PhotoUtility.checkCameraPermission(ScanActivity.this)) {
                         return;
                     }
-                    PhotoUtility.checkCameraPermission(ScanActivity.this);
                     mCameraSource.start(mCameraView.getHolder());
                 } catch (IOException ie) {
                     Log.e(TAG, ie.getMessage());
