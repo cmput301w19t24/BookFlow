@@ -2,6 +2,7 @@ package com.example.bookflow;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -111,8 +112,7 @@ public class BookDetailActivity extends BasicActivity {
                     photoUri = dataSnapshot.child("photoUri").getValue().toString();
                 }
                 catch (Exception e){
-                    photoUri = "https://firebasestorage.googleapis.com/v0/b/bookflow-9db6f.appspot.com" +
-                            "/o/book_photos%2Fimage%3A144622?alt=media&token=c41c954c-b6c2-4451-9210-bd98200e90fd";
+                    photoUri = "android.resource://com.example.bookflow/" + R.drawable.image_placeholder;
                 }
 
                 try {
