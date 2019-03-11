@@ -48,7 +48,7 @@ public class BorrowListActivityTest extends ActivityTestRule<BorrowListActivity>
     @Test
     public void clickMyBorrows(){
         BorrowListActivity activity = (BorrowListActivity) solo.getCurrentActivity();
-
+        // see my borrows listview
         solo.assertCurrentActivity("Wrong Activity", BorrowListActivity.class);
         TextView myBooks = (TextView)solo.getView("title_mybook");
         solo.clickOnView(myBooks);
