@@ -124,7 +124,9 @@ public class UserProfileActivity extends BasicActivity {
         reviewList.addReview(review);
     }
 
-
+    /**
+     * setup Username, user self intro, user email and user phone.
+     */
     private void setUpBasicInfo() {
         // get user information from the database
         ValueEventListener userInfoListener = new ValueEventListener() {
@@ -135,7 +137,7 @@ public class UserProfileActivity extends BasicActivity {
                 email = targetUser.child("email").getValue().toString();
                 phoneNum = targetUser.child("phoneNumber").getValue().toString();
                 username = targetUser.child("username").getValue().toString();
-                selfIntro = targetUser.child("selfintro").getValue().toString();
+                selfIntro = targetUser.child("selfIntro").getValue().toString();
 
 
                 setupTextView(username, selfIntro, email, phoneNum);
@@ -149,6 +151,9 @@ public class UserProfileActivity extends BasicActivity {
         dbRef.child("Users").addListenerForSingleValueEvent(userInfoListener);
     }
 
+    /**
+     * setup the list of all reviews
+     */
     private void setUpReviewList() {
         // get all reviews from database
         ValueEventListener reviewsListener = new ValueEventListener() {
@@ -176,14 +181,27 @@ public class UserProfileActivity extends BasicActivity {
         dbRef.child("Reviews").addListenerForSingleValueEvent(reviewsListener);
     }
 
+    /**
+     * setup the list of all books offered
+     */
     private void setUpOfferList() {
             ;
     }
 
+    /**
+     * setup the list of all books requested
+     */
     private void setUpRequestList() {
         ;
     }
 
+    /**
+     * display informations on textview
+     * @param name username
+     * @param intro self intro
+     * @param email user email
+     * @param phone user phone number
+     */
     private void setupTextView(String name, String intro, String email, String phone) {
         TextView textView = findViewById(R.id.profileName);
         textView.setText(name);
@@ -198,6 +216,9 @@ public class UserProfileActivity extends BasicActivity {
         textView.setText(phone);
     }
 
+    /**
+     * download image from firebase storage and load it into the image view
+     */
     public void setUpImageView() {
         // download user image from storage and update
         StorageReference storageRef;
@@ -216,7 +237,6 @@ public class UserProfileActivity extends BasicActivity {
         });
     }
 
-
     /**
      * This is onClick method for button "edit profile"
      * @param view  onClick method needed
@@ -226,6 +246,10 @@ public class UserProfileActivity extends BasicActivity {
         startActivity(intent);
     }
 
+    /**
+     * onClick method of request button
+     * @param view button view
+     */
     public void switchRequest(View view){
         Button button = findViewById(R.id.review_switch);
         button.setBackgroundResource(R.drawable.normal_button);
@@ -247,6 +271,10 @@ public class UserProfileActivity extends BasicActivity {
         setUpRequestList();
     }
 
+    /**
+     * onClick method of Review button
+     * @param view button view
+     */
     public void switchReview(View view){
         Button button = findViewById(R.id.review_switch);
         button.setBackgroundResource(R.drawable.red_button);
@@ -268,6 +296,10 @@ public class UserProfileActivity extends BasicActivity {
         setUpReviewList();
     }
 
+    /**
+     * onClick method of Offer button
+     * @param view button view
+     */
     public void switchOffer(View view){
         Button button = findViewById(R.id.review_switch);
         button.setBackgroundResource(R.drawable.normal_button);
