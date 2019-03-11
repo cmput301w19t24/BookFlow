@@ -53,10 +53,8 @@ public class BookDetailActivity extends BasicActivity {
 
         // retrieves book_id passed from SearchActivity
         Bundle extras = getIntent().getExtras();
-        //book_id = extras.getString("book_id");
-        //book_id = "-L_UVcRjH_7D3MHna9Oe";
-        //owned by me
-        book_id = "-L_dbgIyVgjwCy6AfejK";
+        book_id = extras.getString("book_id");
+
 
         mDatabase = FirebaseDatabase.getInstance();
         notificationRef = mDatabase.getReference("Notifications");
@@ -75,18 +73,45 @@ public class BookDetailActivity extends BasicActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                title = dataSnapshot.child("title").getValue().toString();
-                author = dataSnapshot.child("author").getValue().toString();
-                isbn = dataSnapshot.child("isbn").getValue().toString();
+                try {
+                    title = dataSnapshot.child("title").getValue().toString();
+                }
+                catch (Exception e){
+                    title = "None Found";
+                }
+
+                try {
+                    author = dataSnapshot.child("author").getValue().toString();
+                }
+                catch (Exception e){
+                    author = "None Found";
+                }
+
+                try {
+                    isbn = dataSnapshot.child("isbn").getValue().toString();
+                }
+                catch (Exception e){
+                    isbn = "Not Found";
+                }
                 //status = dataSnapshot.child("status").getValue().toString();
-                owner_id = dataSnapshot.child("ownerId").getValue().toString();
-                photoUri = dataSnapshot.child("photoUri").getValue().toString();
+                try {
+                    owner_id = dataSnapshot.child("ownerId").getValue().toString();
+                }
+                catch(Exception e) {
+                    owner_id = "Not Found";
+                }
+                try {
+                    photoUri = dataSnapshot.child("photoUri").getValue().toString();
+                }
+                catch (Exception e){
+                    photoUri = "https://firebasestorage.googleapis.com/v0/b/bookflow-9db6f.appspot.com" +
+                            "/o/book_photos%2Fimage%3A144622?alt=media&token=c41c954c-b6c2-4451-9210-bd98200e90fd";
+                }
                 //Log.e("ahhhhhh", owner_id);
 
                 titleField.setText(title);
                 authorField.setText(author);
                 isbnField.setText(isbn);
-
                 Glide.with(BookDetailActivity.this)
                         .load(photoUri)
                         .into(bookImage);
