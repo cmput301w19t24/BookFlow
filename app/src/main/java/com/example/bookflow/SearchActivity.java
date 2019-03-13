@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,10 +42,7 @@ import com.google.firebase.database.Query;
 public class SearchActivity extends BasicActivity {
     public static final String EXTRA_MESSAGE = "com.example.bookflow.MESSAGE";
     private EditText search_Text;
-    private CheckBox checkAccepted;
-    private CheckBox checkAvailable;
-    private CheckBox checkRequested;
-    private CheckBox checkBorrowed;
+    private RadioGroup radioGroup;
     private DatabaseReference mUserDatabase;
     private Spinner spinner;
     private RecyclerView recyclerView;
@@ -55,14 +53,8 @@ public class SearchActivity extends BasicActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        checkAccepted = findViewById(R.id.checkAccepted);
-        checkAvailable = findViewById(R.id.checkAvailable);
-        checkRequested = findViewById(R.id.checkRequested);
-        checkBorrowed = findViewById(R.id.checkBorrowed);
-        checkAccepted.setVisibility(View.INVISIBLE);
-        checkAvailable.setVisibility(View.INVISIBLE);
-        checkRequested.setVisibility(View.INVISIBLE);
-        checkBorrowed.setVisibility(View.INVISIBLE);
+        radioGroup = findViewById(R.id.radioGroup);
+        radioGroup.setVisibility(View.INVISIBLE);
         recyclerView = findViewById(R.id.searchViewList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -74,16 +66,10 @@ public class SearchActivity extends BasicActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 0){
-                    checkAccepted.setVisibility(View.INVISIBLE);
-                    checkAvailable.setVisibility(View.INVISIBLE);
-                    checkRequested.setVisibility(View.INVISIBLE);
-                    checkBorrowed.setVisibility(View.INVISIBLE);
+                    radioGroup.setVisibility(View.INVISIBLE);
                 }
                 else{
-                    checkAccepted.setVisibility(View.VISIBLE);
-                    checkAvailable.setVisibility(View.VISIBLE);
-                    checkRequested.setVisibility(View.VISIBLE);
-                    checkBorrowed.setVisibility(View.VISIBLE);
+                    radioGroup.setVisibility(View.VISIBLE);
                 }
             }
 

@@ -37,6 +37,7 @@ import java.util.regex.Pattern;
 public class SignUpActivity extends BasicActivity {
 
     private EditText id, email, password, repassword,phone;
+    private Button btn;
     private ImageView profile;
     private static final int PICK_FROM_ALBUM = 10;
     private Uri imageUri = null;
