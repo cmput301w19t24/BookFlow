@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ public class SearchActivity extends BasicActivity {
     public static final String EXTRA_MESSAGE = "com.example.bookflow.MESSAGE";
     private EditText search_Text;
     private RadioGroup radioGroup;
+    private RadioButton checkAvailableButton,checkAcceptedButton,checkRequestedButton,checkBorrowedButton;
     private DatabaseReference mUserDatabase;
     private Spinner spinner;
     private RecyclerView recyclerView;
@@ -54,8 +56,16 @@ public class SearchActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         radioGroup = findViewById(R.id.radioGroup);
-        radioGroup.setVisibility(View.INVISIBLE);
+        radioGroup.setAlpha(.5f);
+        checkAcceptedButton = findViewById(R.id.checkAccepted);
+        checkAvailableButton = findViewById(R.id.checkAvailable);
+        checkRequestedButton = findViewById(R.id.checkRequested);
+        checkBorrowedButton = findViewById(R.id.checkBorrowed);
         recyclerView = findViewById(R.id.searchViewList);
+        checkBorrowedButton.setClickable(false);
+        checkAvailableButton.setClickable(false);
+        checkRequestedButton.setClickable(false);
+        checkAcceptedButton.setClickable(false);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mUserDatabase = FirebaseDatabase.getInstance().getReference();
@@ -66,10 +76,18 @@ public class SearchActivity extends BasicActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 0){
-                    radioGroup.setVisibility(View.INVISIBLE);
+                    radioGroup.setAlpha(.5f);
+                    checkBorrowedButton.setClickable(false);
+                    checkAvailableButton.setClickable(false);
+                    checkRequestedButton.setClickable(false);
+                    checkAcceptedButton.setClickable(false);
                 }
                 else{
-                    radioGroup.setVisibility(View.VISIBLE);
+                    radioGroup.setAlpha(1.0f);
+                    checkBorrowedButton.setClickable(true);
+                    checkAvailableButton.setClickable(true);
+                    checkRequestedButton.setClickable(true);
+                    checkAcceptedButton.setClickable(true);
                 }
             }
 
