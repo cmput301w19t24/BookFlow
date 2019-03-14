@@ -207,6 +207,14 @@ public class BookDetailActivity extends BasicActivity {
                     String request_id = requestReference.push().getKey();
                     requestReference.child(request_id).setValue(new Request(owner_id, borrower_id, book_id));
 
+                    // add request to list of sent requests by user
+                    DatabaseReference requestsSentReference = mDatabase.getReference("RequestsSentByUser");
+                    requestsSentReference.child(borrower_id).child(request_id).setValue(true);
+
+                    // add request to list of received requests for book
+                    DatabaseReference receivedRequestsByBookReference = mDatabase.getReference("RequestsReceivedByBook");
+                    receivedRequestsByBookReference.child(book_id).child(request_id).setValue(true);
+
                     // send notification
                     DatabaseReference receiverRef = notificationRef.child(owner_id);
                     String notification_id = receiverRef.push().getKey();
