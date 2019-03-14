@@ -53,7 +53,7 @@ public class NotificationActivity extends BasicActivity {
         DatabaseReference notificationRef = FirebaseDatabase.getInstance().getReference().child("Notifications").child(user_id);
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true); // probably don't need this
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setReverseLayout(true);

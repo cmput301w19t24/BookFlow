@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:text="Notifications"
         android:textStyle="bold"
-        android:textSize="40sp"
+        android:textSize="26sp"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp"
         app:layout_constraintTop_toTopOf="parent"/>

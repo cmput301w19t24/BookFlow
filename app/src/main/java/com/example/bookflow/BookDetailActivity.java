@@ -206,17 +206,19 @@ public class BookDetailActivity extends BasicActivity {
                     username = dataSnapshot.child("username").getValue().toString();
 
                     //create request
-                    DatabaseReference requestReference = mDatabase.getReference("Requests");
-                    String request_id = requestReference.push().getKey();
-                    requestReference.child(request_id).setValue(new Request(owner_id, borrower_id, book_id));
+                    //DatabaseReference requestReference = mDatabase.getReference("Requests");
+                    //String request_id = requestReference.push().getKey();
+                    Request req = new Request(owner_id, borrower_id, book_id);
+                    //requestReference.child(request_id).setValue();
 
                     // add request to list of sent requests by user
                     DatabaseReference requestsSentReference = mDatabase.getReference("RequestsSentByUser");
-                    requestsSentReference.child(borrower_id).child(request_id).setValue(true);
+                    String request_id = requestsSentReference.push().getKey();
+                    requestsSentReference.child(borrower_id).child(request_id).setValue(req);
 
                     // add request to list of received requests for book
                     DatabaseReference receivedRequestsByBookReference = mDatabase.getReference("RequestsReceivedByBook");
-                    receivedRequestsByBookReference.child(book_id).child(request_id).setValue(true);
+                    receivedRequestsByBookReference.child(book_id).child(request_id).setValue(req);
 
                     // send notification
                     SimpleDateFormat formatter = new SimpleDateFormat("HH:mm MM/dd");
@@ -246,8 +248,14 @@ public class BookDetailActivity extends BasicActivity {
 
     public void edit(View v) {
         Intent intent = new Intent(BookDetailActivity.this, EditBookDetailActivity.class);
-        intent.putExtra("bookid",book_id);
+        intent.putExtra("bookid", book_id);
         Log.e("bookid", book_id);
+        startActivity(intent);
+    }
+
+    public void viewRequests(View v) {
+        Intent intent = new Intent(BookDetailActivity.this, RequestsForBookListActivity.class);
+        intent.putExtra("bookid", book_id);
         startActivity(intent);
     }
 

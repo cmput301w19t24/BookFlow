@@ -121,6 +121,7 @@
         android:layout_marginBottom="8dp"
         android:text="View Requests"
         android:textSize="10sp"
+        android:onClick="viewRequests"
         app:layout_constraintBottom_toTopOf="@+id/bookImage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
