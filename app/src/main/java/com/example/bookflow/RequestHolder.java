@@ -73,7 +73,7 @@ public class RequestHolder extends RecyclerView.ViewHolder{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String requesterName = dataSnapshot.child(reqId).child("username").getValue().toString();
                 requester_name.setText(requesterName);
-                request_text.setText("has requested");
+                //request_text.setText("has requested");
                 Log.e("help", requesterName);
             }
 
@@ -83,6 +83,51 @@ public class RequestHolder extends RecyclerView.ViewHolder{
             }
         };
         userRef.addListenerForSingleValueEvent(userListener);
+    }
 
+    public void setRequestText(String s) {
+        request_text.setText(s);
+    }
+
+    public void setBookTitleForSentRequest(String bookId) {
+        final String myBookId = bookId;
+        mDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference bookRef = mDatabase.getReference("Books");
+
+        ValueEventListener bookListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String bookTitle = dataSnapshot.child(myBookId).child("title").getValue().toString();
+                requester_name.setText("You have requested " + bookTitle);
+                //Log.e("help", requesterName);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("cancelled", databaseError.toException());
+            }
+        };
+        bookRef.addListenerForSingleValueEvent(bookListener);
+    }
+    public void setOwnerNameForSentRequest(String ownerId){
+        final String ownId = ownerId;
+        mDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference userRef = mDatabase.getReference("Users");
+
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String ownerName = dataSnapshot.child(ownId).child("username").getValue().toString();
+                request_item_book_title.setText(ownerName);
+                //request_text.setText("has requested");
+                //Log.e("help", requesterName);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("cancelled", databaseError.toException());
+            }
+        };
+        userRef.addListenerForSingleValueEvent(userListener);
     }
 }
