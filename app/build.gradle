@@ -60,6 +60,9 @@ dependencies {
 
     // for barcode ML
     implementation 'com.google.firebase:firebase-ml-vision:19.0.2'
+
+    // for image cropper
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 }
 
 apply plugin: 'com.google.gms.google-services'
