@@ -62,7 +62,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-ml-vision:19.0.2'
 
     // for image cropper
-    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+    api 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
