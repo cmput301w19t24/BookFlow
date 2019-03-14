@@ -33,7 +33,9 @@
             android:name=".ScanActivity"
             android:label="ScanActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".BookDetailActivity" />
+        <activity android:name=".BookDetailActivity"
+            android:screenOrientation="portrait"
+            />
         <activity android:name=".AddBookActivity"
             android:exported="true" />
         <activity

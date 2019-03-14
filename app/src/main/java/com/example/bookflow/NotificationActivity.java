@@ -24,6 +24,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * This class is for the notifications page
  * received accept or request notifications
@@ -49,9 +52,12 @@ public class NotificationActivity extends BasicActivity {
 
         DatabaseReference notificationRef = FirebaseDatabase.getInstance().getReference().child("Notifications").child(user_id);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setReverseLayout(true);
+        llm.setStackFromEnd(true);
 
         recyclerView.setLayoutManager(llm);
 
@@ -71,19 +77,17 @@ public class NotificationActivity extends BasicActivity {
             public NotificationHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.notification_list_item, parent, false);
-
                 return new NotificationHolder(view);
             }
 
             @Override
             protected void onBindViewHolder(NotificationHolder holder, int position, Notification model) {
-                // Bind the image_details object to the BlogViewHolder
-                // ...
                 String outString = "";
                 String sender = model.getSenderName();
                 String book = model.getBookTitle();
                 String sender_id = model.getSenderId();
                 String path = "users/" + sender_id;
+                String timestamp = model.getTimestamp();
                 StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(path);
 
                 if (model.getType().equals("request")) {
@@ -92,6 +96,7 @@ public class NotificationActivity extends BasicActivity {
                 }
                 holder.setNotificationText(outString);
                 holder.setNotificationSenderIcon(imageRef);
+                holder.setNotificationTimestamp(timestamp);
             }
         };
         recyclerView.setAdapter(myFirebaseRecyclerAdapter);

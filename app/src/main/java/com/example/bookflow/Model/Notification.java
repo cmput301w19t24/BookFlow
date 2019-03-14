@@ -12,6 +12,16 @@ public class Notification {
     private String senderName;
     private String bookTitle;
     private String transactionId;
+    private String timestamp;
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
 
     public String getSenderId() {
         return senderId;
@@ -62,12 +72,13 @@ public class Notification {
     }
 
     public Notification(){}
-    public Notification(String senderId, String bookId, String type, String transactionId, String bookTitle, String senderName) {
+    public Notification(String senderId, String bookId, String type, String transactionId, String bookTitle, String senderName, String timestamp) {
         this.senderId = senderId;
         this.bookId = bookId;
         this.type = type;
         this.transactionId = transactionId;
         this.bookTitle = bookTitle;
         this.senderName = senderName;
+        this.timestamp = timestamp;
     }
 }

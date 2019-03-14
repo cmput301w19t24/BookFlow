@@ -25,6 +25,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 /**
  * This class is for the book details page
@@ -216,9 +219,11 @@ public class BookDetailActivity extends BasicActivity {
                     receivedRequestsByBookReference.child(book_id).child(request_id).setValue(true);
 
                     // send notification
+                    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm MM/dd");
+                    String timestamp = formatter.format(new Date());
                     DatabaseReference receiverRef = notificationRef.child(owner_id);
                     String notification_id = receiverRef.push().getKey();
-                    receiverRef.child(notification_id).setValue(new Notification(borrower_id, book_id, "request", request_id, title, username));
+                    receiverRef.child(notification_id).setValue(new Notification(borrower_id, book_id, "request", request_id, title, username, timestamp));
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {

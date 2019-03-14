@@ -15,12 +15,14 @@ public class NotificationHolder extends RecyclerView.ViewHolder{
     private final TextView notification_text;
     private final TextView notification_type;
     private final ImageView notification_sender_icon;
+    private final TextView notification_timestamp;
 
     public NotificationHolder(@NonNull View itemView) {
         super(itemView);
         notification_text = itemView.findViewById(R.id.notification_text);
         notification_type = itemView.findViewById(R.id.notification_type);
         notification_sender_icon = itemView.findViewById(R.id.notification_sender_icon);
+        notification_timestamp = itemView.findViewById(R.id.notification_timestamp);
     }
 
     public void setNotificationText(String s) {
@@ -34,5 +36,8 @@ public class NotificationHolder extends RecyclerView.ViewHolder{
     public void setNotificationSenderIcon(StorageReference s) {
         Glide.with(itemView.getContext())
                 .load(s).into(notification_sender_icon);
+    }
+    public void setNotificationTimestamp(String s) {
+        notification_timestamp.setText(s);
     }
 }
