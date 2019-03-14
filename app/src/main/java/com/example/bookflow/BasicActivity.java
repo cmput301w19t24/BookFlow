@@ -10,9 +10,19 @@ import android.graphics.Color;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -26,10 +36,41 @@ import java.util.function.ToDoubleBiFunction;
  */
 public class BasicActivity extends AppCompatActivity {
     ImageButton mainPageButton;
+    private FirebaseAuth mAuth;
+    boolean initialCall = true;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic);
+
+        mAuth = FirebaseAuth.getInstance();
+        String userId = mAuth.getCurrentUser().getUid();
+        DatabaseReference notificationRef =  FirebaseDatabase.getInstance().getReference("Notifications").child(userId);
+
+
+        ValueEventListener notificationListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (initialCall) {
+                    initialCall = false;
+                }
+                else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Notification Received",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("cancelled", databaseError.toException());
+            }
+        };
+        notificationRef.addValueEventListener(notificationListener);
     }
 
     /**
