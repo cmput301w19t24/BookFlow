@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".SearchActivity">
 
+    <include
+        android:id="@+id/include_main"
+        layout="@layout/activity_basic"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="67dp" />
+
     <android.support.constraint.Guideline
         android:id="@+id/guideline6"
         android:layout_width="wrap_content"
