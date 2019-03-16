@@ -44,7 +44,7 @@ public class SearchActivity extends BasicActivity {
     public static final String EXTRA_MESSAGE = "com.example.bookflow.MESSAGE";
     private EditText search_Text;
     private RadioGroup radioGroup;
-    private RadioButton checkAvailableButton,checkAcceptedButton,checkRequestedButton,checkBorrowedButton;
+    private RadioButton checkAvailableButton,checkAcceptedButton,checkRequestedButton,checkBorrowedButton,selectedButton;
     private DatabaseReference mUserDatabase;
     private Spinner spinner;
     private RecyclerView recyclerView;
@@ -99,10 +99,6 @@ public class SearchActivity extends BasicActivity {
 
         });
 
-        boolean isCheckedAccepted = false;
-        boolean isCheckedAvailable = false;
-        boolean isCheckedRequested = false;
-        boolean isCheckedBorrowed = false;
     }
 
 
@@ -237,7 +233,7 @@ public class SearchActivity extends BasicActivity {
      * @param searchText keyword input of User to search
      * @param constriant option constraint for search
      */
-    public void searchBook(String searchText,String constriant){
+    public void searchBook(String searchText,String constriant,String status){
         Toast.makeText(SearchActivity.this, "Started Search", Toast.LENGTH_LONG).show();
         Query firebaseSearchQuery = mUserDatabase.child("Books").orderByChild(constriant).startAt(searchText).endAt(searchText + "\uf8ff");
         FirebaseRecyclerOptions<Book> options = new FirebaseRecyclerOptions.Builder<Book>()
@@ -295,21 +291,28 @@ public class SearchActivity extends BasicActivity {
         String searchOption = spinner.getSelectedItem().toString();
         String searchText = search_Text.getText().toString();
         String constraint = "title";
+        String status;
         switch (searchOption){
             case "search user":
                 searchUser(searchText);
                 break;
             case "search by book name":
+                selectedButton = (RadioButton)findViewById(radioGroup.getCheckedRadioButtonId());
+                status = selectedButton.getText().toString();
                 constraint = "title";
-                searchBook(searchText,constraint);
+                searchBook(searchText,constraint,status);
                 break;
             case "search by book author":
+                selectedButton = (RadioButton)findViewById(radioGroup.getCheckedRadioButtonId());
+                status = selectedButton.getText().toString();
                 constraint = "author";
-                searchBook(searchText,constraint);
+                searchBook(searchText,constraint,status);
                 break;
             case "search by book ISBN":
+                selectedButton = (RadioButton)findViewById(radioGroup.getCheckedRadioButtonId());
+                status = selectedButton.getText().toString();
                 constraint = "isbn";
-                searchBook(searchText,constraint);
+                searchBook(searchText,constraint,status);
         }
 
     }
