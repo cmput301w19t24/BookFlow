@@ -16,14 +16,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -45,6 +49,11 @@ public class MainActivity extends BasicActivity {
     private FirebaseAuth mAuth;
     private String uid;
     private Query query;
+
+    ArrayList<Book> books;
+    ArrayList<Book> nonfiltered_books;
+    boolean firstgrab = true;
+    ArrayList<Book> filtered_books;
 
     // class of Adapter
     class MyAdapter extends ArrayAdapter<Book> {
@@ -78,15 +87,118 @@ public class MainActivity extends BasicActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         uid = mAuth.getCurrentUser().getUid();
         query = database.getReference().child("Books");
 
-        ArrayList<Book> books = new ArrayList<>();
+        books = new ArrayList<Book>();
+        filtered_books = new ArrayList<Book>();
+        nonfiltered_books = new ArrayList<Book>();
         adpBook = new MyAdapter(this,books);
         bookList();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+//        CheckBox checkBox = (CheckBox) menu.findItem(R.id.check_accepted).getActionView();
+//        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked) {
+//                    // perform logic
+//                }
+//            }
+//        });
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+        item.setChecked(!item.isChecked());
+
+        switch (item.getItemId()) {
+            case R.id.check_available:
+                if (item.isChecked()) {
+                    addToList(Book.BookStatus.AVAILABLE);
+                } else {
+                    removeFromList(Book.BookStatus.AVAILABLE);
+                }
+                return true;
+            case R.id.check_accepted:
+                if (item.isChecked()) {
+                    addToList(Book.BookStatus.ACCEPTED);
+                } else {
+                    removeFromList(Book.BookStatus.ACCEPTED);
+                }
+                return true;
+            case R.id.check_requested:
+                if (item.isChecked()) {
+                    addToList(Book.BookStatus.REQUESTED);
+                } else {
+                    removeFromList(Book.BookStatus.REQUESTED);
+                }
+                return true;
+            case R.id.check_borrowed:
+                if (item.isChecked()) {
+                    addToList(Book.BookStatus.BORROWED);
+                } else {
+                    removeFromList(Book.BookStatus.BORROWED);
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.check_accepted) {
+//            item.setChecked(!item.isChecked());
+////            return true;
+//        }
+    }
+
+    private void addToList(Book.BookStatus status) {
+        for (int i=0; i<nonfiltered_books.size(); i++) {
+            Book book = nonfiltered_books.get(i);
+            if (book.getStatus().equals(status)
+                    || book.getStatus().toString().equals(status.toString())) {
+//                if(!filtered_books.contains(book))
+                    adpBook.add(book);
+//                    adpBook.remove(book);
+//                    books.add(book);
+            }
+        }
+        filtered_books = (ArrayList<Book>)books.clone();
+        myBookList.setAdapter(adpBook);
+    }
+
+    private void removeFromList(Book.BookStatus status) {
+        if (firstgrab) {
+            nonfiltered_books = (ArrayList<Book>) books.clone();
+            firstgrab = false;
+        }
+        for (int i=0; i<filtered_books.size(); i++) {
+            Book book = filtered_books.get(i);
+            if (book.getStatus().equals(status)
+                || book.getStatus().toString().equals(status.toString())) {
+                if(filtered_books.contains(book))
+                    adpBook.remove(book);
+            }
+        }
+        filtered_books = (ArrayList<Book>)books.clone();
+        myBookList.setAdapter(adpBook);
+    }
+
+
 
     /**
      * view book list method
@@ -98,7 +210,10 @@ public class MainActivity extends BasicActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 //                System.out.println("Added " + " " +dataSnapshot.getValue());
-                adpBook.add(dataSnapshot.getValue(Book.class));
+                Book book = (Book)dataSnapshot.getValue(Book.class);
+                if (!books.contains(book)) {
+                    adpBook.add(book);
+                }
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
@@ -126,6 +241,7 @@ public class MainActivity extends BasicActivity {
                 startActivity(intent_detail);
             }
         });
+        nonfiltered_books = (ArrayList<Book>) books.clone();
     }
 
     public void seeBorrowList(View borrowlistV) {
