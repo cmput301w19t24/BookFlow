@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.bumptech.glide.Glide;
 import com.example.bookflow.Model.Notification;
@@ -46,6 +47,10 @@ public class NotificationActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_notification);
+
+        //REMOVE
+        Button tempMyReqButton = findViewById(R.id.tempMySentRequests);
+        tempMyReqButton.setVisibility(View.VISIBLE);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
@@ -118,7 +123,7 @@ public class NotificationActivity extends BasicActivity {
         }
     }
 
-    public void tempMyRequests(View v) {
+    public void tempMySentRequests(View v) {
         Intent intent = new Intent(NotificationActivity.this, SentRequestsListActivity.class);
         startActivity(intent);
     }

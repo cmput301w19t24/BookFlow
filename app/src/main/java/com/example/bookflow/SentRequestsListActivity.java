@@ -1,5 +1,6 @@
 package com.example.bookflow;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,7 +44,7 @@ public class SentRequestsListActivity extends BasicActivity{
         TextView headerView = findViewById(R.id.notification_header_text);
         headerView.setText("Sent Requests");
 
-        DatabaseReference sentRequestsReference = mDatabase.getReference("RequestsSentByUser").child(userId);
+        final DatabaseReference sentRequestsReference = mDatabase.getReference("RequestsSentByUser").child(userId);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -85,7 +86,40 @@ public class SentRequestsListActivity extends BasicActivity{
             public RequestHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.request_list_item, parent, false);
-                return new RequestHolder(view);
+                RequestHolder vh = new RequestHolder(view);
+                vh.setOnClickListener(new RequestHolder.ClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+
+                        DatabaseReference dbRef = myFirebaseRecyclerAdapter.getRef(position);
+                        //String requestId = dbRef.getKey();
+                        //intent.putExtra("requestId", requestId);
+                        //startActivity(intent);
+                        ValueEventListener requestListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                String ownerId = dataSnapshot.child("ownerId").getValue().toString();
+                                String borrowerId = dataSnapshot.child("borrowerId").getValue().toString();
+                                String bookId = dataSnapshot.child("bookId").getValue().toString();
+                                String status = dataSnapshot.child("status").getValue().toString();
+
+                                Intent intent = new Intent(SentRequestsListActivity.this, RequestDetailActivity.class);
+                                intent.putExtra("ownerId", ownerId);
+                                intent.putExtra("borrowerId", borrowerId);
+                                intent.putExtra("bookId", bookId);
+                                intent.putExtra("status", status);
+                                startActivity(intent);
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.w("cancelled", databaseError.toException());
+                            }
+                        };
+                        dbRef.addListenerForSingleValueEvent(requestListener);
+                    }
+                });
+                return vh;
             }
 
             @Override
@@ -95,6 +129,7 @@ public class SentRequestsListActivity extends BasicActivity{
                 String requesterID = model.getBorrowerId();
                 String bookId = model.getBookId();
                 String ownerId = model.getOwnerId();
+                String status = model.getStatus();
                 Log.e("testing", ownerId);
                 String path = "users/" + requesterID;
                 //StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(path);
@@ -107,6 +142,7 @@ public class SentRequestsListActivity extends BasicActivity{
                 //holder.setBookTitleForSentRequest(bookId);
                 //holder.setOwnerNameForSentRequest(ownerId);
                 holder.setRequestItemText(ownerId, bookId, requesterID, "sent");
+                holder.setStatus(status);
             }
         };
         recyclerView.setAdapter(myFirebaseRecyclerAdapter);

@@ -1,5 +1,6 @@
 package com.example.bookflow;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,6 +24,7 @@ public class RequestHolder extends RecyclerView.ViewHolder{
     private final ImageView request_item_icon;
     //private final TextView request_text;
     //private final TextView request_item_book_title;
+    private final TextView request_status;
     private final TextView request_item_text;
     FirebaseDatabase mDatabase;
 
@@ -33,7 +35,36 @@ public class RequestHolder extends RecyclerView.ViewHolder{
         request_item_icon = itemView.findViewById(R.id.request_item_icon);
         //request_text = itemView.findViewById(R.id.request_text);
         request_item_text = itemView.findViewById(R.id.request_item_text);
+        request_status = itemView.findViewById(R.id.request_header);
+
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mClickListener.onItemClick(v, getAdapterPosition());
+
+            }
+        });
+//        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                mClickListener.onItemLongClick(v, getAdapterPosition());
+//                return true;
+//            }
+//        });
     }
+
+    private RequestHolder.ClickListener mClickListener;
+
+    //Interface to send callbacks...
+    public interface ClickListener{
+        public void onItemClick(View view, int position);
+//        public void onItemLongClick(View view, int position);
+    }
+
+    public void setOnClickListener(RequestHolder.ClickListener clickListener){
+        mClickListener = clickListener;
+    }
+
 
 //    public void setRequesterName(String s) {
 //    }
@@ -162,7 +193,13 @@ public class RequestHolder extends RecyclerView.ViewHolder{
                 ValueEventListener bookListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        String bookTitle = dataSnapshot.child(myBookId).child("title").getValue().toString();
+                        String bookTitle;
+                        try {
+                            bookTitle = dataSnapshot.child(myBookId).child("title").getValue().toString();
+                        }
+                        catch (Exception e) {
+                            bookTitle = "title not found";
+                        }
                         String bookImageRef;
                         try {
                             bookImageRef = dataSnapshot.child(myBookId).child("photoUri").getValue().toString();
@@ -196,7 +233,11 @@ public class RequestHolder extends RecyclerView.ViewHolder{
             }
         };
         userRef.addListenerForSingleValueEvent(userListener);
-
-
+    }
+    public void setStatus(String status) {
+        request_status.setText(status);
+        if (status.equals("Pending")) {
+            request_status.setTextColor(Color.parseColor("#FFA500"));
+        }
     }
 }
