@@ -1,5 +1,6 @@
 package com.example.bookflow;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -115,5 +116,10 @@ public class NotificationActivity extends BasicActivity {
         if (myFirebaseRecyclerAdapter!= null) {
             myFirebaseRecyclerAdapter.stopListening();
         }
+    }
+
+    public void tempMyRequests(View v) {
+        Intent intent = new Intent(NotificationActivity.this, SentRequestsListActivity.class);
+        startActivity(intent);
     }
 }

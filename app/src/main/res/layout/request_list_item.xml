@@ -63,10 +63,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:text="REMOVE"
         android:layout_marginTop="30dp"
-        android:textSize="12sp"
+        android:layout_marginEnd="8dp"
+        android:text="REMOVE"
 
+        android:textSize="12sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/request_text"
         app:layout_constraintTop_toTopOf="parent" />
 
