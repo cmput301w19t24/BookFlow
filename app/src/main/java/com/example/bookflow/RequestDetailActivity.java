@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +31,12 @@ public class RequestDetailActivity extends BasicActivity {
     private Button acceptButton;
     private Button rejectButton;
 
+    private String ownerId;
+    private String bookId;
+    private String borrowerId;
+    private String status;
+    private String requestId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +59,11 @@ public class RequestDetailActivity extends BasicActivity {
 
 
         Bundle extras = getIntent().getExtras();
-        final String ownerId = extras.getString("ownerId");
-        String bookId = extras.getString("bookId");
-        final String borrowerId = extras.getString("borrowerId");
-        final String status = extras.getString("status");
+        ownerId = extras.getString("ownerId");
+        bookId = extras.getString("bookId");
+        borrowerId = extras.getString("borrowerId");
+        status = extras.getString("status");
+        requestId = extras.getString("requestId");
 
         DatabaseReference dbRef = mDatabase.getReference("Books").child(bookId);
 
@@ -112,7 +120,6 @@ public class RequestDetailActivity extends BasicActivity {
                                 requestText.setText("Your request for \"" + bookTitle + "\" from "  +ownerUsername +" is still pending.");
                                 cancelButton.setVisibility(View.VISIBLE);
                             }
-
                         }
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
@@ -130,7 +137,24 @@ public class RequestDetailActivity extends BasicActivity {
             }
         };
         dbRef.addListenerForSingleValueEvent(bookListener);
+    }
 
+    public void reject(View v) {
+        Log.e("hello",requestId);
+        // display toast
+        Toast toast = Toast.makeText(getApplicationContext(),
+                "Request Rejected",
+                Toast.LENGTH_LONG);
+        toast.show();
+
+        // remove from owner's received requests
+        DatabaseReference bookReqRef = mDatabase.getReference("RequestsReceivedByBook").child(bookId).child(requestId);
+        bookReqRef.removeValue();
+
+        // set requester's status to rejected
+        DatabaseReference sentReqRef = mDatabase.getReference("RequestsSentByUser").child(borrowerId).child(requestId).child("status");
+        sentReqRef.setValue("Rejected");
+        finish();
 
     }
 }

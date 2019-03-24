@@ -102,13 +102,14 @@ public class RequestsForBookListActivity extends BasicActivity {
                     @Override
                     public void onItemClick(View view, int position) {
 
-                        DatabaseReference dbRef = myFirebaseRecyclerAdapter.getRef(position);
+                        final DatabaseReference dbRef = myFirebaseRecyclerAdapter.getRef(position);
                         //String requestId = dbRef.getKey();
                         //intent.putExtra("requestId", requestId);
                         //startActivity(intent);
                         ValueEventListener requestListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                String requestId = dbRef.getKey();
 
                                 String ownerId = dataSnapshot.child("ownerId").getValue().toString();
                                 String borrowerId = dataSnapshot.child("borrowerId").getValue().toString();
@@ -120,6 +121,7 @@ public class RequestsForBookListActivity extends BasicActivity {
                                 intent.putExtra("borrowerId", borrowerId);
                                 intent.putExtra("bookId", bookId);
                                 intent.putExtra("status", status);
+                                intent.putExtra("requestId", requestId);
                                 startActivity(intent);
                             }
                             @Override
@@ -149,7 +151,7 @@ public class RequestsForBookListActivity extends BasicActivity {
                 holder.setRequesterIcon(imageRef);
                 //holder.setBookTitle(bookId);
                 //holder.setRequestText("has requested");
-                holder.setRequestItemText(ownerId, bookId, requesterId, "received");
+                holder.setRequestItemText(ownerId, bookId, requesterId, "received", status);
                 holder.setStatus(status);
 
             }

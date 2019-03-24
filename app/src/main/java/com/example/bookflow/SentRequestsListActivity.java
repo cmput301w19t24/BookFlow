@@ -91,25 +91,31 @@ public class SentRequestsListActivity extends BasicActivity{
                     @Override
                     public void onItemClick(View view, int position) {
 
-                        DatabaseReference dbRef = myFirebaseRecyclerAdapter.getRef(position);
+                        final DatabaseReference dbRef = myFirebaseRecyclerAdapter.getRef(position);
                         //String requestId = dbRef.getKey();
                         //intent.putExtra("requestId", requestId);
                         //startActivity(intent);
                         ValueEventListener requestListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                                String requestId = dbRef.getKey();
                                 String ownerId = dataSnapshot.child("ownerId").getValue().toString();
                                 String borrowerId = dataSnapshot.child("borrowerId").getValue().toString();
                                 String bookId = dataSnapshot.child("bookId").getValue().toString();
                                 String status = dataSnapshot.child("status").getValue().toString();
 
-                                Intent intent = new Intent(SentRequestsListActivity.this, RequestDetailActivity.class);
-                                intent.putExtra("ownerId", ownerId);
-                                intent.putExtra("borrowerId", borrowerId);
-                                intent.putExtra("bookId", bookId);
-                                intent.putExtra("status", status);
-                                startActivity(intent);
+                                if (status.equals("Rejected")) {
+                                    dbRef.removeValue();
+                                }
+                                else {
+                                    Intent intent = new Intent(SentRequestsListActivity.this, RequestDetailActivity.class);
+                                    intent.putExtra("ownerId", ownerId);
+                                    intent.putExtra("borrowerId", borrowerId);
+                                    intent.putExtra("bookId", bookId);
+                                    intent.putExtra("status", status);
+                                    intent.putExtra("requestId", requestId);
+                                    startActivity(intent);
+                                }
                             }
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
@@ -141,7 +147,7 @@ public class SentRequestsListActivity extends BasicActivity{
                 //holder.setBookTitle(bookId);
                 //holder.setBookTitleForSentRequest(bookId);
                 //holder.setOwnerNameForSentRequest(ownerId);
-                holder.setRequestItemText(ownerId, bookId, requesterID, "sent");
+                holder.setRequestItemText(ownerId, bookId, requesterID, "sent", status);
                 holder.setStatus(status);
             }
         };

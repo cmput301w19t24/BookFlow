@@ -165,10 +165,11 @@ public class RequestHolder extends RecyclerView.ViewHolder{
                 .load(s).into(request_item_icon);
     }
 
-    public void setRequestItemText(String ownerId, String bookId, String requesterId, String type) {
+    public void setRequestItemText(String ownerId, String bookId, String requesterId, String type, String status) {
         final String ownId = ownerId;
         final String myBookId = bookId;
         final String reqId = requesterId;
+        final String stat = status;
         mDatabase = FirebaseDatabase.getInstance();
         DatabaseReference userRef = mDatabase.getReference("Users");
 
@@ -212,7 +213,12 @@ public class RequestHolder extends RecyclerView.ViewHolder{
                             outString = requesterName + " has requested \"" + bookTitle + "\".";
                         }
                         else if (myType.equals("sent")) {
-                            outString = "You have requested \"" + bookTitle + "\" from " + ownerName + ".";
+                            if(stat.equals("Pending")) {
+                                outString = "You have requested \"" + bookTitle + "\" from " + ownerName + ".";
+                            }
+                            else if (stat.equals("Rejected")){
+                                outString = ownerName + " has rejected your request for \"" + bookTitle + "\"";
+                            }
                             Glide.with(itemView.getContext())
                                     .load(bookImageRef).into(request_item_icon);
                         }
@@ -238,6 +244,10 @@ public class RequestHolder extends RecyclerView.ViewHolder{
         request_status.setText(status);
         if (status.equals("Pending")) {
             request_status.setTextColor(Color.parseColor("#FFA500"));
+        }
+        else if (status.equals("Rejected")){
+            request_status.setTextColor(Color.parseColor("#FF1A00"));
+
         }
     }
 }
