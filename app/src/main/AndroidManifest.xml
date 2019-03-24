@@ -55,6 +55,9 @@
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="barcode" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDGAAKq-tTo9lIYNZx_ADoe2us8DZ1t-Ws"/>
     </application>
 
 </manifest>
