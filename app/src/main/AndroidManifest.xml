@@ -22,7 +22,9 @@
         <activity android:name=".BorrowListActivity" />
         <activity android:name=".BookListActivity" />
         <activity android:name=".MapsActivity" />
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".RequestsForBookListActivity"/>
         <activity android:name=".NotificationActivity" />
         <activity android:name=".UserProfileActivity" />

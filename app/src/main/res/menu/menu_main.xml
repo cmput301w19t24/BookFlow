@@ -1,0 +1,33 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+    <item
+        android:id="@+id/check_available"
+        android:checkable="true"
+        android:checked="true"
+        android:orderInCategory="100"
+        android:title="Avaliable"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/check_requested"
+        android:checkable="true"
+        android:checked="true"
+        android:orderInCategory="100"
+        android:title="Requested"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/check_accepted"
+        android:checkable="true"
+        android:checked="true"
+        android:orderInCategory="100"
+        android:title="Accepted"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/check_borrowed"
+        android:checkable="true"
+        android:checked="true"
+        android:orderInCategory="100"
+        android:title="Borrowed"
+        app:showAsAction="never" />
+</menu>
