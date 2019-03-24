@@ -97,15 +97,16 @@ public class SentRequestsListActivity extends BasicActivity{
                 String ownerId = model.getOwnerId();
                 Log.e("testing", ownerId);
                 String path = "users/" + requesterID;
-                StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(path);
+                //StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(path);
 
 
                 //holder.setRequesterName("You Have Requested");
-                holder.setRequestText("from");
-                holder.setRequesterIcon(imageRef);
+                //holder.setRequestText("from");
+                //holder.setRequesterIcon(imageRef);
                 //holder.setBookTitle(bookId);
-                holder.setBookTitleForSentRequest(bookId);
-                holder.setOwnerNameForSentRequest(ownerId);
+                //holder.setBookTitleForSentRequest(bookId);
+                //holder.setOwnerNameForSentRequest(ownerId);
+                holder.setRequestItemText(ownerId, bookId, requesterID, "sent");
             }
         };
         recyclerView.setAdapter(myFirebaseRecyclerAdapter);

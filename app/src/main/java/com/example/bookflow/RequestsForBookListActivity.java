@@ -80,7 +80,7 @@ public class RequestsForBookListActivity extends BasicActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TextView bookTitleView = findViewById(R.id.notification_header_text);
                 String bookTitle = dataSnapshot.child(bookId).child("title").getValue().toString();
-                bookTitleView.setText("Requests For " + bookTitle);
+                bookTitleView.setText("Requests for \"" + bookTitle + "\"");
                 //Log.e("help", requesterName);
             }
 
@@ -103,17 +103,19 @@ public class RequestsForBookListActivity extends BasicActivity {
             protected void onBindViewHolder(RequestHolder holder, int position, Request model) {
                 String outString = "";
 
-                String requesterID = model.getBorrowerId();
+                String requesterId = model.getBorrowerId();
                 String bookId = model.getBookId();
                 String ownerId = model.getOwnerId();
-                String path = "users/" + requesterID;
+                String path = "users/" + requesterId;
                 StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(path);
 
 
-                holder.setRequesterName(requesterID);
+                //holder.setRequesterName(requesterID);
                 holder.setRequesterIcon(imageRef);
-                holder.setBookTitle(bookId);
-                holder.setRequestText("has requested");
+                //holder.setBookTitle(bookId);
+                //holder.setRequestText("has requested");
+                holder.setRequestItemText(ownerId, bookId, requesterId, "received");
+
             }
         };
         recyclerView.setAdapter(myFirebaseRecyclerAdapter);
