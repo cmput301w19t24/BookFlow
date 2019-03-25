@@ -246,6 +246,7 @@ public class MainActivity extends BasicActivity {
 
     public void seeBorrowList(View borrowlistV) {
         Intent intent_borrowlist = new Intent(this, BorrowListActivity.class);
+        intent_borrowlist.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent_borrowlist);
     }
 }
