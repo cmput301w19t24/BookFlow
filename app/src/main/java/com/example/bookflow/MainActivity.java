@@ -167,6 +167,7 @@ public class MainActivity extends BasicActivity {
     }
 
     private void addToList(Book.BookStatus status) {
+        filtered_books = (ArrayList<Book>)books.clone();
         for (int i=0; i<nonfiltered_books.size(); i++) {
             Book book = nonfiltered_books.get(i);
             if (book.getStatus().equals(status)
@@ -177,7 +178,6 @@ public class MainActivity extends BasicActivity {
 //                    books.add(book);
             }
         }
-        filtered_books = (ArrayList<Book>)books.clone();
         myBookList.setAdapter(adpBook);
     }
 
@@ -186,6 +186,7 @@ public class MainActivity extends BasicActivity {
             nonfiltered_books = (ArrayList<Book>) books.clone();
             firstgrab = false;
         }
+        filtered_books = (ArrayList<Book>)books.clone();
         for (int i=0; i<filtered_books.size(); i++) {
             Book book = filtered_books.get(i);
             if (book.getStatus().equals(status)
@@ -194,7 +195,6 @@ public class MainActivity extends BasicActivity {
                     adpBook.remove(book);
             }
         }
-        filtered_books = (ArrayList<Book>)books.clone();
         myBookList.setAdapter(adpBook);
     }
 
