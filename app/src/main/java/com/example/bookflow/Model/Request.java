@@ -21,7 +21,7 @@ public class Request {
         this.ownerId = ownerId;
         this.borrowerId = borrowerId;
         this.bookId = bookId;
-        this.status = "pending";
+        this.status = "Pending";
     }
 
     public String getOwnerId() {

@@ -45,32 +45,32 @@ public class BasicActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic);
 
-        mAuth = FirebaseAuth.getInstance();
-        String userId = mAuth.getCurrentUser().getUid();
-        DatabaseReference notificationRef =  FirebaseDatabase.getInstance().getReference("Notifications").child(userId);
-
-
-        ValueEventListener notificationListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (initialCall) {
-                    initialCall = false;
-                }
-                else {
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            "Notification Received",
-                            Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("cancelled", databaseError.toException());
-            }
-        };
-        notificationRef.addValueEventListener(notificationListener);
+//        mAuth = FirebaseAuth.getInstance();
+//        String userId = mAuth.getCurrentUser().getUid();
+//        DatabaseReference notificationRef =  FirebaseDatabase.getInstance().getReference("Notifications").child(userId);
+//
+//
+//        ValueEventListener notificationListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (initialCall) {
+//                    initialCall = false;
+//                }
+//                else {
+//                    Toast toast = Toast.makeText(getApplicationContext(),
+//                            "Notification Received",
+//                            Toast.LENGTH_SHORT);
+//                    toast.show();
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Log.w("cancelled", databaseError.toException());
+//            }
+//        };
+//        notificationRef.addValueEventListener(notificationListener);
     }
 
     /**

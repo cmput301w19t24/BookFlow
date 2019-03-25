@@ -1,5 +1,6 @@
 package com.example.bookflow;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.menu.MenuView;
@@ -80,7 +81,7 @@ public class RequestsForBookListActivity extends BasicActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TextView bookTitleView = findViewById(R.id.notification_header_text);
                 String bookTitle = dataSnapshot.child(bookId).child("title").getValue().toString();
-                bookTitleView.setText("Requests For " + bookTitle);
+                bookTitleView.setText("Requests for \"" + bookTitle + "\"");
                 //Log.e("help", requesterName);
             }
 
@@ -96,24 +97,63 @@ public class RequestsForBookListActivity extends BasicActivity {
             public RequestHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.request_list_item, parent, false);
-                return new RequestHolder(view);
+                RequestHolder vh = new RequestHolder(view);
+                vh.setOnClickListener(new RequestHolder.ClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+
+                        final DatabaseReference dbRef = myFirebaseRecyclerAdapter.getRef(position);
+                        //String requestId = dbRef.getKey();
+                        //intent.putExtra("requestId", requestId);
+                        //startActivity(intent);
+                        ValueEventListener requestListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String requestId = dbRef.getKey();
+
+                                String ownerId = dataSnapshot.child("ownerId").getValue().toString();
+                                String borrowerId = dataSnapshot.child("borrowerId").getValue().toString();
+                                String bookId = dataSnapshot.child("bookId").getValue().toString();
+                                String status = dataSnapshot.child("status").getValue().toString();
+
+                                Intent intent = new Intent(RequestsForBookListActivity.this, RequestDetailActivity.class);
+                                intent.putExtra("ownerId", ownerId);
+                                intent.putExtra("borrowerId", borrowerId);
+                                intent.putExtra("bookId", bookId);
+                                intent.putExtra("status", status);
+                                intent.putExtra("requestId", requestId);
+                                startActivity(intent);
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.w("cancelled", databaseError.toException());
+                            }
+                        };
+                        dbRef.addListenerForSingleValueEvent(requestListener);
+                    }
+                });
+                return vh;
             }
 
             @Override
             protected void onBindViewHolder(RequestHolder holder, int position, Request model) {
                 String outString = "";
 
-                String requesterID = model.getBorrowerId();
+                String requesterId = model.getBorrowerId();
                 String bookId = model.getBookId();
                 String ownerId = model.getOwnerId();
-                String path = "users/" + requesterID;
+                String status = model.getStatus();
+                String path = "users/" + requesterId;
                 StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(path);
 
 
-                holder.setRequesterName(requesterID);
+                //holder.setRequesterName(requesterID);
                 holder.setRequesterIcon(imageRef);
-                holder.setBookTitle(bookId);
-                holder.setRequestText("has requested");
+                //holder.setBookTitle(bookId);
+                //holder.setRequestText("has requested");
+                holder.setRequestItemText(ownerId, bookId, requesterId, "received", status);
+                holder.setStatus(status);
+
             }
         };
         recyclerView.setAdapter(myFirebaseRecyclerAdapter);

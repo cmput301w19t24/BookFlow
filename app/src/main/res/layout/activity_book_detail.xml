@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="5462342346662346"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/author" />
@@ -93,7 +93,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Accepted"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/isbn" />
@@ -120,7 +120,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="View Requests"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:onClick="viewRequests"
         app:layout_constraintBottom_toTopOf="@+id/bookImage"
         app:layout_constraintStart_toStartOf="parent"
