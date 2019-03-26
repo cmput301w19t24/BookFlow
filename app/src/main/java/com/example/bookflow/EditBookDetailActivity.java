@@ -28,9 +28,11 @@ import com.google.firebase.database.ValueEventListener;
  * Activity responsible for editing the book detail.
  * This activity should be started by other activity
  * with an intent containing the book id which can be
- * retrieved by key "bookid".
+ * retrieved by key INTENT_KEY (i.e. "bookid").
  */
 public class EditBookDetailActivity extends BasicActivity {
+
+    public static final String INTENT_KEY = "bookid";
 
     private static final String TAG = "EditBookDetailActivity";
 
@@ -123,7 +125,7 @@ public class EditBookDetailActivity extends BasicActivity {
 
 
         /* populate existing book info to edit views */
-        mBookId = getIntent().getStringExtra("bookid");
+        mBookId = getIntent().getStringExtra(INTENT_KEY);
         mFirebaseIO.getBook(mBookId, new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

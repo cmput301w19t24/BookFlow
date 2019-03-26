@@ -84,6 +84,12 @@
     <string name="edit_book_error">Edit book failed. Try again :(</string>
     <string name="we_need_write_permission">We need write permission to complete this actioin.</string>
     <string name="transaction">transaction</string>
+    <string name="request">request</string>
+    <string name="view_requests">View Requests</string>
+    <string name="edit_book">edit book</string>
+    <string name="isbn_doesnt_match">ISBN doesn\'t match.</string>
+    <string name="scan_successful">Scan Successful!</string>
+    <string name="invalid_operation">Invalid Operation!</string>
 
     <!-- edit book -->
 

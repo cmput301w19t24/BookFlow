@@ -254,6 +254,6 @@ public class Book {
         AVAILABLE,
         REQUESTED,
         ACCEPTED,
-        BORROWED
+        BORROWED,
     }
 }
