@@ -100,7 +100,11 @@ public class EditBookDetailActivity extends BasicActivity {
         mPhotoImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).start(EditBookDetailActivity.this);
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setFixAspectRatio(true)
+                        .setAspectRatio(1, 1)
+                        .start(EditBookDetailActivity.this);
             }
         });
 
