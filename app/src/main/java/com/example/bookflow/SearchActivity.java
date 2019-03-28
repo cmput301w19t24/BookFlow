@@ -51,13 +51,14 @@ public class SearchActivity extends BasicActivity {
     public static final String EXTRA_MESSAGE = "com.example.bookflow.MESSAGE";
     private EditText search_Text;
     private RadioGroup radioGroup;
-    private RadioButton checkAvailableButton,checkAcceptedButton,checkRequestedButton,checkBorrowedButton,selectedButton;
+    private RadioButton checkAvailableButton, checkAcceptedButton, checkRequestedButton, checkBorrowedButton, selectedButton;
     private DatabaseReference mDatabase;
     private Spinner spinner;
     private RecyclerView recyclerView;
-    FirebaseRecyclerAdapter<User,UserViewHolder> firebaseUserRecyclerAdapter;
+    FirebaseRecyclerAdapter<User, UserViewHolder> firebaseUserRecyclerAdapter;
     FirebaseRecyclerAdapter<Book, BookViewHolder> firebaseBookRecyclerAdapter;
     private List<Book> books;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,18 +108,42 @@ public class SearchActivity extends BasicActivity {
 
         });
         books = new ArrayList<Book>();
-        bookList();
+        mDatabase.child("Books").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Book book = (Book) dataSnapshot.getValue(Book.class);
+                books.add(book);
+                Log.i("booklist", "add book name = " + book.getTitle());
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 
 
     /**
      * User view holder class for search user
      */
-    public static class UserViewHolder extends RecyclerView.ViewHolder{
+    public static class UserViewHolder extends RecyclerView.ViewHolder {
         View mView;
 
         /**
          * Constructor for view holder
+         *
          * @param itemView
          */
         public UserViewHolder(@NonNull View itemView) {
@@ -128,17 +153,18 @@ public class SearchActivity extends BasicActivity {
 
         /**
          * get view element and set details
-         * @param ctx current context
+         *
+         * @param ctx             current context
          * @param userName
          * @param userEmail
          * @param userPhoneNumber
          * @param userImage
          */
-        public void setDetails(Context ctx, String userName, String userEmail, String userPhoneNumber, String userImage){
-            TextView user_name = (TextView)mView.findViewById(R.id.searchDetail1);
-            TextView user_email = (TextView)mView.findViewById(R.id.searchDetail2);
-            TextView user_phoneNumber = (TextView)mView.findViewById(R.id.searchDetail3);
-            ImageView user_image = (ImageView)mView.findViewById(R.id.searchItemImage);
+        public void setDetails(Context ctx, String userName, String userEmail, String userPhoneNumber, String userImage) {
+            TextView user_name = (TextView) mView.findViewById(R.id.searchDetail1);
+            TextView user_email = (TextView) mView.findViewById(R.id.searchDetail2);
+            TextView user_phoneNumber = (TextView) mView.findViewById(R.id.searchDetail3);
+            ImageView user_image = (ImageView) mView.findViewById(R.id.searchItemImage);
             user_name.setText(userName);
             user_email.setText(userEmail);
             user_phoneNumber.setText(userPhoneNumber);
@@ -148,54 +174,55 @@ public class SearchActivity extends BasicActivity {
 
     /**
      * search User function
+     *
      * @param searchText input keyword of User to search
      */
-    public void searchUser(String searchText){
+    public void searchUser(String searchText) {
         Toast.makeText(SearchActivity.this, "Started Search", Toast.LENGTH_LONG).show();
         Query firebaseUserSearchQuery = mDatabase.child("Users").orderByChild("username").startAt(searchText).endAt(searchText + "\uf8ff");
 
         FirebaseRecyclerOptions<User> options = new FirebaseRecyclerOptions.Builder<User>()
-                .setQuery(firebaseUserSearchQuery,User.class).build();
-        firebaseUserRecyclerAdapter=
-        new FirebaseRecyclerAdapter<User, UserViewHolder>(options) {
-            @NonNull
-            @Override
-            public UserViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.searchitem,viewGroup,false);
-                return new UserViewHolder(view);
-            }
+                .setQuery(firebaseUserSearchQuery, User.class).build();
+        firebaseUserRecyclerAdapter =
+                new FirebaseRecyclerAdapter<User, UserViewHolder>(options) {
+                    @NonNull
+                    @Override
+                    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+                        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.searchitem, viewGroup, false);
+                        return new UserViewHolder(view);
+                    }
 
-            /**
-             * bind content to view holder
-             * @param holder user view holder
-             * @param position position in the view list
-             * @param model User model
-             */
-            @Override
-            protected void onBindViewHolder(@NonNull UserViewHolder holder, final int position, @NonNull User model) {
-                holder.setDetails(getApplicationContext(),model.getUsername(),model.getEmail(),model.getPhoneNumber(),model.getImageurl());
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
                     /**
-                     * item click on method
-                     * jump to user profile page
-                     * @param v
+                     * bind content to view holder
+                     * @param holder user view holder
+                     * @param position position in the view list
+                     * @param model User model
                      */
                     @Override
-                    public void onClick(View v) {
-                        String user_id = getRef(position).getKey();
-                        Log.i("userid",user_id);
-                        Intent intent = new Intent(SearchActivity.this,UserProfileActivity.class);
-                        intent.putExtra(EXTRA_MESSAGE,user_id);
-                        startActivity(intent);
+                    protected void onBindViewHolder(@NonNull UserViewHolder holder, final int position, @NonNull User model) {
+                        holder.setDetails(getApplicationContext(), model.getUsername(), model.getEmail(), model.getPhoneNumber(), model.getImageurl());
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            /**
+                             * item click on method
+                             * jump to user profile page
+                             * @param v
+                             */
+                            @Override
+                            public void onClick(View v) {
+                                String user_id = getRef(position).getKey();
+                                Log.i("userid", user_id);
+                                Intent intent = new Intent(SearchActivity.this, UserProfileActivity.class);
+                                intent.putExtra(EXTRA_MESSAGE, user_id);
+                                startActivity(intent);
+                            }
+                        });
                     }
-                });
-            }
 
-        };
+                };
         recyclerView.setAdapter(firebaseUserRecyclerAdapter);
-        try{
+        try {
             firebaseBookRecyclerAdapter.stopListening();
-        }catch(Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -204,12 +231,13 @@ public class SearchActivity extends BasicActivity {
 
     /**
      * Book view holder class
-      */
-    public static class BookViewHolder extends RecyclerView.ViewHolder{
+     */
+    public static class BookViewHolder extends RecyclerView.ViewHolder {
         View mView;
 
         /**
          * basic constructor
+         *
          * @param itemView
          */
         public BookViewHolder(@NonNull View itemView) {
@@ -219,17 +247,18 @@ public class SearchActivity extends BasicActivity {
 
         /**
          * get view element and set details
-         * @param ctx current context
+         *
+         * @param ctx       current context
          * @param isbn
          * @param title
          * @param author
          * @param bookImage
          */
-        public void setDetails(Context ctx, String isbn, String title, String author, String bookImage){
-            TextView book_isbn = (TextView)mView.findViewById(R.id.searchDetail1);
-            TextView book_title = (TextView)mView.findViewById(R.id.searchDetail2);
-            TextView book_author = (TextView)mView.findViewById(R.id.searchDetail3);
-            ImageView book_image = (ImageView)mView.findViewById(R.id.searchItemImage);
+        public void setDetails(Context ctx, String isbn, String title, String author, String bookImage) {
+            TextView book_isbn = (TextView) mView.findViewById(R.id.searchDetail1);
+            TextView book_title = (TextView) mView.findViewById(R.id.searchDetail2);
+            TextView book_author = (TextView) mView.findViewById(R.id.searchDetail3);
+            ImageView book_image = (ImageView) mView.findViewById(R.id.searchItemImage);
             book_isbn.setText(isbn);
             book_title.setText(title);
             book_author.setText(author);
@@ -239,21 +268,22 @@ public class SearchActivity extends BasicActivity {
 
     /**
      * search book function
+     *
      * @param searchText keyword input of User to search
      * @param constriant option constraint for search
      */
-    public void searchBook(String searchText,String constriant,String status){
+    public void searchBook(String searchText, String constriant, String status) {
         Toast.makeText(SearchActivity.this, "Started Search", Toast.LENGTH_LONG).show();
-        Log.i("bookstatus",status);
-        Query firebaseSearchQuery = mDatabase.child("Books").orderByChild("bookInfo").startAt(searchText).endAt(searchText + "\uf8ff");
+        Log.i("bookstatus", status);
+        Query firebaseSearchQuery = mDatabase.child("Books").orderByChild(constriant).startAt(searchText).endAt(searchText + "\uf8ff");
         FirebaseRecyclerOptions<Book> options = new FirebaseRecyclerOptions.Builder<Book>()
-                .setQuery(firebaseSearchQuery,Book.class).build();
-        firebaseBookRecyclerAdapter=
+                .setQuery(firebaseSearchQuery, Book.class).build();
+        firebaseBookRecyclerAdapter =
                 new FirebaseRecyclerAdapter<Book, BookViewHolder>(options) {
                     @NonNull
                     @Override
                     public BookViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.searchitem,viewGroup,false);
+                        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.searchitem, viewGroup, false);
                         return new BookViewHolder(view);
                     }
 
@@ -265,7 +295,7 @@ public class SearchActivity extends BasicActivity {
                      */
                     @Override
                     protected void onBindViewHolder(@NonNull BookViewHolder holder, final int position, @NonNull Book model) {
-                        holder.setDetails(getApplicationContext(),model.getIsbn(),model.getTitle(),model.getAuthor(),model.getPhotoUri());
+                        holder.setDetails(getApplicationContext(), model.getIsbn(), model.getTitle(), model.getAuthor(), model.getPhotoUri());
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             /**
                              * item click on method
@@ -275,8 +305,8 @@ public class SearchActivity extends BasicActivity {
                             @Override
                             public void onClick(View v) {
                                 String book_id = getRef(position).getKey();
-                                Intent intent = new Intent(SearchActivity.this,BookDetailActivity.class);
-                                intent.putExtra("book_id",book_id);
+                                Intent intent = new Intent(SearchActivity.this, BookDetailActivity.class);
+                                intent.putExtra("book_id", book_id);
                                 startActivity(intent);
                             }
                         });
@@ -286,7 +316,7 @@ public class SearchActivity extends BasicActivity {
         recyclerView.setAdapter(firebaseBookRecyclerAdapter);
         try {
             firebaseUserRecyclerAdapter.stopListening();
-        }catch(Exception e){
+        } catch (Exception e) {
 
         }
         firebaseBookRecyclerAdapter.startListening();
@@ -295,58 +325,36 @@ public class SearchActivity extends BasicActivity {
     /**
      * search button "GO" click on method
      * get user input and filter options
+     *
      * @param v
      */
-    public void search(View v){
+    public void search(View v) {
         String searchOption = spinner.getSelectedItem().toString();
         String searchText = search_Text.getText().toString();
         String constraint = "title";
         String status;
-        switch (searchOption){
+        switch (searchOption) {
             case "search user":
                 searchUser(searchText);
                 break;
             case "search by book name":
-                selectedButton = (RadioButton)findViewById(radioGroup.getCheckedRadioButtonId());
+                selectedButton = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
                 status = selectedButton.getText().toString().toUpperCase();
                 constraint = "title";
-                searchBook(searchText,constraint,status);
+                searchBook(searchText, constraint, status);
                 break;
             case "search by book author":
-                selectedButton = (RadioButton)findViewById(radioGroup.getCheckedRadioButtonId());
+                selectedButton = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
                 status = selectedButton.getText().toString().toUpperCase();
                 constraint = "author";
-                searchBook(searchText,constraint,status);
+                searchBook(searchText, constraint, status);
                 break;
             case "search by book ISBN":
-                selectedButton = (RadioButton)findViewById(radioGroup.getCheckedRadioButtonId());
+                selectedButton = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
                 status = selectedButton.getText().toString().toUpperCase();
                 constraint = "isbn";
-                searchBook(searchText,constraint,status);
+                searchBook(searchText, constraint, status);
         }
 
-    }
-    private void bookList(){
-        mDatabase.child("Books").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Book book = (Book)dataSnapshot.getValue(Book.class);
-                books.add(book);
-                Log.i("booklist","add book name = " + book.getTitle());
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            }
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            }
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
     }
 }
