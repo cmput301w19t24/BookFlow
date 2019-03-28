@@ -299,20 +299,19 @@ public class MainActivity extends BasicActivity {
         findViewById(R.id.myBookList).setVisibility(View.GONE);
         findViewById(R.id.myBorrowList).setVisibility(View.VISIBLE);
         // toggle colors
-        findViewById(R.id.toolbar2).setBackgroundResource(R.drawable.border);
-        ((TextView)findViewById(R.id.title_mybook)).setTextColor(getResources().getColor(R.color.colorPrimary));
-        findViewById(R.id.toolbar3).setBackgroundResource(R.drawable.border_fill);
-        ((TextView)findViewById(R.id.title_myborrow)).setTextColor(Color.WHITE);
-
+        findViewById(R.id.toolbar3).setBackgroundResource(R.drawable.border);
+        ((TextView)findViewById(R.id.title_myborrow)).setTextColor(getResources().getColor(R.color.colorPrimary));
+        findViewById(R.id.toolbar2).setBackgroundResource(R.drawable.border_fill);
+        ((TextView)findViewById(R.id.title_mybook)).setTextColor(Color.WHITE);
     }
 
     public void seeBookList(View booklistV) {
         findViewById(R.id.myBookList).setVisibility(View.VISIBLE);
         findViewById(R.id.myBorrowList).setVisibility(View.GONE);
         // toggle colors
-        findViewById(R.id.toolbar3).setBackgroundResource(R.drawable.border);
-        ((TextView)findViewById(R.id.title_myborrow)).setTextColor(getResources().getColor(R.color.colorPrimary));
-        findViewById(R.id.toolbar2).setBackgroundResource(R.drawable.border_fill);
-        ((TextView)findViewById(R.id.title_mybook)).setTextColor(Color.WHITE);
+        findViewById(R.id.toolbar2).setBackgroundResource(R.drawable.border);
+        ((TextView)findViewById(R.id.title_mybook)).setTextColor(getResources().getColor(R.color.colorPrimary));
+        findViewById(R.id.toolbar3).setBackgroundResource(R.drawable.border_fill);
+        ((TextView)findViewById(R.id.title_myborrow)).setTextColor(Color.WHITE);
     }
 }
