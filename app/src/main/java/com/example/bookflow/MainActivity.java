@@ -316,7 +316,7 @@ public class MainActivity extends BasicActivity {
     }
 
     public void refreshPage(View refreshV) {
-        Intent intent_re = new Intent(MainActivity.this, MainActivity.class);
-        startActivity(intent_re);
+        finish();
+        startActivity(getIntent());
     }
 }
