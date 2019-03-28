@@ -39,6 +39,7 @@ import java.util.Date;
  */
 
 public class BookDetailActivity extends BasicActivity {
+    private static final int RC_EDIT_BOOK = 1;
     private TextView titleField;
     private TextView authorField;
     private TextView isbnField;
@@ -100,7 +101,7 @@ public class BookDetailActivity extends BasicActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        mBookRef.child(bookId).addListenerForSingleValueEvent(new ValueEventListener() {
+        mBookRef.child(bookId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -124,20 +125,26 @@ public class BookDetailActivity extends BasicActivity {
     private void controlVisual() {
         String curUser = mAuth.getCurrentUser().getUid();
 
-        if(bookStatus.equals("AVAILABLE")|| bookStatus.equals("REQUESTED")) {
+        boolean isReadyForTrans = bookStatus.equals("ACCEPTED") || bookStatus.equals("BORROWED");
+        boolean isOwner = curUser.equals(ownerId);
+        boolean isBorrower = curUser.equals(borrowerId);
+        boolean isParticipant = isOwner || isBorrower;
+
+
+        if(!isReadyForTrans) {
             statusField.setTextColor(Color.parseColor("#7CFC00"));
+            requestButton.setVisibility(View.VISIBLE);
+            transactionButton.setVisibility(View.GONE);
         }
 
-        if(curUser.equals(ownerId)) {
+        if (isOwner) {
             requestButton.setVisibility(View.GONE);
             editButton.setVisibility(View.VISIBLE);
             viewRequestsButton.setVisibility(View.VISIBLE);
         }
 
-        if (curUser.equals(ownerId) || curUser.equals(borrowerId)) {
-            if (bookStatus.equals("ACCEPTED") || bookStatus.equals("BORROWED")) {
-                transactionButton.setVisibility(View.VISIBLE);
-            }
+        if (isParticipant && isReadyForTrans) {
+            transactionButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -274,7 +281,7 @@ public class BookDetailActivity extends BasicActivity {
         Intent intent = new Intent(BookDetailActivity.this, EditBookDetailActivity.class);
         intent.putExtra(EditBookDetailActivity.INTENT_KEY, bookId);
         Log.e("bookid", bookId);
-        startActivity(intent);
+        startActivityForResult(intent, RC_EDIT_BOOK);
     }
 
     public void viewRequests(View v) {
@@ -292,6 +299,13 @@ public class BookDetailActivity extends BasicActivity {
         startActivityForResult(intent, ScanUtility.RC_SCAN);
     }
 
+    /**
+     * handles the return of other activities, including EditBookActivity
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == ScanUtility.RC_SCAN) {
@@ -301,6 +315,11 @@ public class BookDetailActivity extends BasicActivity {
                 if (isbn != null) {
                     completeTransaction(isbn);
                 }
+            }
+        } else if (requestCode == RC_EDIT_BOOK) {
+            if (resultCode == RESULT_OK) {
+                // reload the book data
+
             }
         }
     }
@@ -342,4 +361,5 @@ public class BookDetailActivity extends BasicActivity {
             Toast.makeText(this, getString(R.string.invalid_operation), Toast.LENGTH_LONG).show();
         }
     }
+
 }
