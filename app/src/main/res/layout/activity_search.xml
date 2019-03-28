@@ -18,17 +18,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.9" /><![CDATA[
-
-
-
     `
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="699dp" />
-
-
-
-
-
     ]]>
 
     <ImageView

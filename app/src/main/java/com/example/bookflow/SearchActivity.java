@@ -35,6 +35,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Search page
  * User could search user, search book by author, title and isbn
@@ -50,7 +53,7 @@ public class SearchActivity extends BasicActivity {
     private RecyclerView recyclerView;
     FirebaseRecyclerAdapter<User,UserViewHolder> firebaseUserRecyclerAdapter;
     FirebaseRecyclerAdapter<Book, BookViewHolder> firebaseBookRecyclerAdapter;
-
+    private List<Book> books = new ArrayList<Book>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +91,7 @@ public class SearchActivity extends BasicActivity {
                     checkAvailableButton.setClickable(true);
                     checkRequestedButton.setClickable(true);
                     checkAcceptedButton.setClickable(true);
+                    checkAvailableButton.toggle();
                 }
             }
 
@@ -235,7 +239,8 @@ public class SearchActivity extends BasicActivity {
      */
     public void searchBook(String searchText,String constriant,String status){
         Toast.makeText(SearchActivity.this, "Started Search", Toast.LENGTH_LONG).show();
-        Query firebaseSearchQuery = mUserDatabase.child("Books").orderByChild(constriant).startAt(searchText).endAt(searchText + "\uf8ff");
+        Log.i("bookstatus",status);
+        Query firebaseSearchQuery = mUserDatabase.child("Books").orderByChild("bookInfo").startAt(searchText).endAt(status);
         FirebaseRecyclerOptions<Book> options = new FirebaseRecyclerOptions.Builder<Book>()
                 .setQuery(firebaseSearchQuery,Book.class).build();
         firebaseBookRecyclerAdapter=
@@ -298,19 +303,19 @@ public class SearchActivity extends BasicActivity {
                 break;
             case "search by book name":
                 selectedButton = (RadioButton)findViewById(radioGroup.getCheckedRadioButtonId());
-                status = selectedButton.getText().toString();
+                status = selectedButton.getText().toString().toUpperCase();
                 constraint = "title";
                 searchBook(searchText,constraint,status);
                 break;
             case "search by book author":
                 selectedButton = (RadioButton)findViewById(radioGroup.getCheckedRadioButtonId());
-                status = selectedButton.getText().toString();
+                status = selectedButton.getText().toString().toUpperCase();
                 constraint = "author";
                 searchBook(searchText,constraint,status);
                 break;
             case "search by book ISBN":
                 selectedButton = (RadioButton)findViewById(radioGroup.getCheckedRadioButtonId());
-                status = selectedButton.getText().toString();
+                status = selectedButton.getText().toString().toUpperCase();
                 constraint = "isbn";
                 searchBook(searchText,constraint,status);
         }
