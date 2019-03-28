@@ -1,12 +1,10 @@
 package com.example.bookflow.Util;
 
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.bookflow.Model.Book;
-import com.example.bookflow.Model.User;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -74,7 +72,7 @@ public class FirebaseIO {
     public void getBook(String bookid, ValueEventListener listener) {
         mBookDatabaseReference
                 .child(bookid)
-                .addListenerForSingleValueEvent(listener);
+                .addValueEventListener(listener);
     }
 
 
@@ -112,6 +110,7 @@ public class FirebaseIO {
                         throw task.getException();
                     }
 
+                    // TODO: delete the original image first
                     Uri downloadUri = task.getResult();
                     Log.d(TAG, "downloadUri = " + downloadUri.toString());
                     mybook.setPhotoUri(downloadUri.toString());
@@ -119,9 +118,17 @@ public class FirebaseIO {
                     String myuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     mybook.setOwnerId(myuid);
 
-                    DatabaseReference bookRef = mBookDatabaseReference.push();
-                    String bookId = bookRef.getKey();
-                    mybook.setBookId(bookId);
+                    DatabaseReference bookRef = null;
+                    if (mybook.getBookId() != null) {
+                        // this is an existed book
+                        bookRef = mBookDatabaseReference.child(mybook.getBookId());
+                    } else {
+                        // this is a new book
+                        bookRef = mBookDatabaseReference.push();
+                        String bookId = bookRef.getKey();
+                        mybook.setBookId(bookId);
+                    }
+
                     return bookRef.setValue(mybook);
                 }
             }).addOnCompleteListener(listener);

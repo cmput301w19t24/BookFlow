@@ -38,6 +38,20 @@ public class Book {
         this(title, author, isbn);
         this.bookId = id;
     }
+
+    public Book(Book rhs) {
+        title = rhs.title;
+        author = rhs.author;
+        isbn = rhs.isbn;
+        rating = rhs.rating;
+        status = rhs.status;
+        ownerId = rhs.ownerId;
+        borrowerId = rhs.borrowerId;
+        requestCount = rhs.requestCount;
+        photoUri = rhs.photoUri;
+        description = rhs.description;
+        bookId = rhs.bookId;
+    }
     
     /*setter and getter of title*/
 

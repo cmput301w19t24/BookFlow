@@ -39,6 +39,7 @@ import java.util.Date;
  */
 
 public class BookDetailActivity extends BasicActivity {
+    private static final int RC_EDIT_BOOK = 1;
     private TextView titleField;
     private TextView authorField;
     private TextView isbnField;
@@ -49,6 +50,7 @@ public class BookDetailActivity extends BasicActivity {
     private ImageButton editButton;
     private Button viewRequestsButton;
     private RatingBar ratingBar;
+    private Button transactionButton;
 
     private String bookId;
     private String ownerId;
@@ -64,7 +66,6 @@ public class BookDetailActivity extends BasicActivity {
     private float rating;
 
     private FirebaseDatabase mDatabase;
-    private DatabaseReference mRequestRef;
     private DatabaseReference notificationRef;
     private DatabaseReference mBookRef;
 
@@ -83,21 +84,24 @@ public class BookDetailActivity extends BasicActivity {
 
         mDatabase = FirebaseDatabase.getInstance();
         notificationRef = mDatabase.getReference("Notifications");
-        mRequestRef = mDatabase.getReference("Requests");
         mBookRef = mDatabase.getReference("Books");
 
-        titleField = findViewById(R.id.bookName);
-        authorField = findViewById(R.id.author);
-        isbnField = findViewById(R.id.isbn);
-        statusField = findViewById(R.id.book_status);
-        bookImage = findViewById(R.id.bookImage);
-        commentField = findViewById(R.id.book_comments);
+        titleField = findViewById(R.id.book_detail_book_name);
+        authorField = findViewById(R.id.book_detail_author);
+        isbnField = findViewById(R.id.book_detail_isbn);
+        statusField = findViewById(R.id.book_detail_book_status);
+        bookImage = findViewById(R.id.book_detail_book_image);
+        commentField = findViewById(R.id.book_detail_book_comments);
         ratingBar = (RatingBar)findViewById(R.id.ratingBar);
+        requestButton = findViewById(R.id.book_detail_request_button);
+        editButton = findViewById(R.id.book_detail_edit_book_button);
+        viewRequestsButton = findViewById(R.id.book_detail_view_requests_button);
+        transactionButton = findViewById(R.id.book_detail_scan_for_transaction);
 
 
         mAuth = FirebaseAuth.getInstance();
 
-        mBookRef.child(bookId).addListenerForSingleValueEvent(new ValueEventListener() {
+        mBookRef.child(bookId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -119,30 +123,34 @@ public class BookDetailActivity extends BasicActivity {
      * Control the visibility of UI components based on book status
      */
     private void controlVisual() {
-        if(bookStatus.equals("AVAILABLE")|| bookStatus.equals("REQUESTED")) {
-            statusField.setTextColor(Color.parseColor("#7CFC00"));
-        } else if (bookStatus.equals("ACCEPTED")) {
-            // find the corresponding request object
-            // TODO: change request in firebase first
-//            mRequestRef.orderByChild()
-
-        }
         String curUser = mAuth.getCurrentUser().getUid();
 
-        if(curUser.equals(ownerId)) {
-            requestButton = findViewById(R.id.requestButton);
-            editButton = findViewById(R.id.edit_book_button);
-            viewRequestsButton = findViewById(R.id.view_requests_button);
+        boolean isReadyForTrans = bookStatus.equals("ACCEPTED") || bookStatus.equals("BORROWED");
+        boolean isOwner = curUser.equals(ownerId);
+        boolean isBorrower = curUser.equals(borrowerId);
+        boolean isParticipant = isOwner || isBorrower;
 
+
+        if(!isReadyForTrans) {
+            statusField.setTextColor(Color.parseColor("#7CFC00"));
+            requestButton.setVisibility(View.VISIBLE);
+            transactionButton.setVisibility(View.GONE);
+        }
+
+        if (isOwner) {
             requestButton.setVisibility(View.GONE);
             editButton.setVisibility(View.VISIBLE);
             viewRequestsButton.setVisibility(View.VISIBLE);
+        }
+
+        if (isParticipant && isReadyForTrans) {
+            transactionButton.setVisibility(View.VISIBLE);
         }
     }
 
     /**
      * Populate data from firebase database into views
-     * @param dataSnapshot
+     * @param dataSnapshot data snapshot from firebase
      */
     private void populateBookData(DataSnapshot dataSnapshot) {
         try {
@@ -232,10 +240,7 @@ public class BookDetailActivity extends BasicActivity {
                     username = dataSnapshot.child("username").getValue().toString();
 
                     //create request
-                    //DatabaseReference requestReference = mDatabase.getReference("Requests");
-                    //String request_id = requestReference.push().getKey();
                     Request req = new Request(ownerId, borrowerId, bookId);
-                    //requestReference.child(request_id).setValue();
 
                     // add request to list of sent requests by user
                     DatabaseReference requestsSentReference = mDatabase.getReference("RequestsSentByUser");
@@ -276,7 +281,7 @@ public class BookDetailActivity extends BasicActivity {
         Intent intent = new Intent(BookDetailActivity.this, EditBookDetailActivity.class);
         intent.putExtra(EditBookDetailActivity.INTENT_KEY, bookId);
         Log.e("bookid", bookId);
-        startActivity(intent);
+        startActivityForResult(intent, RC_EDIT_BOOK);
     }
 
     public void viewRequests(View v) {
@@ -294,12 +299,27 @@ public class BookDetailActivity extends BasicActivity {
         startActivityForResult(intent, ScanUtility.RC_SCAN);
     }
 
+    /**
+     * handles the return of other activities, including EditBookActivity
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == ScanUtility.RC_SCAN) {
             if (resultCode == RESULT_OK) {
+                assert data != null;
                 String isbn = data.getStringExtra(ScanActivity.SCAN_RESULT);
-                completeTransaction(isbn);
+                if (isbn != null) {
+                    completeTransaction(isbn);
+                }
+            }
+        } else if (requestCode == RC_EDIT_BOOK) {
+            if (resultCode == RESULT_OK) {
+                // reload the book data
+
             }
         }
     }
@@ -309,6 +329,9 @@ public class BookDetailActivity extends BasicActivity {
      * @param isbn
      */
     private void completeTransaction(String isbn) {
+
+        boolean isTransactionSuccessful = false;
+
         // first check if the scanned isbn matches the target book
         if (isbn == null || !isbn.equals(this.isbn)) {
             Toast.makeText(this, getString(R.string.isbn_doesnt_match), Toast.LENGTH_LONG).show();
@@ -320,18 +343,23 @@ public class BookDetailActivity extends BasicActivity {
         DatabaseReference statusRef = thisBookRef.child("status");
         DatabaseReference borrowIdRef = thisBookRef.child("borrowerId");
 
-        if (bookStatus.equals("ACCEPTED") && ownerId.equals(currUserId)) {
+        final boolean isParticipant = ownerId.equals(currUserId) || borrowerId.equals(currUserId);
+        if (bookStatus.equals("ACCEPTED") && isParticipant) {
             // the owner marks the book as borrowed
             statusRef.setValue(Book.BookStatus.BORROWED);
-//            borrowIdRef.setValue();
+            isTransactionSuccessful = true;
 
-        } else if (bookStatus.equals("BORROWED") && borrowerId.equals(currUserId)) {
+        } else if (bookStatus.equals("BORROWED") && isParticipant) {
             /* the borrowed marks the book as available */
             statusRef.setValue(Book.BookStatus.AVAILABLE);
+            isTransactionSuccessful = true;
+        }
+
+        if (isTransactionSuccessful) {
+            Toast.makeText(BookDetailActivity.this, getString(R.string.scan_successful), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, getString(R.string.invalid_operation), Toast.LENGTH_LONG).show();
         }
-
-        Toast.makeText(BookDetailActivity.this, getString(R.string.scan_successful), Toast.LENGTH_SHORT).show();
     }
+
 }

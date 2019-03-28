@@ -90,6 +90,8 @@
     <string name="scan_successful">Scan Successful!</string>
     <string name="invalid_operation">Invalid Operation!</string>
     <string name="bookflow">BookFlow</string>
+    <string name="accept">Accept</string>
+    <string name="reject">Reject</string>
 
     <!-- edit book -->
 
