@@ -38,6 +38,8 @@ import java.util.Date;
  */
 
 public class RequestsForBookListActivity extends BasicActivity {
+    public static final String INTENT_KEY = "bookid";
+
     private FirebaseAuth mAuth;
     private String photoUri;
     private FirebaseDatabase mDatabase;
