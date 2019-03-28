@@ -88,6 +88,7 @@ public class FirebaseIO {
 
             Log.d(TAG, "mSelectedPhotoUri: " + localUri.toString());
             Log.d(TAG, "mSelectedPhotoUri.getLast...: " + localUri.getLastPathSegment());
+            Log.i(TAG, "mybook.getBookId = " + mybook.getBookId());
 
             final StorageReference photoRef = mBookPhotoStorageReference.child(localUri.getLastPathSegment());
             UploadTask uploadTask = photoRef.putFile(localUri);
@@ -122,6 +123,7 @@ public class FirebaseIO {
                     if (mybook.getBookId() != null) {
                         // this is an existed book
                         bookRef = mBookDatabaseReference.child(mybook.getBookId());
+
                     } else {
                         // this is a new book
                         bookRef = mBookDatabaseReference.push();
@@ -138,11 +140,84 @@ public class FirebaseIO {
             String myuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             mybook.setOwnerId(myuid);
 
-            DatabaseReference bookRef = mBookDatabaseReference.push();
-            String bookId = bookRef.getKey();
-            mybook.setBookId(bookId);
+            DatabaseReference bookRef = null;
+            if (mybook.getBookId() != null) {
+                // this is an existed book
+                bookRef = mBookDatabaseReference.child(mybook.getBookId());
+            } else {
+                // this is a new book
+                bookRef = mBookDatabaseReference.push();
+                String bookId = bookRef.getKey();
+                mybook.setBookId(bookId);
+            }
+
             bookRef.setValue(mybook)
                     .addOnCompleteListener(listener);
         }
     }
+
+
+    /**
+     * update the book information to firebase. This method fires a series of async tasks
+     * first check if the user has uploaded a photo. if so, upload the photo to
+     * Firebase Storage, and add the URI to Book
+     *
+     * @param mybook the book object to be updated
+     */
+    public void updateBook(final Book mybook, Uri localUri, OnCompleteListener<Void> listener) {
+        if (localUri != null) {
+
+            Log.d(TAG, "mSelectedPhotoUri: " + localUri.toString());
+            Log.d(TAG, "mSelectedPhotoUri.getLast...: " + localUri.getLastPathSegment());
+            Log.i(TAG, "mybook.getBookId = " + mybook.getBookId());
+
+            final StorageReference photoRef = mBookPhotoStorageReference.child(localUri.getLastPathSegment());
+            UploadTask uploadTask = photoRef.putFile(localUri);
+
+            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                // upon completion, start to retrieve Uri
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+
+                    return photoRef.getDownloadUrl();
+                }
+            }).continueWithTask(new Continuation<Uri, Task<Void>>() {
+                // upon completion, start to upload to database
+                @Override
+                public Task<Void> then(@NonNull Task<Uri> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+
+                    // TODO: delete the original image first
+                    Uri downloadUri = task.getResult();
+                    Log.d(TAG, "downloadUri = " + downloadUri.toString());
+                    mybook.setPhotoUri(downloadUri.toString());
+
+                    DatabaseReference bookRef = null;
+                    if (mybook.getBookId() != null) {
+                        // this is an existed book
+                        bookRef = mBookDatabaseReference.child(mybook.getBookId());
+                    }
+                    return bookRef.setValue(mybook);
+                }
+            }).addOnCompleteListener(listener);
+
+        } else {
+            // no photo uploaded
+
+            DatabaseReference bookRef = null;
+            if (mybook.getBookId() != null) {
+                // this is an existed book
+                bookRef = mBookDatabaseReference.child(mybook.getBookId());
+            }
+
+            bookRef.setValue(mybook)
+                    .addOnCompleteListener(listener);
+        }
+    }
+
 }

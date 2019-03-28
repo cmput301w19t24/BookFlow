@@ -116,7 +116,7 @@ public class EditBookDetailActivity extends BasicActivity {
                 if (editedBook != null) {
                     mProgressbar.setVisibility(View.VISIBLE);
 
-                    mFirebaseIO.saveBook(editedBook, mSelectedPhotoUri, new OnCompleteListener<Void>() {
+                    mFirebaseIO.updateBook(editedBook, mSelectedPhotoUri, new OnCompleteListener<Void>() {
                         /**
                          * upon completion, hide the loading panel and prompt user
                          * @param task
@@ -190,8 +190,6 @@ public class EditBookDetailActivity extends BasicActivity {
             Glide.with(mPhotoImageView.getContext())
                     .load(book.getPhotoUri())
                     .into(mPhotoImageView);
-        } else {
-
         }
 
 
@@ -250,6 +248,8 @@ public class EditBookDetailActivity extends BasicActivity {
         book.setAuthor(author);
         book.setIsbn(isbn);
         book.setDescription(detail);
+
+        Log.i(TAG, book.getBookId());
 
         return book;
     }
