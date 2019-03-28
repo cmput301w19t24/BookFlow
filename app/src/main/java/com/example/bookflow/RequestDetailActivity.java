@@ -72,11 +72,14 @@ public class RequestDetailActivity extends BasicActivity {
         ValueEventListener bookListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String bookImageRef = dataSnapshot.child("photoUri").getValue().toString();
+                Object photoUriObj = dataSnapshot.child("photoUri").getValue();
                 final String bookTitle = dataSnapshot.child("title").getValue().toString();
 
-                Glide.with(RequestDetailActivity.this)
-                        .load(bookImageRef).into(bookIcon);
+                if (photoUriObj != null) {
+                    String bookImgUri = photoUriObj.toString();
+                    Glide.with(RequestDetailActivity.this)
+                            .load(bookImgUri).into(bookIcon);
+                }
 
                 if (curUser.equals(ownerId)) {
                     userLabel.setText("Requester");
