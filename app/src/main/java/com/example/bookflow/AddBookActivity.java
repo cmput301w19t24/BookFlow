@@ -157,9 +157,8 @@ public class AddBookActivity extends BasicActivity {
      * @param data
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (resultCode == RESULT_OK) {
-            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 Uri imgUri = result.getUri();
                 mSelectedPhotoUri = imgUri;
@@ -167,8 +166,10 @@ public class AddBookActivity extends BasicActivity {
                 Glide.with(mPhotoImageView.getContext())
                         .load(imgUri)
                         .into(mPhotoImageView);
+            }
 
-            } else if (requestCode == ScanUtility.RC_SCAN) {
+        } else if (requestCode == ScanUtility.RC_SCAN) {
+            if (resultCode == RESULT_OK) {
                 String isbn = data.getStringExtra(ScanActivity.SCAN_RESULT);
                 if (isbn != null) {
                     Toast.makeText(this, "ISBN: " + isbn, Toast.LENGTH_LONG).show();

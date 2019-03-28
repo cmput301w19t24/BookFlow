@@ -52,6 +52,7 @@ public class EditBookDetailActivity extends BasicActivity {
     private Button mScanButton;
 
     private String mBookId;
+    private Book mThisBook;
 
     /**
      * initialize UI elements, firebase and register listeners
@@ -77,6 +78,23 @@ public class EditBookDetailActivity extends BasicActivity {
 
         mProgressbar.setVisibility(View.GONE);
 
+        /* populate existing book info to edit views */
+        mBookId = getIntent().getStringExtra(INTENT_KEY);
+        mFirebaseIO.getBook(mBookId, new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Book thisBook = dataSnapshot.getValue(Book.class);
+                propagateBookToView(thisBook);
+                mThisBook = thisBook;
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         /* register listeners */
         mPhotoImageView.setOnClickListener(new View.OnClickListener() {
@@ -90,11 +108,11 @@ public class EditBookDetailActivity extends BasicActivity {
             @Override
             public void onClick(View v) {
                 // check all required field and save the data
-                Book mybook = extractBookInfo();
-                if (mybook != null) {
+                Book editedBook = extractBookInfo();
+                if (editedBook != null) {
                     mProgressbar.setVisibility(View.VISIBLE);
 
-                    mFirebaseIO.saveBook(mybook, mSelectedPhotoUri, new OnCompleteListener<Void>() {
+                    mFirebaseIO.saveBook(editedBook, mSelectedPhotoUri, new OnCompleteListener<Void>() {
                         /**
                          * upon completion, hide the loading panel and prompt user
                          * @param task
@@ -126,21 +144,7 @@ public class EditBookDetailActivity extends BasicActivity {
         });
 
 
-        /* populate existing book info to edit views */
-        mBookId = getIntent().getStringExtra(INTENT_KEY);
-        mFirebaseIO.getBook(mBookId, new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Book thisBook = dataSnapshot.getValue(Book.class);
-                propagateBookToView(thisBook);
 
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         // ask for permission
         PhotoUtility.checkCameraPermission(this);
@@ -178,9 +182,14 @@ public class EditBookDetailActivity extends BasicActivity {
         }
 
         // populate book photo
-        Glide.with(mPhotoImageView.getContext())
-                .load(book.getPhotoUri())
-                .into(mPhotoImageView);
+        if (book.getPhotoUri() != null) {
+            Glide.with(mPhotoImageView.getContext())
+                    .load(book.getPhotoUri())
+                    .into(mPhotoImageView);
+        } else {
+
+        }
+
 
     }
 
@@ -195,19 +204,23 @@ public class EditBookDetailActivity extends BasicActivity {
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            Uri imgUri = result.getUri();
-            mSelectedPhotoUri = imgUri;
-            // display photo on the image view
-            Glide.with(mPhotoImageView.getContext())
-                    .load(imgUri)
-                    .into(mPhotoImageView);
+            if (resultCode == RESULT_OK) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                Uri imgUri = result.getUri();
+                mSelectedPhotoUri = imgUri;
+                // display photo on the image view
+                Glide.with(mPhotoImageView.getContext())
+                        .load(imgUri)
+                        .into(mPhotoImageView);
+            }
 
         } else if (requestCode == ScanUtility.RC_SCAN) {
-            String isbn = data.getStringExtra(ScanActivity.SCAN_RESULT);
-            if (isbn != null) {
-                Toast.makeText(this, "ISBN: " + isbn, Toast.LENGTH_LONG).show();
-                mIsbnEditText.setText(isbn);
+            if (resultCode == RESULT_OK) {
+                String isbn = data.getStringExtra(ScanActivity.SCAN_RESULT);
+                if (isbn != null) {
+                    Toast.makeText(this, "ISBN: " + isbn, Toast.LENGTH_LONG).show();
+                    mIsbnEditText.setText(isbn);
+                }
             }
         }
     }
@@ -228,7 +241,10 @@ public class EditBookDetailActivity extends BasicActivity {
             return null;
         }
 
-        Book book = new Book(bookTitle, author, isbn);
+        Book book = new Book(mThisBook);
+        book.setTitle(bookTitle);
+        book.setAuthor(author);
+        book.setIsbn(isbn);
         book.setDescription(detail);
 
         return book;
