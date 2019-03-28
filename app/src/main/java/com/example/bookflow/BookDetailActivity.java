@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,7 @@ public class BookDetailActivity extends BasicActivity {
     private Button requestButton;
     private ImageButton editButton;
     private Button viewRequestsButton;
+    private RatingBar ratingBar;
 
     private String bookId;
     private String ownerId;
@@ -59,6 +61,7 @@ public class BookDetailActivity extends BasicActivity {
     private String username;
     private String photoUri;
     private String comments;
+    private float rating;
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRequestRef;
@@ -89,6 +92,8 @@ public class BookDetailActivity extends BasicActivity {
         statusField = findViewById(R.id.book_status);
         bookImage = findViewById(R.id.bookImage);
         commentField = findViewById(R.id.book_comments);
+        ratingBar = (RatingBar)findViewById(R.id.ratingBar);
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -188,11 +193,18 @@ public class BookDetailActivity extends BasicActivity {
             bookStatus = "Not Found";
         }
 
+        try{
+            rating = Float.valueOf(dataSnapshot.child("rating").getValue().toString());
+        }catch(Exception e){
+            rating = 3;
+        }
+
         titleField.setText(title);
         authorField.setText("by " + author);
         isbnField.setText("ISBN: " + isbn);
         statusField.setText(bookStatus);
         commentField.setText(comments);
+        ratingBar.setRating(rating);
         Glide.with(BookDetailActivity.this)
                 .load(photoUri)
                 .into(bookImage);

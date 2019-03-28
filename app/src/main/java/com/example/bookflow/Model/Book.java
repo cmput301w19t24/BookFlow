@@ -10,7 +10,7 @@ public class Book {
     private String title;
     private String author;
     private String isbn;
-    private int rating;
+    private float rating;
     private BookStatus status;
     private String ownerId;
     private String borrowerId;
@@ -99,7 +99,7 @@ public class Book {
      * set rating
      * @param rating
      */
-    public void setRating(int rating){
+    public void setRating(float rating){
         this.rating = rating;
     }
 
@@ -107,7 +107,7 @@ public class Book {
      * get rating
      * @return the rating
      */
-    public int getRating(){
+    public float getRating(){
         return this.rating;
     }
     
