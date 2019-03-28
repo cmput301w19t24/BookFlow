@@ -58,6 +58,7 @@ public class SearchActivity extends BasicActivity {
     FirebaseRecyclerAdapter<User, UserViewHolder> firebaseUserRecyclerAdapter;
     FirebaseRecyclerAdapter<Book, BookViewHolder> firebaseBookRecyclerAdapter;
     private List<Book> books;
+    private List<Book> filtered_books;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +109,7 @@ public class SearchActivity extends BasicActivity {
 
         });
         books = new ArrayList<Book>();
+        filtered_books = new ArrayList<Book>();
         mDatabase.child("Books").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -322,6 +324,11 @@ public class SearchActivity extends BasicActivity {
         firebaseBookRecyclerAdapter.startListening();
     }
 
+
+    private void searchBook(String searchText,String status){
+
+    }
+
     /**
      * search button "GO" click on method
      * get user input and filter options
@@ -356,5 +363,22 @@ public class SearchActivity extends BasicActivity {
                 searchBook(searchText, constraint, status);
         }
 
+    }
+
+    private void filterBooks(String searchText, String status){
+        String[] words = searchText.split("\\s");
+        Boolean flag = false;
+        filtered_books.clear();
+        for(Book book:books) {
+            flag = true;
+            for (String w : words) {
+                if(!book.getBookInfo().contains(w)){
+                    flag = false;
+                }
+            }
+            if(flag == true && book.getStatus().equals(status)){
+                filtered_books.add(book);
+            }
+        }
     }
 }
