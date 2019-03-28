@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -31,9 +31,13 @@ import com.example.bookflow.Model.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,12 +52,12 @@ public class SearchActivity extends BasicActivity {
     private EditText search_Text;
     private RadioGroup radioGroup;
     private RadioButton checkAvailableButton,checkAcceptedButton,checkRequestedButton,checkBorrowedButton,selectedButton;
-    private DatabaseReference mUserDatabase;
+    private DatabaseReference mDatabase;
     private Spinner spinner;
     private RecyclerView recyclerView;
     FirebaseRecyclerAdapter<User,UserViewHolder> firebaseUserRecyclerAdapter;
     FirebaseRecyclerAdapter<Book, BookViewHolder> firebaseBookRecyclerAdapter;
-    private List<Book> books = new ArrayList<Book>();
+    private List<Book> books;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,21 +75,21 @@ public class SearchActivity extends BasicActivity {
         checkAcceptedButton.setClickable(false);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mUserDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         search_Text = findViewById(R.id.searchText);
         spinner = findViewById(R.id.spinner);
+
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 0){
+                if (position == 0) {
                     radioGroup.setAlpha(.5f);
                     checkBorrowedButton.setClickable(false);
                     checkAvailableButton.setClickable(false);
                     checkRequestedButton.setClickable(false);
                     checkAcceptedButton.setClickable(false);
-                }
-                else{
+                } else {
                     radioGroup.setAlpha(1.0f);
                     checkBorrowedButton.setClickable(true);
                     checkAvailableButton.setClickable(true);
@@ -102,7 +106,8 @@ public class SearchActivity extends BasicActivity {
 
 
         });
-
+        books = new ArrayList<Book>();
+        bookList();
     }
 
 
@@ -147,7 +152,7 @@ public class SearchActivity extends BasicActivity {
      */
     public void searchUser(String searchText){
         Toast.makeText(SearchActivity.this, "Started Search", Toast.LENGTH_LONG).show();
-        Query firebaseUserSearchQuery = mUserDatabase.child("Users").orderByChild("username").startAt(searchText).endAt(searchText + "\uf8ff");
+        Query firebaseUserSearchQuery = mDatabase.child("Users").orderByChild("username").startAt(searchText).endAt(searchText + "\uf8ff");
 
         FirebaseRecyclerOptions<User> options = new FirebaseRecyclerOptions.Builder<User>()
                 .setQuery(firebaseUserSearchQuery,User.class).build();
@@ -240,7 +245,7 @@ public class SearchActivity extends BasicActivity {
     public void searchBook(String searchText,String constriant,String status){
         Toast.makeText(SearchActivity.this, "Started Search", Toast.LENGTH_LONG).show();
         Log.i("bookstatus",status);
-        Query firebaseSearchQuery = mUserDatabase.child("Books").orderByChild("bookInfo").startAt(searchText).endAt(status);
+        Query firebaseSearchQuery = mDatabase.child("Books").orderByChild("bookInfo").startAt(searchText).endAt(searchText + "\uf8ff");
         FirebaseRecyclerOptions<Book> options = new FirebaseRecyclerOptions.Builder<Book>()
                 .setQuery(firebaseSearchQuery,Book.class).build();
         firebaseBookRecyclerAdapter=
@@ -320,5 +325,28 @@ public class SearchActivity extends BasicActivity {
                 searchBook(searchText,constraint,status);
         }
 
+    }
+    private void bookList(){
+        mDatabase.child("Books").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Book book = (Book)dataSnapshot.getValue(Book.class);
+                books.add(book);
+                Log.i("booklist","add book name = " + book.getTitle());
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 }
