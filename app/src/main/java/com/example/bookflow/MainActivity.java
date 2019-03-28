@@ -13,6 +13,7 @@ import com.example.bookflow.Model.Book;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -297,10 +298,21 @@ public class MainActivity extends BasicActivity {
     public void seeBorrowList(View borrowlistV) {
         findViewById(R.id.myBookList).setVisibility(View.GONE);
         findViewById(R.id.myBorrowList).setVisibility(View.VISIBLE);
+        // toggle colors
+        findViewById(R.id.toolbar2).setBackgroundResource(R.drawable.border);
+        ((TextView)findViewById(R.id.title_mybook)).setTextColor(getResources().getColor(R.color.colorPrimary));
+        findViewById(R.id.toolbar3).setBackgroundResource(R.drawable.border_fill);
+        ((TextView)findViewById(R.id.title_myborrow)).setTextColor(Color.WHITE);
+
     }
 
     public void seeBookList(View booklistV) {
         findViewById(R.id.myBookList).setVisibility(View.VISIBLE);
         findViewById(R.id.myBorrowList).setVisibility(View.GONE);
+        // toggle colors
+        findViewById(R.id.toolbar3).setBackgroundResource(R.drawable.border);
+        ((TextView)findViewById(R.id.title_myborrow)).setTextColor(getResources().getColor(R.color.colorPrimary));
+        findViewById(R.id.toolbar2).setBackgroundResource(R.drawable.border_fill);
+        ((TextView)findViewById(R.id.title_mybook)).setTextColor(Color.WHITE);
     }
 }

@@ -25,7 +25,6 @@
     <string name="review">Reviews:</string>
 
     <!-- main -->
-    <string name="bookflow">BookFlow</string>
     <string name="more"><![CDATA[>>More]]></string>
     <string name="my_borrows">My Borrows</string>
     <string name="my_books">My Books</string>
@@ -90,6 +89,7 @@
     <string name="isbn_doesnt_match">ISBN doesn\'t match.</string>
     <string name="scan_successful">Scan Successful!</string>
     <string name="invalid_operation">Invalid Operation!</string>
+    <string name="bookflow">BookFlow</string>
 
     <!-- edit book -->
 

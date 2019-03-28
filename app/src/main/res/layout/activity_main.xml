@@ -12,7 +12,7 @@
         android:id="@+id/menu_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
+        android:layout_margin="0dp"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:layout_constraintBottom_toTopOf="@id/toolbar2"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,7 +21,6 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/colorPrimary"
             app:layout_constraintBottom_toTopOf="parent"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
@@ -31,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:fontFamily="sans-serif-black"
-                android:text="BookFlow"
+                android:text="@string/app_name"
                 android:textAlignment="center"
                 android:textColor="@color/common_google_signin_btn_text_dark_default"
                 android:textSize="24sp"
@@ -43,8 +42,9 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar2"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/colorPrimary"
+        android:layout_height="40dp"
+        android:layout_marginVertical="5dp"
+        android:background="@drawable/border_fill"
         android:clickable="true"
         android:focusable="true"
         android:onClick="seeBookList"
@@ -55,11 +55,11 @@
             android:id="@+id/title_mybook"
             android:layout_width="320dp"
             android:layout_height="30dp"
-            android:fontFamily="sans-serif-light"
+            android:fontFamily="sans-serif"
             android:text="@string/my_books"
             android:textAlignment="textStart"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
-            android:textSize="24sp"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textSize="20sp"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="12dp" />
     </android.support.v7.widget.Toolbar>
@@ -78,8 +78,8 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar3"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/colorPrimary"
+        android:layout_height="40dp"
+        android:background="@drawable/border"
         android:clickable="true"
         android:focusable="true"
         android:onClick="seeBorrowList"
@@ -90,11 +90,11 @@
             android:id="@+id/title_myborrow"
             android:layout_width="320dp"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
+            android:fontFamily="sans-serif"
             android:text="@string/my_borrows"
             android:textAlignment="textStart"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
-            android:textSize="24sp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="6dp" />
     </android.support.v7.widget.Toolbar>
