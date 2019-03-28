@@ -314,4 +314,9 @@ public class MainActivity extends BasicActivity {
         findViewById(R.id.toolbar3).setBackgroundResource(R.drawable.border_fill);
         ((TextView)findViewById(R.id.title_myborrow)).setTextColor(Color.WHITE);
     }
+
+    public void refreshPage(View refreshV) {
+        Intent intent_re = new Intent(MainActivity.this, MainActivity.class);
+        startActivity(intent_re);
+    }
 }

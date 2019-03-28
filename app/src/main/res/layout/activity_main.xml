@@ -24,9 +24,20 @@
             app:layout_constraintBottom_toTopOf="parent"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
+            <ImageView
+                android:id="@+id/refresh_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="refreshPage"
+                app:srcCompat="@drawable/refresh" />
+
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="375dp"
+                android:layout_width="325dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:fontFamily="sans-serif-black"
