@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -106,16 +105,6 @@ public class MainActivity extends BasicActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
-//        CheckBox checkBox = (CheckBox) menu.findItem(R.id.check_accepted).getActionView();
-//        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked) {
-//                    // perform logic
-//                }
-//            }
-//        });
         return true;
     }
 
@@ -159,11 +148,6 @@ public class MainActivity extends BasicActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.check_accepted) {
-//            item.setChecked(!item.isChecked());
-////            return true;
-//        }
     }
 
     private void addToList(Book.BookStatus status) {
@@ -172,10 +156,8 @@ public class MainActivity extends BasicActivity {
             Book book = nonfiltered_books.get(i);
             if (book.getStatus().equals(status)
                     || book.getStatus().toString().equals(status.toString())) {
-//                if(!filtered_books.contains(book))
+                if(!filtered_books.contains(book))
                     adpBook.add(book);
-//                    adpBook.remove(book);
-//                    books.add(book);
             }
         }
         myBookList.setAdapter(adpBook);
