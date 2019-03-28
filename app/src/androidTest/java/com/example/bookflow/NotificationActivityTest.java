@@ -52,7 +52,7 @@ public class NotificationActivityTest extends ActivityTestRule<SearchActivity> {
         solo.waitForText("Roald Dahl");
         solo.clickInRecyclerView(0);
         solo.assertCurrentActivity("Wrong Activity", BookDetailActivity.class);
-        solo.clickOnView(solo.getView(R.id.requestButton));
+        solo.clickOnView(solo.getView(R.id.book_detail_request_button));
         // switch accounts
         mAuth.signInWithEmailAndPassword("homer@gmail.com", "password");
         solo.clickOnView(solo.getView(R.id.notification_button));

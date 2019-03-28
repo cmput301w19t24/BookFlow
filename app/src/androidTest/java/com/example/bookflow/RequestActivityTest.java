@@ -52,7 +52,7 @@ public class RequestActivityTest extends ActivityTestRule<SearchActivity> {
         solo.waitForText("Roald Dahl");
         solo.clickInRecyclerView(0);
         solo.assertCurrentActivity("Wrong Activity", BookDetailActivity.class);
-        solo.clickOnView(solo.getView(R.id.requestButton));
+        solo.clickOnView(solo.getView(R.id.book_detail_request_button));
     }
 
     @After

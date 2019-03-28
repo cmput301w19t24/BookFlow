@@ -13,27 +13,27 @@
         tools:layout_editor_absoluteY="0dp" />
 
     <TextView
-        android:id="@+id/isbn"
+        android:id="@+id/book_detail_isbn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="5462342346662346"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/author" />
+        app:layout_constraintTop_toBottomOf="@+id/book_detail_author" />
 
     <TextView
-        android:id="@+id/author"
+        android:id="@+id/book_detail_author"
         android:layout_width="wrap_content"
         android:layout_height="23dp"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookName"
+        app:layout_constraintTop_toBottomOf="@+id/book_detail_book_name"
         tools:text="by Paula Hawkins" />
 
     <TextView
-        android:id="@+id/bookName"
+        android:id="@+id/book_detail_book_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -42,10 +42,10 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookImage" />
+        app:layout_constraintTop_toBottomOf="@+id/book_detail_book_image" />
 
     <TextView
-        android:id="@+id/book_comments"
+        android:id="@+id/book_detail_book_comments"
         android:layout_width="309dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -54,10 +54,10 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/book_status" />
+        app:layout_constraintTop_toBottomOf="@+id/book_detail_book_status" />
 
     <ImageView
-        android:id="@+id/bookImage"
+        android:id="@+id/book_detail_book_image"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_marginTop="64dp"
@@ -68,31 +68,31 @@
 
 
     <TextView
-        android:id="@+id/book_status"
+        android:id="@+id/book_detail_book_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Accepted"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/isbn" />
+        app:layout_constraintTop_toBottomOf="@+id/book_detail_isbn" />
 
     <ImageButton
-        android:id="@+id/edit_book_button"
+        android:id="@+id/book_detail_edit_book_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:visibility="gone"
         android:onClick="edit"
         android:backgroundTint="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/bookImage"
+        app:layout_constraintBottom_toTopOf="@+id/book_detail_book_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_edit_24px"
         android:contentDescription="@string/edit_book" />
 
     <Button
-        android:id="@+id/view_requests_button"
+        android:id="@+id/book_detail_view_requests_button"
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
         android:onClick="viewRequests"
         android:background="@android:color/holo_green_light"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/bookImage"
+        app:layout_constraintBottom_toTopOf="@+id/book_detail_book_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
@@ -115,12 +115,12 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/include"
-        app:layout_constraintTop_toBottomOf="@+id/book_comments"
+        app:layout_constraintTop_toBottomOf="@+id/book_detail_book_comments"
         tools:layout_editor_absoluteX="16dp"
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/requestButton"
+            android:id="@+id/book_detail_request_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
@@ -154,7 +154,7 @@
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/book_comments" />
+        app:layout_constraintTop_toBottomOf="@+id/book_detail_book_comments" />
 
 
 </android.support.constraint.ConstraintLayout>

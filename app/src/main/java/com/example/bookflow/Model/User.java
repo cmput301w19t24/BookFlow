@@ -38,6 +38,7 @@ public class User implements Owner,Borrower{
         this.password = password;
     }
 
+
     /**
      * self intro getter
      * @return self introduction as a string
