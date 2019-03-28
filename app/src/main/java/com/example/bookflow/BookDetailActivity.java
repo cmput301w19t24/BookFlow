@@ -1,12 +1,15 @@
 package com.example.bookflow;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -358,9 +361,34 @@ public class BookDetailActivity extends BasicActivity {
         if (isTransactionSuccessful) {
             Toast.makeText(BookDetailActivity.this, getString(R.string.scan_successful), Toast.LENGTH_SHORT).show();
             //Todo Dialog rating
+            //showEditbox();
         } else {
             Toast.makeText(this, getString(R.string.invalid_operation), Toast.LENGTH_LONG).show();
         }
     }
 
+    // Use dialog interface for editting and deleting feelings
+    public void showEditbox() {
+        final Dialog dialog = new Dialog(BookDetailActivity.this);
+        dialog.setTitle("Rating book");
+        dialog.setContentView(R.layout.editbox);
+        final EditText reviewText = dialog.findViewById(R.id.reviewText);
+        Button confirmButton = dialog.findViewById(R.id.reviewButton);
+        final RatingBar ratingBar = dialog.findViewById(R.id.ratingBar2);
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String review = reviewText.getText().toString();
+                float rating = ratingBar.getRating();
+
+
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
+    }
+
 }
+
