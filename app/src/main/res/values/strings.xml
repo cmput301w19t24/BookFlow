@@ -94,6 +94,6 @@
     <string name="reject">Reject</string>
 
     <!-- edit book -->
-
+    <string name="editboxTitle">How will you rate this book?</string>
 
 </resources>
