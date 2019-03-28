@@ -286,7 +286,7 @@ public class BookDetailActivity extends BasicActivity {
 
     public void viewRequests(View v) {
         Intent intent = new Intent(BookDetailActivity.this, RequestsForBookListActivity.class);
-        intent.putExtra("bookid", bookId);
+        intent.putExtra(RequestsForBookListActivity.INTENT_KEY, bookId);
         startActivity(intent);
     }
 
