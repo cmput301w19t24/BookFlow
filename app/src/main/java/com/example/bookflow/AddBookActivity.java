@@ -21,6 +21,8 @@ import com.example.bookflow.Util.PhotoUtility;
 import com.example.bookflow.Util.ScanUtility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 
 /**
@@ -78,7 +80,7 @@ public class AddBookActivity extends BasicActivity {
         mPhotoImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PhotoUtility.showPickPhotoDialog(AddBookActivity.this);
+                CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).start(AddBookActivity.this);
             }
         });
 
@@ -157,30 +159,14 @@ public class AddBookActivity extends BasicActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (resultCode == RESULT_OK) {
-            if (requestCode == PhotoUtility.RC_PHOTO_PICKER) {
-
-                Uri imgUri = data.getData();
-                Log.d(TAG, imgUri.toString());
-
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                Uri imgUri = result.getUri();
                 mSelectedPhotoUri = imgUri;
-
                 // display photo on the image view
                 Glide.with(mPhotoImageView.getContext())
                         .load(imgUri)
                         .into(mPhotoImageView);
-
-            } else if (requestCode == PhotoUtility.RC_IMAGE_CAPTURE) {
-                Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
-
-                Uri imgUri = PhotoUtility.bitmapToUri(this, imageBitmap);
-
-                if (imgUri != null) {
-                    mSelectedPhotoUri = imgUri;
-
-                    Glide.with(mPhotoImageView.getContext())
-                            .load(imageBitmap)
-                            .into(mPhotoImageView);
-                }
 
             } else if (requestCode == ScanUtility.RC_SCAN) {
                 String isbn = data.getStringExtra(ScanActivity.SCAN_RESULT);
@@ -191,5 +177,4 @@ public class AddBookActivity extends BasicActivity {
             }
         }
     }
-
 }
