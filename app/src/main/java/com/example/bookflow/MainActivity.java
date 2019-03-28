@@ -43,7 +43,9 @@ import java.util.ArrayList;
 public class MainActivity extends BasicActivity {
 
     private static ListView myBookList;
+    private static ListView myBorrowList;
     private MyAdapter adpBook;
+    private MyAdapter adpBorrow;
     private FirebaseDatabase database;
     private FirebaseAuth mAuth;
     private String uid;
@@ -51,8 +53,11 @@ public class MainActivity extends BasicActivity {
 
     ArrayList<Book> books;
     ArrayList<Book> nonfiltered_books;
-    boolean firstgrab = true;
     ArrayList<Book> filtered_books;
+    boolean firstgrab = true;
+    ArrayList<Book> borrows;
+    ArrayList<Book> nonfiltered_borrows;
+    ArrayList<Book> filtered_borrows;
 
     // class of Adapter
     class MyAdapter extends ArrayAdapter<Book> {
@@ -99,6 +104,12 @@ public class MainActivity extends BasicActivity {
         nonfiltered_books = new ArrayList<Book>();
         adpBook = new MyAdapter(this,books);
         bookList();
+
+        borrows = new ArrayList<Book>();
+        filtered_borrows = new ArrayList<Book>();
+        nonfiltered_borrows = new ArrayList<Book>();
+        adpBorrow = new MyAdapter(this, borrows);
+        borrowList();
     }
 
     @Override
@@ -161,13 +172,26 @@ public class MainActivity extends BasicActivity {
             }
         }
         myBookList.setAdapter(adpBook);
+
+        filtered_borrows = (ArrayList<Book>)borrows.clone();
+        for (int i=0; i<nonfiltered_borrows.size(); i++) {
+            Book book = nonfiltered_borrows.get(i);
+            if (book.getStatus().equals(status)
+                    || book.getStatus().toString().equals(status.toString())) {
+                if(!filtered_borrows.contains(book))
+                    adpBorrow.add(book);
+            }
+        }
+        myBorrowList.setAdapter(adpBorrow);
     }
 
     private void removeFromList(Book.BookStatus status) {
         if (firstgrab) {
             nonfiltered_books = (ArrayList<Book>) books.clone();
+            nonfiltered_borrows = (ArrayList<Book>) borrows.clone();
             firstgrab = false;
         }
+
         filtered_books = (ArrayList<Book>)books.clone();
         for (int i=0; i<filtered_books.size(); i++) {
             Book book = filtered_books.get(i);
@@ -178,9 +202,18 @@ public class MainActivity extends BasicActivity {
             }
         }
         myBookList.setAdapter(adpBook);
+
+        filtered_borrows = (ArrayList<Book>)borrows.clone();
+        for (int i=0; i<filtered_borrows.size(); i++) {
+            Book book = filtered_borrows.get(i);
+            if (book.getStatus().equals(status)
+                    || book.getStatus().toString().equals(status.toString())) {
+                if(filtered_borrows.contains(book))
+                    adpBorrow.remove(book);
+            }
+        }
+        myBorrowList.setAdapter(adpBorrow);
     }
-
-
 
     /**
      * view book list method
@@ -209,6 +242,42 @@ public class MainActivity extends BasicActivity {
         myBookList.setAdapter(adpBook);
         myBookList.setClickable(true);
         myBookList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent_detail = new Intent(MainActivity.this, BookDetailActivity.class);
+                String book_id = adpBook.getItem(position).getBookId();
+                intent_detail.putExtra("book_id",book_id);
+                startActivity(intent_detail);
+            }
+        });
+    }
+
+    /**
+     * view book list method
+     */
+    private void borrowList() {
+        myBorrowList = (ListView) findViewById(R.id.myBorrowList);
+        // add user's book to adapter
+        query.orderByChild("borrowerId").equalTo(uid).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Book book = (Book)dataSnapshot.getValue(Book.class);
+                if (!borrows.contains(book)) {
+                    adpBorrow.add(book);
+                }
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) { }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
+        myBorrowList.setAdapter(adpBorrow);
+        myBorrowList.setClickable(true);
+        myBorrowList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             /**
              * @param parent
              * @param view
@@ -218,17 +287,20 @@ public class MainActivity extends BasicActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent_detail = new Intent(MainActivity.this, BookDetailActivity.class);
-                String book_id = adpBook.getItem(position).getBookId();
+                String book_id = adpBorrow.getItem(position).getBookId();
                 intent_detail.putExtra("book_id",book_id);
                 startActivity(intent_detail);
             }
         });
-        nonfiltered_books = (ArrayList<Book>) books.clone();
     }
 
     public void seeBorrowList(View borrowlistV) {
-        Intent intent_borrowlist = new Intent(this, BorrowListActivity.class);
-        intent_borrowlist.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent_borrowlist);
+        findViewById(R.id.myBookList).setVisibility(View.GONE);
+        findViewById(R.id.myBorrowList).setVisibility(View.VISIBLE);
+    }
+
+    public void seeBookList(View booklistV) {
+        findViewById(R.id.myBookList).setVisibility(View.VISIBLE);
+        findViewById(R.id.myBorrowList).setVisibility(View.GONE);
     }
 }

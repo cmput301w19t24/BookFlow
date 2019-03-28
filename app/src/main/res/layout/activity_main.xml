@@ -18,58 +18,51 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="?attr/colorPrimary"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
-        app:layout_constraintBottom_toTopOf="parent">
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
-
-        <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="45dp"
-        android:layout_height="30dp"
-        android:layout_weight="1"
-        android:contentDescription="TODO"
-        app:srcCompat="@drawable/isbn_icon" />
-        <TextView
-        android:id="@+id/textView2"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:fontFamily="sans-serif-black"
-        android:text="BookFlow"
-        android:textAlignment="center"
-        android:textColor="@color/common_google_signin_btn_text_dark_default"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="375dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:fontFamily="sans-serif-black"
+                android:text="BookFlow"
+                android:textAlignment="center"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar2"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@color/common_google_signin_btn_text_dark_pressed"
-            android:clickable="true"
-            app:layout_constraintBottom_toTopOf="@id/myBookList"
-            app:layout_constraintTop_toBottomOf="@id/menu_layout"
-            >
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="seeBookList"
+        app:layout_constraintBottom_toTopOf="@id/myBookList"
+        app:layout_constraintTop_toBottomOf="@id/menu_layout">
 
-            <TextView
-                android:id="@+id/title_mybook"
-                android:layout_width="320dp"
-                android:layout_height="30dp"
-                android:fontFamily="sans-serif-light"
-                android:text="@string/my_books"
-                android:textAlignment="textStart"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:textSize="24sp"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="12dp" />
-        </android.support.v7.widget.Toolbar>
+        <TextView
+            android:id="@+id/title_mybook"
+            android:layout_width="320dp"
+            android:layout_height="30dp"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/my_books"
+            android:textAlignment="textStart"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="12dp" />
+    </android.support.v7.widget.Toolbar>
 
         <ListView
             android:id="@+id/myBookList"
@@ -82,55 +75,41 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar2" />
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar3"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@color/common_google_signin_btn_text_dark_pressed"
-            android:clickable="true"
-            android:onClick="seeBorrowList"
-            app:layout_constraintBottom_toBottomOf="@id/guideline4"
-            app:layout_constraintTop_toBottomOf="@id/myBookList">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar3"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="seeBorrowList"
+        app:layout_constraintBottom_toBottomOf="@+id/myBorrowList"
+        app:layout_constraintTop_toBottomOf="@id/myBookList">
 
-            <TextView
-                android:id="@+id/title_myborrow"
-                android:layout_width="320dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:text="@string/my_borrows"
-                android:textAlignment="textStart"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:textSize="24sp"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="6dp" />
+        <TextView
+            android:id="@+id/title_myborrow"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/my_borrows"
+            android:textAlignment="textStart"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="6dp" />
+    </android.support.v7.widget.Toolbar>
 
-            <!--<TextView-->
-            <!--android:id="@+id/title2_viewmore"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:clickable="true"-->
-            <!--android:fontFamily="sans-serif-medium"-->
-            <!--android:onClick="seeMoreBorrows"-->
-            <!--android:text="@string/more"-->
-            <!--android:textAlignment="textStart"-->
-            <!--android:textColor="@color/colorPrimaryDark"-->
-            <!--android:textSize="18sp"-->
-            <!--android:textStyle="bold" />-->
-        </android.support.v7.widget.Toolbar>
+        <ListView
+            android:id="@+id/myBorrowList"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/guideline4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar3" />
 
-        <!--<ListView-->
-        <!--android:id="@+id/myBorrowList"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:textFilterEnabled="false"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintHorizontal_bias="0.0"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@id/toolbar3"-->
-        <!--app:layout_constraintVertical_bias="0.0" />-->
-
-        <!--</LinearLayout>-->
         <android.support.constraint.Guideline
             android:id="@+id/guideline4"
             android:layout_width="wrap_content"
@@ -138,9 +117,9 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.94" />
 
-        <include
-            android:id="@+id/include_main"
-            layout="@layout/activity_basic"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="67dp" />
+    <include
+        android:id="@+id/include_main"
+        layout="@layout/activity_basic"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 </android.support.constraint.ConstraintLayout>

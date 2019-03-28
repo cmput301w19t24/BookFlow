@@ -55,7 +55,6 @@ public class MainActivityTest extends ActivityTestRule<MainActivity> {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         TextView myBorrows = (TextView)solo.getView("title_myborrow");
         solo.clickOnView(myBorrows);
-        solo.assertCurrentActivity("Wrong Activity", BorrowListActivity.class);
     }
 
     @Test
