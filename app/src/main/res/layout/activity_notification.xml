@@ -7,12 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".NotificationActivity" >
-
-    <include
-        android:id="@+id/notification_include"
-        layout="@layout/activity_basic"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="67dp" />
+    
 
 
     <android.support.v7.widget.RecyclerView
@@ -45,12 +40,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--<include-->
-        <!--android:id="@+id/include"-->
-        <!--layout="@layout/activity_basic"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--tools:layout_editor_absoluteY="0dp" />-->
+    <include
+        android:id="@+id/include"
+        layout="@layout/activity_basic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="0dp" />
 
 
 </android.support.constraint.ConstraintLayout>
