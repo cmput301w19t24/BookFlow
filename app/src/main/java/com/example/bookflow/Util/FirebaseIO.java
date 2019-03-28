@@ -72,7 +72,7 @@ public class FirebaseIO {
     public void getBook(String bookid, ValueEventListener listener) {
         mBookDatabaseReference
                 .child(bookid)
-                .addValueEventListener(listener);
+                .addListenerForSingleValueEvent(listener);
     }
 
 
