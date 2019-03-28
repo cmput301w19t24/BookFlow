@@ -123,6 +123,8 @@
         android:text="@string/login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@android:color/holo_green_light"
+        android:textColor="@android:color/white"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <android.support.constraint.Guideline

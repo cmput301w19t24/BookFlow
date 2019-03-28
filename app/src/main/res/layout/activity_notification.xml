@@ -8,6 +8,12 @@
     android:layout_height="match_parent"
     tools:context=".NotificationActivity" >
 
+    <include
+        android:id="@+id/notification_include"
+        layout="@layout/activity_basic"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="67dp" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -21,13 +27,12 @@
         android:id="@+id/notification_header_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Notifications"
-        android:textStyle="bold"
-        android:textSize="26sp"
         android:layout_marginStart="16dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:text="Notifications"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/tempMySentRequests"
