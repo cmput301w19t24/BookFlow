@@ -16,7 +16,7 @@
         android:id="@+id/isbn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="5462342346662346"
+        tools:text="5462342346662346"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,6 @@
         android:id="@+id/author"
         android:layout_width="wrap_content"
         android:layout_height="23dp"
-        android:text="@string/authorName"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,8 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-
-        android:text="The Girl on the Train"
+        tools:text="The Girl on the Train"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,10 +48,9 @@
         android:id="@+id/book_comments"
         android:layout_width="309dp"
         android:layout_height="wrap_content"
-
         android:layout_marginTop="8dp"
         android:gravity="center_horizontal"
-        android:text="hello world"
+        tools:text="hello world"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,36 +60,18 @@
         android:id="@+id/bookImage"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-
-
         android:layout_marginTop="64dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <Button
-        android:id="@+id/requestButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="60dp"
-        android:background="@android:color/holo_green_light"
-        android:onClick="request"
-        android:text="Request"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/book_comments"
-        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/book_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Accepted"
+        tools:text="Accepted"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,7 +88,8 @@
         app:layout_constraintBottom_toTopOf="@+id/bookImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_edit_24px" />
+        app:srcCompat="@drawable/ic_baseline_edit_24px"
+        android:contentDescription="@string/edit_book" />
 
     <Button
         android:id="@+id/view_requests_button"
@@ -119,13 +99,47 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="View Requests"
+        android:text="@string/view_requests"
         android:textSize="12sp"
         android:onClick="viewRequests"
+        android:background="@android:color/holo_green_light"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/bookImage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/include"
+        app:layout_constraintTop_toBottomOf="@+id/book_comments"
+        tools:layout_editor_absoluteX="16dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/requestButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@android:color/holo_green_light"
+            android:onClick="request"
+            android:text="@string/request"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/book_detail_scan_for_transaction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:onClick="startTransactionProcess"
+            android:background="@android:color/holo_green_light"
+            android:text="@string/transaction"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
 
 
 </android.support.constraint.ConstraintLayout>
