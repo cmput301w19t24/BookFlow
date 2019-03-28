@@ -80,8 +80,10 @@
                     android:id="@+id/add_book_scan_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/add_book_isbn_et"
+                    android:background="@color/colorPrimary"
                     android:text="@string/scan"
-                    android:layout_toEndOf="@+id/add_book_isbn_et"/>
+                    android:textColor="@color/common_google_signin_btn_text_dark_default" />
 
             </RelativeLayout>
 
