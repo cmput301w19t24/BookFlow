@@ -247,14 +247,15 @@ public class SearchActivity extends BasicActivity {
          * @param userPhoneNumber
          * @param userImage
          */
-        public void setDetails(Context ctx, String userName, String userEmail, String userPhoneNumber, String userImage) {
+        public void setDetails(Context ctx, String userName, String userEmail, String userintro, String userImage) {
             TextView user_name = (TextView) mView.findViewById(R.id.searchDetail1);
-            TextView user_email = (TextView) mView.findViewById(R.id.searchDetail2);
-            TextView user_phoneNumber = (TextView) mView.findViewById(R.id.searchDetail3);
+            TextView user_email = (TextView) mView.findViewById(R.id.searchDetail3);
+            TextView user_selfintro = (TextView) mView.findViewById(R.id.searchDetail2);
             ImageView user_image = (ImageView) mView.findViewById(R.id.searchItemImage);
+
             user_name.setText(userName);
             user_email.setText(userEmail);
-            user_phoneNumber.setText(userPhoneNumber);
+            user_selfintro.setText(userintro);
             Glide.with(ctx).load(userImage).into(user_image);
         }
     }
@@ -287,7 +288,7 @@ public class SearchActivity extends BasicActivity {
                      */
                     @Override
                     protected void onBindViewHolder(@NonNull UserViewHolder holder, final int position, @NonNull User model) {
-                        holder.setDetails(getApplicationContext(), model.getUsername(), model.getEmail(), model.getPhoneNumber(), model.getImageurl());
+                        holder.setDetails(getApplicationContext(), model.getUsername(), model.getEmail(), model.getSelfIntro(), model.getImageurl());
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             /**
                              * item click on method
