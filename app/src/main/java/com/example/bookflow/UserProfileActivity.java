@@ -1,5 +1,6 @@
 package com.example.bookflow;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -20,7 +22,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.bookflow.Model.Book;
 import com.example.bookflow.Model.Review;
-import com.example.bookflow.Model.ReviewList;
 import com.example.bookflow.Model.User;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
@@ -49,10 +50,36 @@ import java.util.UUID;
 public class UserProfileActivity extends BasicActivity {
     private DatabaseReference dbRef;
     private String email, phoneNum, username, selfIntro, uid;
-    private ReviewList reviewList = new ReviewList();
+    private ArrayList<Review> reviewList = new ArrayList<Review>();
     private ListView reviewListView, offerListView;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseStorage storage = FirebaseStorage.getInstance();
+
+    // class of Adapter
+    class MyAdapter extends ArrayAdapter<Review> {
+        MyAdapter(Context c, ArrayList<Review> reviews) {
+            super(c,R.layout.user_list, reviews);
+        }
+
+        @Override
+        public View getView(int position, View v, ViewGroup parent) {
+            Review review = this.getItem(position);
+
+            if (v == null) {
+                v = LayoutInflater.from(getContext()).inflate(R.layout.user_list, parent, false);
+            }
+            TextView comments = v.findViewById(R.id.review_text);
+            TextView rname = v.findViewById(R.id.reviewer_name);
+            TextView rating = v.findViewById(R.id.rating);
+            ImageView mphoto = v.findViewById(R.id.reviewer_photo);
+
+            rname.setText(review.getReviewer().getUsername());
+            comments.setText(review.getComments());
+            rating.setText(review.getRating());
+            Glide.with(UserProfileActivity.this).load(review.getReviewer().getImageurl()).into(mphoto);
+            return v;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +147,7 @@ public class UserProfileActivity extends BasicActivity {
         Review review = new Review(reviewer, reviewee, comments, rating);
 
         // append to review list
-        reviewList.addReview(review);
+        reviewList.add(review);
     }
 
     /**
@@ -163,12 +190,12 @@ public class UserProfileActivity extends BasicActivity {
                         prepareReviewList(eachReview);
                     }
                 }
-                ArrayList<String> stringList = reviewList.toStringArray();
-                if (stringList.size() == 0) {
-                    stringList.add("No Review");
-                }
-                ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(UserProfileActivity.this,
-                        R.layout.review_list_adapter, stringList);
+//                ArrayList<String> stringList = reviewList.toStringArray();
+//                if (stringList.size() == 0) {
+//                    stringList.add("No Review");
+//                }
+                MyAdapter adapter1 = new MyAdapter(UserProfileActivity.this,
+                        reviewList);
                 reviewListView.setAdapter(adapter1);
             }
 
