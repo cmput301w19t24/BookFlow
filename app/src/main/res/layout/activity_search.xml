@@ -27,7 +27,7 @@
         android:id="@+id/userPicture"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:background="@null"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +42,7 @@
         android:layout_marginEnd="8dp"
         android:gravity="center"
         android:hint="Enter keywords"
-        android:textSize="18dp"
+        android:textSize="17dp"
         app:layout_constraintEnd_toStartOf="@+id/goSearch"
         app:layout_constraintStart_toEndOf="@+id/userPicture"
         app:layout_constraintTop_toTopOf="parent" />
@@ -109,8 +109,9 @@
             android:id="@+id/checkAvailable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_weight="1"
             android:text="Available" />
 
         <RadioButton
@@ -119,7 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="200dp"
-            android:layout_marginTop="-35dp"
+            android:layout_marginTop="-40dp"
             android:text="Accepted" />
 
 
@@ -129,6 +130,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+
             android:text="Requested" />
 
 
@@ -138,7 +141,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="200dp"
-            android:layout_marginTop="-35dp"
+            android:layout_marginTop="-40dp"
             android:text="Borrowed" />
 
     </RadioGroup>
