@@ -7,12 +7,15 @@ package com.example.bookflow;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,13 +147,13 @@ public class SearchActivity extends BasicActivity {
         private Context mContext;
         public LinearAdapter(Context context){
             this.mContext=context;
-       ;
         }
 
         public LinearAdapter(SearchActivity context) {
             this.mContext=context;
 
         }
+
 
         @Override
         public LinearAdapter.LinearViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -159,12 +162,16 @@ public class SearchActivity extends BasicActivity {
 
 
         @Override
-        public void onBindViewHolder(LinearAdapter.LinearViewHolder holder, int position) {
+        public void onBindViewHolder(LinearAdapter.LinearViewHolder holder, final int position) {
             holder.setData(mContext,position);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    String book_id = filtered_books.get(position).getBookId();
+                    Log.i("bookid",book_id);
+                    Intent intent = new Intent(SearchActivity.this,BookDetailActivity.class);
+                    intent.putExtra("book_id",book_id);
+                    startActivity(intent);
                 }
             });
         }
@@ -178,21 +185,35 @@ public class SearchActivity extends BasicActivity {
 
         class LinearViewHolder extends RecyclerView.ViewHolder{
             private TextView title;
-            private TextView isbn;
+            private TextView status;
             private TextView author;
             private ImageView photo;
 
             public LinearViewHolder(View itemView){
                 super(itemView);
                 title = itemView.findViewById(R.id.searchDetail1);
-                isbn = itemView.findViewById(R.id.searchDetail2);
-                author = itemView.findViewById(R.id.searchDetail3);
+                status = itemView.findViewById(R.id.searchDetail3);
+                author = itemView.findViewById(R.id.searchDetail2);
                 photo = itemView.findViewById(R.id.searchItemImage);
+
             }
             public void setData(Context ctx,int i){
+                title.setTextColor(Color.BLUE);
+                title.setTypeface(null, Typeface.BOLD_ITALIC);
                 title.setText(filtered_books.get(i).getTitle());
-                isbn.setText(filtered_books.get(i).getIsbn());
-                author.setText(filtered_books.get(i).getAuthor());
+                title.setGravity(Gravity.CENTER);
+
+                author.setTextColor(Color.BLUE);
+                author.setTypeface(null, Typeface.ITALIC);
+                author.setTextSize(15);
+                author.setGravity(Gravity.CENTER);
+                author.setText("by "+filtered_books.get(i).getAuthor());
+
+                status.setTextColor(Color.BLUE);
+                status.setTextSize(15);
+                status.setGravity(Gravity.CENTER);
+                status.setText("Currently "+filtered_books.get(i).getStatus());
+
                 Glide.with(ctx).load(filtered_books.get(i).getPhotoUri()).into(photo);
             }
 
@@ -325,9 +346,9 @@ public class SearchActivity extends BasicActivity {
             TextView book_title = (TextView) mView.findViewById(R.id.searchDetail2);
             TextView book_author = (TextView) mView.findViewById(R.id.searchDetail3);
             ImageView book_image = (ImageView) mView.findViewById(R.id.searchItemImage);
-            book_isbn.setText(isbn);
-            book_title.setText(title);
-            book_author.setText(author);
+            book_isbn.setText("isbn: "+isbn);
+            book_title.setText("title: "+title);
+            book_author.setText("author: "+author);
             Glide.with(ctx).load(bookImage).into(book_image);
         }
     }
@@ -400,6 +421,7 @@ public class SearchActivity extends BasicActivity {
         LinearAdapter madapter = new LinearAdapter(this);
         recyclerView.setAdapter(madapter);
 
+
     }
 
     /**
@@ -448,10 +470,18 @@ public class SearchActivity extends BasicActivity {
             if(!(book.getStatus().toString().equals(status))){
                 filtered_books.remove(book);
             }
+
+            if (searchText==""){
+
+            } else{
+                for(String w:words){
+                    if(!(book.getBookInfo().contains(w))){
+                        filtered_books.remove(book);
+                    }
+                }
+            }
+
         }
 
-        for(Book book:filtered_books){
-            Log.i("status",book.getStatus().toString());
-        }
     }
 }

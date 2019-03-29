@@ -23,6 +23,7 @@ public class NotificationHolder extends RecyclerView.ViewHolder{
     private final ImageView notification_sender_icon;
     private final TextView notification_timestamp;
     FirebaseDatabase mDatabase;
+    private NotificationHolder.ClickListener mClickListener;
 
     public NotificationHolder(@NonNull View itemView) {
         super(itemView);
@@ -30,6 +31,22 @@ public class NotificationHolder extends RecyclerView.ViewHolder{
         notification_type = itemView.findViewById(R.id.notification_type);
         notification_sender_icon = itemView.findViewById(R.id.notification_sender_icon);
         notification_timestamp = itemView.findViewById(R.id.notification_timestamp);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mClickListener.onItemClick(v, getAdapterPosition());
+
+            }
+        });
+    }
+
+    public interface ClickListener{
+        public void onItemClick(View view, int position);
+//        public void onItemLongClick(View view, int position);
+    }
+
+    public void setOnClickListener(NotificationHolder.ClickListener clickListener){
+        mClickListener = clickListener;
     }
 
     public void setNotificationText(String s) {

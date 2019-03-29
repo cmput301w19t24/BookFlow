@@ -272,7 +272,7 @@ public class MainActivity extends BasicActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent_detail = new Intent(MainActivity.this, BookDetailActivity.class);
                 String book_id = adpBook.getItem(position).getBookId();
-                intent_detail.putExtra("book_id",book_id);
+                intent_detail.putExtra(BookDetailActivity.INTENT_EXTRA, book_id);
                 startActivity(intent_detail);
             }
         });
@@ -319,7 +319,7 @@ public class MainActivity extends BasicActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent_detail = new Intent(MainActivity.this, BookDetailActivity.class);
                 String book_id = adpBorrow.getItem(position).getBookId();
-                intent_detail.putExtra("book_id",book_id);
+                intent_detail.putExtra(BookDetailActivity.INTENT_EXTRA, book_id);
                 startActivity(intent_detail);
             }
         });

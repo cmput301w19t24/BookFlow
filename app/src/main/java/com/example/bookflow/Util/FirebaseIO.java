@@ -7,7 +7,6 @@ import android.util.Log;
 import com.example.bookflow.Model.Book;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -165,7 +164,9 @@ public class FirebaseIO {
      *
      * @param mybook the book object to be updated
      */
-    public void updateBook(final Book mybook, Uri localUri, OnCompleteListener<Void> listener) {
+    public void updateBook(final Book mybook, Uri localUri, final OnCompleteListener<Void> listener) {
+        final String lastPhotoUri = mybook.getPhotoUri();
+
         if (localUri != null) {
 
             Log.d(TAG, "mSelectedPhotoUri: " + localUri.toString());
@@ -173,12 +174,16 @@ public class FirebaseIO {
             Log.i(TAG, "mybook.getBookId = " + mybook.getBookId());
 
             final StorageReference photoRef = mBookPhotoStorageReference.child(localUri.getLastPathSegment());
+
             UploadTask uploadTask = photoRef.putFile(localUri);
 
             uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 // upon completion, start to retrieve Uri
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+
+                    // get photo download URL
+
                     if (!task.isSuccessful()) {
                         throw task.getException();
                     }
@@ -189,6 +194,9 @@ public class FirebaseIO {
                 // upon completion, start to upload to database
                 @Override
                 public Task<Void> then(@NonNull Task<Uri> task) throws Exception {
+
+                    // update database
+
                     if (!task.isSuccessful()) {
                         throw task.getException();
                     }
@@ -196,6 +204,7 @@ public class FirebaseIO {
                     // TODO: delete the original image first
                     Uri downloadUri = task.getResult();
                     Log.d(TAG, "downloadUri = " + downloadUri.toString());
+
                     mybook.setPhotoUri(downloadUri.toString());
 
                     DatabaseReference bookRef = null;
@@ -205,10 +214,20 @@ public class FirebaseIO {
                     }
                     return bookRef.setValue(mybook);
                 }
-            }).addOnCompleteListener(listener);
+            }).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (!mybook.getPhotoUri().equals(lastPhotoUri)) {
+                                deletePhoto(lastPhotoUri, listener);
+                            } else {
+                                listener.onComplete(task);
+                            }
+                        }
+                    });
 
         } else {
             // no photo uploaded
+            mybook.setPhotoUri(null);
 
             DatabaseReference bookRef = null;
             if (mybook.getBookId() != null) {
@@ -217,7 +236,16 @@ public class FirebaseIO {
             }
 
             bookRef.setValue(mybook)
-                    .addOnCompleteListener(listener);
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (lastPhotoUri != null) {
+                                deletePhoto(lastPhotoUri, listener);
+                            } else {
+                                listener.onComplete(task);
+                            }
+                        }
+                    });
         }
     }
 
@@ -252,4 +280,22 @@ public class FirebaseIO {
         }
     }
 
+    public void deletePhoto(String photoUri, OnCompleteListener<Void> listener) {
+        if (photoUri != null) {
+            mFirebaseStorage.getReferenceFromUrl(photoUri)
+                    .delete()
+                    .continueWithTask(new Continuation<Void, Task<Void>>() {
+                        @Override
+                        public Task<Void> then(@NonNull Task<Void> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+
+                            DatabaseReference bookPhotoRef = mBookDatabaseReference.child("PhotoUri");
+                            return bookPhotoRef.removeValue();
+                        }
+                    }).addOnCompleteListener(listener);
+        }
+
+    }
 }

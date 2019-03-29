@@ -10,6 +10,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.bookflow.Model.Book;
+import com.example.bookflow.Model.Notification;
+import com.example.bookflow.Model.Request;
+import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -61,90 +65,112 @@ public class RequestDetailActivity extends BasicActivity {
         rejectButton = findViewById(R.id.reject_received_request_button);
 
 
-
         Bundle extras = getIntent().getExtras();
-        ownerId = extras.getString("ownerId");
+        //ownerId = extras.getString("ownerId");
         bookId = extras.getString("bookId");
-        borrowerId = extras.getString("borrowerId");
-        status = extras.getString("status");
+        //borrowerId = extras.getString("borrowerId");
+        //status = extras.getString("status");
         requestId = extras.getString("requestId");
 
-        DatabaseReference dbRef = mDatabase.getReference("Books").child(bookId);
 
+        DatabaseReference requestReference = mDatabase.getReference("RequestsReceivedByBook").child(bookId).child(requestId);
         bookLabel.setText("Book");
 
-        ValueEventListener bookListener = new ValueEventListener() {
+        ValueEventListener requestListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Object photoUriObj = dataSnapshot.child("photoUri").getValue();
-                final String bookTitle = dataSnapshot.child("title").getValue().toString();
+                Request r = dataSnapshot.getValue(Request.class);
+                borrowerId = r.getBorrowerId();
+                status = r.getStatus();
+                ownerId = r.getOwnerId();
 
-                if (photoUriObj != null) {
-                    String bookImgUri = photoUriObj.toString();
-                    Glide.with(RequestDetailActivity.this)
-                            .load(bookImgUri).into(bookIcon);
-                }
+                DatabaseReference bookReference = mDatabase.getReference("Books").child(bookId);
 
-                if (curUser.equals(ownerId)) {
-                    userLabel.setText("Requester");
-                    String path = "users/" + borrowerId;
-                    StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(path);
-                    Glide.with(RequestDetailActivity.this)
-                            .load(imageRef).into(userIcon);
-                    DatabaseReference userDbRef =  mDatabase.getReference("Users").child(borrowerId);
-                    ValueEventListener userListener = new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            String borrowerUsername = dataSnapshot.child("username").getValue().toString();
-                            if (status.equals("Pending")) {
-                                requestText.setText(borrowerUsername + " has requested \"" + bookTitle + "\"");
-                                acceptButton.setVisibility(View.VISIBLE);
-                                rejectButton.setVisibility(View.VISIBLE);
+                ValueEventListener bookListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Object photoUriObj = dataSnapshot.child("photoUri").getValue();
+                    final String bookTitle = dataSnapshot.child("title").getValue().toString();
+
+                    if (photoUriObj != null) {
+                        String bookImgUri = photoUriObj.toString();
+                        Glide.with(RequestDetailActivity.this)
+                                .load(bookImgUri).into(bookIcon);
+                    }
+
+                    if (curUser.equals(ownerId)) {
+                        userLabel.setText("Requester");
+                        String path = "users/" + borrowerId;
+                        StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(path);
+                        Glide.with(RequestDetailActivity.this)
+                                .load(imageRef).into(userIcon);
+                        DatabaseReference userDbRef =  mDatabase.getReference("Users").child(borrowerId);
+                        ValueEventListener userListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String borrowerUsername = dataSnapshot.child("username").getValue().toString();
+                                if (status.equals("Pending")) {
+                                    requestText.setText(borrowerUsername + " has requested \"" + bookTitle + "\"");
+                                    acceptButton.setVisibility(View.VISIBLE);
+                                    rejectButton.setVisibility(View.VISIBLE);
+                                }
+
                             }
-
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            Log.w("cancelled", databaseError.toException());
-                        }
-                    };
-                    userDbRef.addListenerForSingleValueEvent(userListener);
-
-                }
-                else if (curUser.equals(borrowerId)) {
-                    userLabel.setText("Owner");
-                    String path = "users/" + ownerId;
-                    StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(path);
-                    Glide.with(RequestDetailActivity.this)
-                            .load(imageRef).into(userIcon);
-
-                    DatabaseReference userDbRef =  mDatabase.getReference("Users").child(ownerId);
-                    ValueEventListener userListener = new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            String ownerUsername = dataSnapshot.child("username").getValue().toString();
-                            if (status.equals("Pending")) {
-                                requestText.setText("Your request for \"" + bookTitle + "\" from "  +ownerUsername +" is still pending.");
-                                cancelButton.setVisibility(View.VISIBLE);
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.w("cancelled", databaseError.toException());
                             }
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            Log.w("cancelled", databaseError.toException());
-                        }
-                    };
-                    userDbRef.addListenerForSingleValueEvent(userListener);
+                        };
+                        userDbRef.addListenerForSingleValueEvent(userListener);
+
+                    }
+                    else if (curUser.equals(borrowerId)) {
+                        userLabel.setText("Owner");
+                        String path = "users/" + ownerId;
+                        StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(path);
+                        Glide.with(RequestDetailActivity.this)
+                                .load(imageRef).into(userIcon);
+
+                        DatabaseReference userDbRef =  mDatabase.getReference("Users").child(ownerId);
+                        ValueEventListener userListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String ownerUsername = dataSnapshot.child("username").getValue().toString();
+                                if (status.equals("Pending")) {
+                                    requestText.setText("Your request for \"" + bookTitle + "\" from "  +ownerUsername +" is still pending.");
+                                    cancelButton.setVisibility(View.VISIBLE);
+                                }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.w("cancelled", databaseError.toException());
+                            }
+                        };
+                        userDbRef.addListenerForSingleValueEvent(userListener);
+
+                    }
 
                 }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.w("cancelled", databaseError.toException());
+                }
+            };
+            bookReference.addListenerForSingleValueEvent(bookListener);
+        }
 
-            }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.w("cancelled", databaseError.toException());
             }
         };
-        dbRef.addListenerForSingleValueEvent(bookListener);
+        requestReference.addListenerForSingleValueEvent(requestListener);
     }
+
+
+
+
+//
 
     public void reject(View v) {
         Log.e("hello",requestId);
@@ -161,6 +187,27 @@ public class RequestDetailActivity extends BasicActivity {
         // set requester's status to rejected
         DatabaseReference sentReqRef = mDatabase.getReference("RequestsSentByUser").child(borrowerId).child(requestId).child("status");
         sentReqRef.setValue("Rejected");
+
+        // delete notification
+        final DatabaseReference notificationRef = mDatabase.getReference("Notifications").child(ownerId);
+        ValueEventListener notificationListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot child : dataSnapshot.getChildren() ){
+                    Notification n = child.getValue(Notification.class);
+                    if (n.getTransactionId().equals(requestId)) {
+                        notificationRef.child(child.getKey()).removeValue();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("cancelled", databaseError.toException());
+            }
+        };
+        notificationRef.addListenerForSingleValueEvent(notificationListener);
+
+
         finish();
     }
 
@@ -173,5 +220,35 @@ public class RequestDetailActivity extends BasicActivity {
         infos.add(this.requestId);
         intent.putExtra(PARAMETERS, infos);
         startActivity(intent);
+    }
+
+    public void cancelRequest(View v) {
+        DatabaseReference sentReqRef = mDatabase.getReference("RequestsSentByUser").child(borrowerId).child(requestId);
+        sentReqRef.removeValue();
+
+        DatabaseReference bookReqRef = mDatabase.getReference("RequestsReceivedByBook").child(bookId).child(requestId).child("status");
+        bookReqRef.setValue("Cancelled");
+
+        // delete notification
+        final DatabaseReference notificationRef = mDatabase.getReference("Notifications").child(ownerId);
+        ValueEventListener notificationListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot child : dataSnapshot.getChildren() ){
+                    Notification n = child.getValue(Notification.class);
+                    if (n.getTransactionId().equals(requestId)) {
+                        notificationRef.child(child.getKey()).removeValue();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("cancelled", databaseError.toException());
+            }
+        };
+        notificationRef.addListenerForSingleValueEvent(notificationListener);
+        finish();
+
+
     }
 }

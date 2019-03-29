@@ -42,6 +42,8 @@ import java.util.Date;
  */
 
 public class BookDetailActivity extends BasicActivity {
+    public static final String INTENT_EXTRA = "book_id";
+
     private static final int RC_EDIT_BOOK = 1;
     private TextView titleField;
     private TextView authorField;
@@ -83,7 +85,7 @@ public class BookDetailActivity extends BasicActivity {
 
         // retrieves bookId passed from SearchActivity
         Bundle extras = getIntent().getExtras();
-        bookId  = extras.getString("book_id");
+        bookId  = extras.getString(INTENT_EXTRA);
 
         mDatabase = FirebaseDatabase.getInstance();
         notificationRef = mDatabase.getReference("Notifications");
@@ -260,6 +262,12 @@ public class BookDetailActivity extends BasicActivity {
                     DatabaseReference receiverRef = notificationRef.child(ownerId);
                     String notification_id = receiverRef.push().getKey();
                     receiverRef.child(notification_id).setValue(new Notification(borrowerId, bookId, "request", request_id, title, username, timestamp));
+
+                    // transition book state
+                    DatabaseReference bookRef = mDatabase.getReference("Books");
+                    if (bookStatus.equals("AVAILABLE")) {
+                        bookRef.child(bookId).child("status").setValue("REQUESTED");
+                    }
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
