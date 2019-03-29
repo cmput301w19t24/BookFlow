@@ -1,6 +1,7 @@
 package com.example.bookflow;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -250,10 +251,12 @@ public class UserProfileActivity extends BasicActivity {
      */
     public void switchReview(View view){
         Button button = findViewById(R.id.review_switch);
-        button.setBackgroundResource(R.drawable.red_button);
+        button.setBackgroundResource(R.drawable.tab_select);
+        ((TextView)findViewById(R.id.review_switch)).setTextColor(getResources().getColor(R.color.colorPrimary));
 
         button = findViewById(R.id.offer_switch);
-        button.setBackgroundResource(R.drawable.normal_button);
+        button.setBackgroundResource(R.drawable.tab_notselect);
+        ((TextView)findViewById(R.id.offer_switch)).setTextColor(Color.WHITE);
 
         LinearLayout layout = findViewById(R.id.reviewsLayout);
         layout.setVisibility(LinearLayout.VISIBLE);
@@ -270,10 +273,13 @@ public class UserProfileActivity extends BasicActivity {
      */
     public void switchOffer(View view){
         Button button = findViewById(R.id.review_switch);
-        button.setBackgroundResource(R.drawable.normal_button);
+        button.setBackgroundResource(R.drawable.tab_notselect);
+        ((TextView)findViewById(R.id.review_switch)).setTextColor(Color.WHITE);
 
         button = findViewById(R.id.offer_switch);
-        button.setBackgroundResource(R.drawable.red_button);
+        button.setBackgroundResource(R.drawable.tab_select);
+        ((TextView)findViewById(R.id.offer_switch)).setTextColor(getResources().getColor(R.color.colorPrimary));
+
 
         LinearLayout layout = findViewById(R.id.reviewsLayout);
         layout.setVisibility(LinearLayout.GONE);

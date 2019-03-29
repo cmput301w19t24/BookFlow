@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="25dp"
         android:layout_marginBottom="8dp"
         android:layout_weight="1"
         android:background="@drawable/simple_black_border"
@@ -68,7 +68,8 @@
                 android:layout_margin="5dp"
                 android:layout_weight="2"
                 android:text="@string/placeholder"
-                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="24sp" />
 
             <TextView
@@ -102,8 +103,7 @@
             android:id="@+id/emailLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/round_border"
+            android:layout_margin="3dp"
             android:orientation="horizontal"
             android:paddingTop="2dp"
             android:paddingBottom="2dp">
@@ -112,9 +112,9 @@
                 android:id="@+id/fixEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
+                android:layout_marginStart="6dp"
                 android:text="@string/email"
-                android:textColor="#000000"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp" />
 
             <TextView
@@ -122,7 +122,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="#000000"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp" />
         </LinearLayout>
 
@@ -130,8 +130,7 @@
             android:id="@+id/phoneLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/round_border"
+            android:layout_margin="3dp"
             android:orientation="horizontal"
             android:paddingTop="2dp"
             android:paddingBottom="2dp">
@@ -140,9 +139,9 @@
                 android:id="@+id/fixPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
+                android:layout_marginStart="6dp"
                 android:text="@string/phone"
-                android:textColor="#000000"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp" />
 
             <TextView
@@ -150,7 +149,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="#000000"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp" />
 
         </LinearLayout>
@@ -158,7 +157,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:layout_marginTop="6dp"
             android:orientation="horizontal">
 
             <Button
@@ -170,7 +169,7 @@
                 android:background="@drawable/tab_select"
                 android:onClick="switchReview"
                 android:text="@string/review_list"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused" />
+                android:textColor="@color/colorPrimaryDark" />
 
             <Button
                 android:id="@+id/offer_switch"
