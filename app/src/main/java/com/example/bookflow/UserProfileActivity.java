@@ -147,7 +147,8 @@ public class UserProfileActivity extends BasicActivity {
         Review review = new Review(reviewer, reviewee, comments, rating);
 
         // append to review list
-        reviewList.add(review);
+        if (!reviewList.contains(review))
+            reviewList.add(review);
     }
 
     /**
