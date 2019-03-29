@@ -162,7 +162,6 @@ public class RequestDetailActivity extends BasicActivity {
         DatabaseReference sentReqRef = mDatabase.getReference("RequestsSentByUser").child(borrowerId).child(requestId).child("status");
         sentReqRef.setValue("Rejected");
         finish();
-
     }
 
     public void accept(View v) {
