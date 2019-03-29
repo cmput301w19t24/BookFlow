@@ -102,15 +102,6 @@
                     android:inputType="textMultiLine" />
             </android.support.design.widget.TextInputLayout>
 
-            <ImageView
-                android:id="@+id/edit_book_save_iv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="24dp"
-                android:contentDescription="@string/save"
-                app:srcCompat="@drawable/ic_baseline_save_24px" />
-
         </LinearLayout>
 
     </ScrollView>
