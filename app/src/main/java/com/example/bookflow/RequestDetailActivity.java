@@ -165,15 +165,6 @@ public class RequestDetailActivity extends BasicActivity {
     }
 
     public void accept(View v) {
-        Intent intent = new Intent(RequestDetailActivity.this, MapsActivity.class);
-        intent.putExtra("bookId", bookId);
-        intent.putExtra("borrowerId", borrowerId);
-        intent.putExtra("requestId", requestId);
-        startActivity(intent);
-
-    }
-
-    public void accept(View v) {
         Intent intent = new Intent(this, MapsActivity.class);
         ArrayList<String> infos = new ArrayList<>();
         infos.add(this.ownerId);
