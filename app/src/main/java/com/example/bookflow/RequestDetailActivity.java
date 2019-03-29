@@ -1,5 +1,6 @@
 package com.example.bookflow;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -158,6 +159,14 @@ public class RequestDetailActivity extends BasicActivity {
         DatabaseReference sentReqRef = mDatabase.getReference("RequestsSentByUser").child(borrowerId).child(requestId).child("status");
         sentReqRef.setValue("Rejected");
         finish();
+    }
+
+    public void accept(View v) {
+        Intent intent = new Intent(RequestDetailActivity.this, MapsActivity.class);
+        intent.putExtra("bookId", bookId);
+        intent.putExtra("borrowerId", borrowerId);
+        intent.putExtra("requestId", requestId);
+        startActivity(intent);
 
     }
 }
