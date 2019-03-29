@@ -221,6 +221,22 @@ public class MainActivity extends BasicActivity {
         myBorrowList.setAdapter(adpBorrow);
     }
 
+    private void reloadBookList() {
+        firstgrab = true;
+        books.clear();
+        filtered_books.clear();
+        nonfiltered_books.clear();
+        bookList();
+    }
+
+    private void reloadBorrowList() {
+        firstgrab = true;
+        borrows.clear();
+        filtered_borrows.clear();
+        nonfiltered_borrows.clear();
+        borrowList();
+    }
+
     /**
      * view book list method
      */
@@ -238,19 +254,11 @@ public class MainActivity extends BasicActivity {
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                firstgrab = true;
-                books.clear();
-                filtered_books.clear();
-                nonfiltered_books.clear();
-                bookList();
+                reloadBookList();
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                firstgrab = true;
-                books.clear();
-                filtered_books.clear();
-                nonfiltered_books.clear();
-                bookList();
+                reloadBookList();
             }
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
@@ -287,19 +295,11 @@ public class MainActivity extends BasicActivity {
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                firstgrab = true;
-                borrows.clear();
-                filtered_borrows.clear();
-                nonfiltered_borrows.clear();
-                borrowList();
+                reloadBorrowList();
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                firstgrab = true;
-                borrows.clear();
-                filtered_borrows.clear();
-                nonfiltered_borrows.clear();
-                borrowList();
+                reloadBorrowList();
             }
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
