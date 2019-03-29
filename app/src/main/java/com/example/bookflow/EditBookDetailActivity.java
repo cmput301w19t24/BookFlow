@@ -202,6 +202,7 @@ public class EditBookDetailActivity extends BasicActivity {
                             Toast.makeText(getApplicationContext(), getString(R.string.delete_book_success), Toast.LENGTH_LONG)
                                     .show();
                             Intent intent = new Intent(EditBookDetailActivity.this,MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
 
                         } else {
