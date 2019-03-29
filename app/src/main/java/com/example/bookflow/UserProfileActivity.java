@@ -59,7 +59,6 @@ public class UserProfileActivity extends BasicActivity {
         setContentView(R.layout.activity_user_profile);
     }
 
-
     /**
      * onStart method get all needed data in this page from firebase
      * and convert them to strings, integers, users which we can directly use
