@@ -253,15 +253,15 @@ public class SearchActivity extends BasicActivity {
             TextView user_selfintro = (TextView) mView.findViewById(R.id.searchDetail2);
             ImageView user_image = (ImageView) mView.findViewById(R.id.searchItemImage);
             user_name.setTextColor(Color.BLACK);
-            user_name.setGravity(Gravity.CENTER);
+            user_name.setGravity(Gravity.LEFT);
             user_name.setText(userName);
 
             user_email.setTextColor(Color.BLUE);
             user_email.setTextSize(15);
-            user_email.setGravity(Gravity.CENTER);
+            user_email.setGravity(Gravity.LEFT);
             user_email.setText(userEmail);
 
-            user_selfintro.setGravity(Gravity.CENTER);
+            user_selfintro.setGravity(Gravity.LEFT);
             user_selfintro.setTextSize(15);
             if(userintro == ""){
                 user_selfintro.setText("This guy is lazy and don't have a introduction yet");
