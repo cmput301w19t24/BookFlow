@@ -49,7 +49,7 @@ public class UserProfileActivity extends BasicActivity {
     private DatabaseReference dbRef;
     private String email, phoneNum, username, selfIntro, uid;
     private ReviewList reviewList = new ReviewList();
-    private ListView reviewListView, requestListView, offerListView;
+    private ListView reviewListView, offerListView;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -58,7 +58,6 @@ public class UserProfileActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
     }
-
 
     /**
      * onStart method get all needed data in this page from firebase
@@ -69,7 +68,6 @@ public class UserProfileActivity extends BasicActivity {
         super.onStart();
         reviewListView = (ListView) findViewById(R.id.reviewList);
         offerListView = (ListView) findViewById(R.id.offerList);
-        requestListView = (ListView) findViewById(R.id.requestList);
         dbRef = FirebaseDatabase.getInstance().getReference();
 
         // determine whether it's yourself visiting your profile or other user visiting your profile
@@ -247,31 +245,6 @@ public class UserProfileActivity extends BasicActivity {
     }
 
     /**
-     * onClick method of request button
-     * @param view button view
-     */
-    public void switchRequest(View view){
-        Button button = findViewById(R.id.review_switch);
-        button.setBackgroundResource(R.drawable.normal_button);
-
-        button = findViewById(R.id.offer_switch);
-        button.setBackgroundResource(R.drawable.normal_button);
-
-        button = findViewById(R.id.request_switch);
-        button.setBackgroundResource(R.drawable.red_button);
-
-        LinearLayout layout = findViewById(R.id.reviewsLayout);
-        layout.setVisibility(LinearLayout.GONE);
-
-        layout = findViewById(R.id.offerLayout);
-        layout.setVisibility(LinearLayout.GONE);
-
-        layout = findViewById(R.id.requestLayout);
-        layout.setVisibility(LinearLayout.VISIBLE);
-        setUpRequestList();
-    }
-
-    /**
      * onClick method of Review button
      * @param view button view
      */
@@ -282,17 +255,12 @@ public class UserProfileActivity extends BasicActivity {
         button = findViewById(R.id.offer_switch);
         button.setBackgroundResource(R.drawable.normal_button);
 
-        button = findViewById(R.id.request_switch);
-        button.setBackgroundResource(R.drawable.normal_button);
-
         LinearLayout layout = findViewById(R.id.reviewsLayout);
         layout.setVisibility(LinearLayout.VISIBLE);
 
         layout = findViewById(R.id.offerLayout);
         layout.setVisibility(LinearLayout.GONE);
 
-        layout = findViewById(R.id.requestLayout);
-        layout.setVisibility(LinearLayout.GONE);
         setUpReviewList();
     }
 
@@ -307,17 +275,12 @@ public class UserProfileActivity extends BasicActivity {
         button = findViewById(R.id.offer_switch);
         button.setBackgroundResource(R.drawable.red_button);
 
-        button = findViewById(R.id.request_switch);
-        button.setBackgroundResource(R.drawable.normal_button);
-
         LinearLayout layout = findViewById(R.id.reviewsLayout);
         layout.setVisibility(LinearLayout.GONE);
 
         layout = findViewById(R.id.offerLayout);
         layout.setVisibility(LinearLayout.VISIBLE);
 
-        layout = findViewById(R.id.requestLayout);
-        layout.setVisibility(LinearLayout.GONE);
         setUpOfferList();
     }
 }

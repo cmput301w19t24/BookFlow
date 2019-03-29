@@ -11,9 +11,6 @@
         layout="@layout/activity_basic"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -184,17 +181,6 @@
                 android:text="@string/books_offered"
                 android:textColor="#000000" />
 
-            <Button
-                android:id="@+id/request_switch"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/normal_button"
-                android:onClick="switchRequest"
-                android:text="@string/books_requested"
-                android:textColor="#000000" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -223,20 +209,6 @@
 
             <ListView
                 android:id="@+id/offerList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/requestLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/triangle"
-            android:orientation="vertical"
-            android:visibility="visible">
-
-            <ListView
-                android:id="@+id/requestList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>

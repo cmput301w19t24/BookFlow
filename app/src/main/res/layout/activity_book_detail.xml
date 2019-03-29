@@ -102,8 +102,8 @@
         android:text="@string/view_requests"
         android:textSize="12sp"
         android:onClick="viewRequests"
-        android:background="@android:color/holo_green_light"
-        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
         app:layout_constraintBottom_toTopOf="@+id/book_detail_book_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -125,10 +125,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:visibility="gone"
-            android:background="@android:color/holo_green_light"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
             android:onClick="request"
-            android:text="@string/request"
-            android:textColor="@android:color/white" />
+            android:text="@string/request" />
 
         <Button
             android:id="@+id/book_detail_scan_for_transaction"

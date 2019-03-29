@@ -163,6 +163,11 @@ public class MainActivity extends BasicActivity {
     }
 
     private void addToList(Book.BookStatus status) {
+        if (firstgrab) {
+            nonfiltered_books = (ArrayList<Book>) books.clone();
+            nonfiltered_borrows = (ArrayList<Book>) borrows.clone();
+            firstgrab = false;
+        }
         filtered_books = (ArrayList<Book>)books.clone();
         for (int i=0; i<nonfiltered_books.size(); i++) {
             Book book = nonfiltered_books.get(i);
@@ -216,6 +221,22 @@ public class MainActivity extends BasicActivity {
         myBorrowList.setAdapter(adpBorrow);
     }
 
+    private void reloadBookList() {
+        firstgrab = true;
+        books.clear();
+        filtered_books.clear();
+        nonfiltered_books.clear();
+        bookList();
+    }
+
+    private void reloadBorrowList() {
+        firstgrab = true;
+        borrows.clear();
+        filtered_borrows.clear();
+        nonfiltered_borrows.clear();
+        borrowList();
+    }
+
     /**
      * view book list method
      */
@@ -225,16 +246,20 @@ public class MainActivity extends BasicActivity {
         query.orderByChild("ownerId").equalTo(uid).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                System.out.println("Added " + " " +dataSnapshot.getValue());
                 Book book = (Book)dataSnapshot.getValue(Book.class);
                 if (!books.contains(book)) {
                     adpBook.add(book);
+                    firstgrab = true;
                 }
             }
             @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                reloadBookList();
+            }
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) { }
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                reloadBookList();
+            }
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
             @Override
@@ -265,12 +290,17 @@ public class MainActivity extends BasicActivity {
                 Book book = (Book)dataSnapshot.getValue(Book.class);
                 if (!borrows.contains(book)) {
                     adpBorrow.add(book);
+                    firstgrab = true;
                 }
             }
             @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                reloadBorrowList();
+            }
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) { }
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                reloadBorrowList();
+            }
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
             @Override

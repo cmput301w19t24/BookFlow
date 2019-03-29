@@ -45,7 +45,7 @@
                     android:id="@+id/edit_book_title_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/authorName"
+                    android:hint="@string/bookName"
                     android:inputType="textAutoComplete" />
             </android.support.design.widget.TextInputLayout>
 
@@ -59,7 +59,7 @@
                     android:id="@+id/edit_book_author_name_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/bookName"
+                    android:hint="@string/authorName"
                     android:inputType="text" />
             </android.support.design.widget.TextInputLayout>
 
@@ -81,8 +81,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/edit_book_isbn_et"
-                    android:background="@color/colorPrimary"
                     android:text="@string/scan"
+                    android:background="@color/colorPrimary"
                     android:textColor="@color/common_google_signin_btn_text_dark_default" />
 
             </RelativeLayout>

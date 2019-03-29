@@ -216,7 +216,7 @@ public class BookDetailActivity extends BasicActivity {
         statusField.setText(bookStatus);
         commentField.setText(comments);
         ratingBar.setRating(rating);
-        Glide.with(BookDetailActivity.this)
+        Glide.with(getApplicationContext())
                 .load(photoUri)
                 .into(bookImage);
     }

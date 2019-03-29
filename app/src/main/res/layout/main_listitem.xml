@@ -24,25 +24,45 @@
             android:layout_marginLeft="16dp">
 
             <TextView
-                android:id="@+id/iauthor"
-                android:layout_width="318dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="sans-serif"
-                android:padding="3dp"
-                android:textColor="@color/colorPrimary"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
                 android:id="@+id/ititle"
                 android:layout_width="318dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
+                android:layout_marginTop="10dp"
                 android:padding="3dp"
                 android:textColor="@color/design_default_color_primary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="8dp">
+
+                <TextView
+                    android:id="@+id/iby"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="sans-serif"
+                    android:padding="2dp"
+                    android:text="by"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/iauthor"
+                    android:layout_width="298dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="sans-serif"
+                    android:padding="3dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
