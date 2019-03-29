@@ -65,101 +65,6 @@ public class RequestHolder extends RecyclerView.ViewHolder{
         mClickListener = clickListener;
     }
 
-
-//    public void setRequesterName(String s) {
-//    }
-
-//    public void setBookTitle(String bookId) {
-//        final String myBookId = bookId;
-//        mDatabase = FirebaseDatabase.getInstance();
-//        DatabaseReference bookRef = mDatabase.getReference("Books");
-//
-//        ValueEventListener bookListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String bookTitle = dataSnapshot.child(myBookId).child("title").getValue().toString();
-//                request_item_book_title.setText(bookTitle);
-//                //Log.e("help", requesterName);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.w("cancelled", databaseError.toException());
-//            }
-//        };
-//        bookRef.addListenerForSingleValueEvent(bookListener);
-//
-//    }
-
-
-//    public void setRequesterName(String requesterId) {
-//        final String reqId = requesterId;
-//        mDatabase = FirebaseDatabase.getInstance();
-//        DatabaseReference userRef = mDatabase.getReference("Users");
-//
-//        ValueEventListener userListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String requesterName = dataSnapshot.child(reqId).child("username").getValue().toString();
-//                requester_name.setText(requesterName);
-//                //request_text.setText("has requested");
-//                Log.e("help", requesterName);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.w("cancelled", databaseError.toException());
-//            }
-//        };
-//        userRef.addListenerForSingleValueEvent(userListener);
-//    }
-//
-//    public void setRequestText(String s) {
-//        request_text.setText(s);
-//    }
-//
-//    public void setBookTitleForSentRequest(String bookId) {
-//        final String myBookId = bookId;
-//        mDatabase = FirebaseDatabase.getInstance();
-//        DatabaseReference bookRef = mDatabase.getReference("Books");
-//
-//        ValueEventListener bookListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String bookTitle = dataSnapshot.child(myBookId).child("title").getValue().toString();
-//                requester_name.setText("You have requested " + bookTitle);
-//                //Log.e("help", requesterName);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.w("cancelled", databaseError.toException());
-//            }
-//        };
-//        bookRef.addListenerForSingleValueEvent(bookListener);
-//    }
-//    public void setOwnerNameForSentRequest(String ownerId){
-//        final String ownId = ownerId;
-//        mDatabase = FirebaseDatabase.getInstance();
-//        DatabaseReference userRef = mDatabase.getReference("Users");
-//
-//        ValueEventListener userListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String ownerName = dataSnapshot.child(ownId).child("username").getValue().toString();
-//                request_item_book_title.setText(ownerName);
-//                //request_text.setText("has requested");
-//                //Log.e("help", requesterName);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.w("cancelled", databaseError.toException());
-//            }
-//        };
-//        userRef.addListenerForSingleValueEvent(userListener);
-//    }
-
     public void setRequesterIcon(StorageReference s) {
         Glide.with(itemView.getContext())
                 .load(s).into(request_item_icon);
@@ -210,7 +115,12 @@ public class RequestHolder extends RecyclerView.ViewHolder{
                         }
                         String outString = "";
                         if (myType.equals("received")) {
-                            outString = requesterName + " has requested \"" + bookTitle + "\".";
+                            if(stat.equals("Pending")) {
+                                outString = requesterName + " has requested \"" + bookTitle + "\".";
+                            }
+                            else if (stat.equals("Accepted")){
+                                outString =  "You have accepted " +requesterName + "'s request for \"" + bookTitle + "\"";
+                            }
                         }
                         else if (myType.equals("sent")) {
                             if(stat.equals("Pending")) {
@@ -218,6 +128,9 @@ public class RequestHolder extends RecyclerView.ViewHolder{
                             }
                             else if (stat.equals("Rejected")){
                                 outString = ownerName + " has rejected your request for \"" + bookTitle + "\"";
+                            }
+                            else if (stat.equals("Accepted")){
+                                outString = ownerName + " has accepted your request for \"" + bookTitle + "\"";
                             }
                             Glide.with(itemView.getContext())
                                     .load(bookImageRef).into(request_item_icon);
@@ -250,6 +163,9 @@ public class RequestHolder extends RecyclerView.ViewHolder{
         }
         else if (status.equals("Cancelled")){
             request_status.setTextColor(Color.parseColor("#FF1A00"));
+        }
+        else if (status.equals("Accepted")){
+            request_status.setTextColor(Color.parseColor("#00FF00"));
         }
     }
 }

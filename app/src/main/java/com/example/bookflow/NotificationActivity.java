@@ -96,11 +96,19 @@ public class NotificationActivity extends BasicActivity {
                                 Notification n = dataSnapshot.getValue(Notification.class);
                                 String requestId = n.getTransactionId();
                                 String bookId = n.getBookId();
+                                String type = n.getType();
 
-                                Intent intent = new Intent(NotificationActivity.this, RequestDetailActivity.class);
-                                intent.putExtra("requestId", requestId);
-                                intent.putExtra("bookId", bookId);
-                                startActivity(intent);
+                                if (type.equals("request")) {
+                                    Intent intent = new Intent(NotificationActivity.this, RequestDetailActivity.class);
+                                    intent.putExtra("requestId", requestId);
+                                    intent.putExtra("bookId", bookId);
+                                    startActivity(intent);
+                                }
+                                else if (type.equals("accept")){
+                                    Intent intent = new Intent(NotificationActivity.this, BookDetailActivity.class);
+                                    intent.putExtra("book_id", bookId);
+                                    startActivity(intent);
+                                }
 
                             }
 
@@ -128,6 +136,10 @@ public class NotificationActivity extends BasicActivity {
                 if (model.getType().equals("request")) {
                     holder.setNotificationType("Book Request");
                     outString = sender + " has requested " + "\"" + book + "\"";
+                }
+                else if (model.getType().equals("accept")){
+                    holder.setNotificationType("Request Accepted");
+                    outString = sender + " has accepted your request for \"" + book + "\"" ;
                 }
                 holder.setNotificationText(outString);
                 holder.setNotificationSenderIcon(imageRef);

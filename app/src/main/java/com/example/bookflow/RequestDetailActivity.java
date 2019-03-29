@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.example.bookflow.Model.Book;
 import com.example.bookflow.Model.Notification;
 import com.example.bookflow.Model.Request;
+import com.example.bookflow.Model.User;
 import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -23,7 +24,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RequestDetailActivity extends BasicActivity {
     public static final String PARAMETERS= "com.example.bookflow.MESSAGE";
@@ -44,6 +47,8 @@ public class RequestDetailActivity extends BasicActivity {
     private String borrowerId;
     private String status;
     private String requestId;
+    private String ownerName;
+    private String bookTitle;
 
 
     @Override
@@ -211,16 +216,114 @@ public class RequestDetailActivity extends BasicActivity {
         finish();
     }
 
+//    public void accept(View v) {
+//        Intent intent = new Intent(this, MapsActivity.class);
+//        ArrayList<String> infos = new ArrayList<>();
+//        infos.add(this.ownerId);
+//        infos.add(this.bookId);
+//        infos.add(this.status);
+//        infos.add(this.requestId);
+//        intent.putExtra(PARAMETERS, infos);
+//        startActivity(intent);
+//    }
+
+
     public void accept(View v) {
-        Intent intent = new Intent(this, MapsActivity.class);
-        ArrayList<String> infos = new ArrayList<>();
-        infos.add(this.ownerId);
-        infos.add(this.bookId);
-        infos.add(this.status);
-        infos.add(this.requestId);
-        intent.putExtra(PARAMETERS, infos);
+        DatabaseReference booksRef = mDatabase.getReference("Books").child(bookId).child("status");
+        booksRef.setValue("ACCEPTED");
+
+        DatabaseReference sentReqRef = mDatabase.getReference("RequestsSentByUser").child(borrowerId).child(requestId);
+        sentReqRef.child("status").setValue("Accepted");
+
+        DatabaseReference bookReqRef = mDatabase.getReference("RequestsReceivedByBook").child(bookId).child(requestId);
+        bookReqRef.child("status").setValue("Accepted");
+
+        DatabaseReference notificationRef = mDatabase.getReference("Notifications");
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm MM/dd");
+        final String timestamp = formatter.format(new Date());
+        final DatabaseReference receiverRef = notificationRef.child(borrowerId);
+        final String notification_id = receiverRef.push().getKey();
+
+        DatabaseReference userRef = mDatabase.getReference("Users").child(ownerId);
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User u = dataSnapshot.getValue(User.class);
+                ownerName = u.getUsername();
+
+                DatabaseReference bookRef = mDatabase.getReference("Books").child(bookId);
+                ValueEventListener bookListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Book b = dataSnapshot.getValue(Book.class);
+                        bookTitle = b.getTitle();
+                        receiverRef.child(notification_id).setValue(new Notification(ownerId, bookId, "accept", requestId, bookTitle, ownerName, timestamp));
+
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("cancelled", databaseError.toException());
+                    }
+                };
+                bookRef.addListenerForSingleValueEvent(bookListener);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("cancelled", databaseError.toException());
+            }
+        };
+        userRef.addListenerForSingleValueEvent(userListener);
+
+
+        DatabaseReference bookRef = mDatabase.getReference("RequestsReceivedByBook").child(bookId);
+        ValueEventListener reqListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot child : dataSnapshot.getChildren() ){
+                    Request r = child.getValue(Request.class);
+                    String borId = r.getBorrowerId();
+                    final String reqId = child.getKey();
+                    if (!reqId.equals(requestId)){
+                        Log.e("TESTING", borId);
+                        Log.e("TESTING", reqId);
+                        DatabaseReference sentRef = mDatabase.getReference("RequestsSentByUser").child(borId).child(reqId).child("status");
+                        sentRef.setValue("Rejected");
+                        DatabaseReference bookReqRef = mDatabase.getReference("RequestsReceivedByBook").child(bookId).child(reqId);
+                        bookReqRef.removeValue();
+                    }
+                    final DatabaseReference notificationRef = mDatabase.getReference("Notifications").child(ownerId);
+                    ValueEventListener notificationListener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for(DataSnapshot child : dataSnapshot.getChildren() ){
+                                Notification n = child.getValue(Notification.class);
+                                if (n.getTransactionId().equals(reqId)) {
+                                    notificationRef.child(child.getKey()).removeValue();
+                                }
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.w("cancelled", databaseError.toException());
+                        }
+                    };
+                    notificationRef.addListenerForSingleValueEvent(notificationListener);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("cancelled", databaseError.toException());
+            }
+        };
+        bookRef.addListenerForSingleValueEvent(reqListener);
+        Intent intent = new Intent(RequestDetailActivity.this, BookDetailActivity.class);
+        intent.putExtra("book_id", bookId);
         startActivity(intent);
+        //finish();
     }
+
+
 
     public void cancelRequest(View v) {
         DatabaseReference sentReqRef = mDatabase.getReference("RequestsSentByUser").child(borrowerId).child(requestId);
