@@ -36,6 +36,12 @@ public class LinearAdapter extends RecyclerView.Adapter <LinearAdapter.LinearVie
     @Override
     public void onBindViewHolder(LinearAdapter.LinearViewHolder holder, int position) {
        holder.setData(mContext,position);
+       holder.itemView.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+
+           }
+       });
     }
 
 
