@@ -22,7 +22,7 @@ public class User implements Owner,Borrower{
     private ArrayList<Book> ownedBooks = new ArrayList<Book>();
     private ArrayList<Book> borrowedBooks= new ArrayList<Book>();
     private ArrayList<Request>  requests= new ArrayList<Request>();
-    private ReviewList reviews;
+    private ArrayList<Review> reviews;
 
     public User() {
 

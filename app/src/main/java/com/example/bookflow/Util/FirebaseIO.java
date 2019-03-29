@@ -7,6 +7,7 @@ import android.util.Log;
 import com.example.bookflow.Model.Book;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -28,9 +29,6 @@ public class FirebaseIO {
 
     private static FirebaseIO INSTANCE = null;
 
-    /**
-     * Firebase
-     */
     private FirebaseStorage mFirebaseStorage;
     private FirebaseDatabase mFirebaseDatabase;
 
@@ -56,10 +54,13 @@ public class FirebaseIO {
      */
     private FirebaseIO() {
 
+        /**
+         * Firebase
+         */
         mFirebaseStorage = FirebaseStorage.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
 
-        mBookPhotoStorageReference = mFirebaseStorage.getReference().child("book_photos");
+        mBookPhotoStorageReference = mFirebaseStorage.getReference();
         mBookDatabaseReference = mFirebaseDatabase.getReference().child("Books");
     }
 
@@ -217,6 +218,37 @@ public class FirebaseIO {
 
             bookRef.setValue(mybook)
                     .addOnCompleteListener(listener);
+        }
+    }
+
+    /**
+     * delete a book form database and storage if the book has an image.
+     * @param book
+     * @param listener
+     */
+    public void deleteBook(Book book, OnCompleteListener<Void> listener) {
+        final String imgUri = book.getPhotoUri();
+        final String bookId = book.getBookId();
+
+        if (bookId != null && imgUri == null) {
+            mBookDatabaseReference.child(bookId)
+                    .removeValue()
+                    .addOnCompleteListener(listener);
+        }
+        else if (bookId != null) {
+            mBookDatabaseReference.child(bookId)
+                    .removeValue()
+                    .continueWithTask(new Continuation<Void, Task<Void>>() {
+                        @Override
+                        public Task<Void> then(@NonNull Task<Void> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+
+                            return mFirebaseStorage.getReferenceFromUrl(imgUri)
+                                    .delete();
+                        }
+                    }).addOnCompleteListener(listener);
         }
     }
 

@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,7 +45,6 @@ public class EditBookDetailActivity extends BasicActivity {
     private Uri mSelectedPhotoUri;
 
     private ImageView mPhotoImageView;
-    private ImageView mSaveImageView;
     private EditText mBookTitleEditText;
     private EditText mAuthorEditText;
     private EditText mIsbnEditText;
@@ -68,7 +69,6 @@ public class EditBookDetailActivity extends BasicActivity {
 
         /* initialize UI elements */
         mPhotoImageView = findViewById(R.id.edit_book_image_iv);
-        mSaveImageView = findViewById(R.id.edit_book_save_iv);
         mBookTitleEditText = findViewById(R.id.edit_book_title_et);
         mAuthorEditText = findViewById(R.id.edit_book_author_name_et);
         mIsbnEditText = findViewById(R.id.edit_book_isbn_et);
@@ -108,9 +108,38 @@ public class EditBookDetailActivity extends BasicActivity {
             }
         });
 
-        mSaveImageView.setOnClickListener(new View.OnClickListener() {
+
+        mScanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(EditBookDetailActivity.this, ScanActivity.class);
+                startActivityForResult(intent, ScanUtility.RC_SCAN);
+            }
+        });
+
+
+
+
+        // ask for permission
+        PhotoUtility.checkCameraPermission(this);
+        PhotoUtility.checkWriteExternalPermission(this);
+    }
+
+    /**
+     * Inflate the menu; this adds items to the action bar if it is present.
+     * @param menu the menu
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_edit_book, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_edit_book_save:
                 // check all required field and save the data
                 Book editedBook = extractBookInfo();
                 if (editedBook != null) {
@@ -135,25 +164,28 @@ public class EditBookDetailActivity extends BasicActivity {
                         }
                     });
                 }
-            }
-        });
+                return true;
+            case R.id.action_edit_book_delete:
+                mFirebaseIO.deleteBook(mThisBook, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.delete_book_success), Toast.LENGTH_LONG)
+                                    .show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), getString(R.string.delete_book_fail), Toast.LENGTH_LONG)
+                                    .show();
+                        }
 
+                    }
+                });
+                return true;
 
-        mScanButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(EditBookDetailActivity.this, ScanActivity.class);
-                startActivityForResult(intent, ScanUtility.RC_SCAN);
-            }
-        });
-
-
-
-
-        // ask for permission
-        PhotoUtility.checkCameraPermission(this);
-        PhotoUtility.checkWriteExternalPermission(this);
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
+
 
     /**
      * propagate the existing book info to the text views

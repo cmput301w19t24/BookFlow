@@ -95,5 +95,7 @@
 
     <!-- edit book -->
     <string name="editboxTitle">How will you rate this book?</string>
+    <string name="delete_book_success">Delete book success!</string>
+    <string name="delete_book_fail">Failed to delete a book, Please try again</string>
 
 </resources>

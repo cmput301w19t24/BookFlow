@@ -46,8 +46,8 @@ public class Review {
         return comments;
     }
 
-    public int getRating() {
-        return rating;
+    public String getRating() {
+        return Integer.toString(this.rating);
     }
 
     public String toString() {
