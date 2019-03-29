@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.bookflow.Model.Notification;
@@ -83,7 +84,35 @@ public class NotificationActivity extends BasicActivity {
             public NotificationHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.notification_list_item, parent, false);
-                return new NotificationHolder(view);
+                NotificationHolder nh = new NotificationHolder(view);
+                nh.setOnClickListener(new NotificationHolder.ClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        final DatabaseReference dbRef = myFirebaseRecyclerAdapter.getRef(position);
+                        ValueEventListener notificationListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                //String notificationId = dbRef.getKey();
+                                Notification n = dataSnapshot.getValue(Notification.class);
+                                String requestId = n.getTransactionId();
+                                String bookId = n.getBookId();
+
+                                Intent intent = new Intent(NotificationActivity.this, RequestDetailActivity.class);
+                                intent.putExtra("requestId", requestId);
+                                intent.putExtra("bookId", bookId);
+                                startActivity(intent);
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.w("cancelled", databaseError.toException());
+                            }
+                        };
+                        dbRef.addListenerForSingleValueEvent(notificationListener);
+                    }
+                });
+                return nh;
             }
 
             @Override
