@@ -25,7 +25,6 @@ public class Review {
     private String date;
     private int rating;
     private String uuid;
-//    private FirebaseDatabase db = FirebaseDatabase.getInstance();
 
     public Review() {
 
@@ -39,44 +38,11 @@ public class Review {
         this.uuid = uuid;
     }
 
-//    public Review(User reviewer, User reviewee, String comments, int rating, String uuid) {
-//        this.reviewer = reviewer.getUid();
-//        this.reviewee = reviewee.getUid();
-//        this.comments = comments;
-//        this.rating = rating;
-//        this.uuid = uuid;
-//    }
-
     public String getReviewerID() {
-//        db.getReference().child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                User user = (User)dataSnapshot.child(reviewer).getValue(User.class);
-//                re_er.setUser(user);
-//                return;
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//        return re_er;
         return reviewer;
     }
 
     public String getReviewee() {
-//        db.getReference().child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                User user = (User)dataSnapshot.child(reviewee).getValue(User.class);
-//                re_ee.setUser(user);
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//        return re_ee;
         return reviewee;
     }
 
