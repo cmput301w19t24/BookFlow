@@ -25,14 +25,31 @@
             android:paddingTop="56dp"
             android:paddingRight="24dp">
 
-            <ImageView
-                android:id="@+id/edit_book_image_iv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/edit_book_image_rel_layout"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="24dp"
-                android:contentDescription="@string/add_book_image"
-                app:srcCompat="@drawable/image_placeholder" />
+                android:layout_marginBottom="24dp">
+
+                <ImageView
+                    android:id="@+id/edit_book_image_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/book_image"
+                    app:srcCompat="@drawable/add_book_icon" />
+
+                <ImageView
+                    android:id="@+id/edit_book_delete_photo"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_delete_black_24dp"
+                    android:contentDescription="@string/delete_image" />
+            </RelativeLayout>
 
 
             <android.support.design.widget.TextInputLayout

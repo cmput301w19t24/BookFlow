@@ -252,4 +252,23 @@ public class FirebaseIO {
         }
     }
 
+    public void deletePhoto(Book book, OnCompleteListener<Void> listener) {
+        String photoUri = book.getPhotoUri();
+        if (photoUri != null) {
+            mFirebaseStorage.getReferenceFromUrl(photoUri)
+                    .delete()
+                    .continueWithTask(new Continuation<Void, Task<Void>>() {
+                        @Override
+                        public Task<Void> then(@NonNull Task<Void> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+
+                            DatabaseReference bookPhotoRef = mBookDatabaseReference.child("PhotoUri");
+                            return bookPhotoRef.removeValue();
+                        }
+                    }).addOnCompleteListener(listener);
+        }
+
+    }
 }

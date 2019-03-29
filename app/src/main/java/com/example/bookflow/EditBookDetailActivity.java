@@ -50,6 +50,7 @@ public class EditBookDetailActivity extends BasicActivity {
     private EditText mDescriptionEditText;
     private ProgressBar mProgressbar;
     private Button mScanButton;
+    private ImageView mDeletePhotoImageView;
 
     private String mBookId;
     private Book mThisBook;
@@ -74,6 +75,7 @@ public class EditBookDetailActivity extends BasicActivity {
         mDescriptionEditText = findViewById(R.id.edit_book_description_it);
         mProgressbar = findViewById(R.id.edit_book_progress_bar);
         mScanButton = findViewById(R.id.edit_book_scan_button);
+        mDeletePhotoImageView = findViewById(R.id.edit_book_delete_photo);
 
         mProgressbar.setVisibility(View.GONE);
 
@@ -113,6 +115,33 @@ public class EditBookDetailActivity extends BasicActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(EditBookDetailActivity.this, ScanActivity.class);
                 startActivityForResult(intent, ScanUtility.RC_SCAN);
+            }
+        });
+
+        mDeletePhotoImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mProgressbar.setVisibility(View.VISIBLE);
+                mFirebaseIO.deletePhoto(mThisBook, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            mThisBook.setPhotoUri(null);
+                            Glide.with(mPhotoImageView.getContext())
+                                    .load(getDrawable(R.drawable.add_book_icon))
+                                    .into(mPhotoImageView);
+
+                            mDeletePhotoImageView.setVisibility(View.GONE);
+
+                            Toast.makeText(getApplicationContext(), getString(R.string.book_photo_deleted), Toast.LENGTH_LONG)
+                                    .show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), getString(R.string.book_photo_delete_failed), Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                        mProgressbar.setVisibility(View.GONE);
+                    }
+                });
             }
         });
 
@@ -221,6 +250,10 @@ public class EditBookDetailActivity extends BasicActivity {
             Glide.with(mPhotoImageView.getContext())
                     .load(book.getPhotoUri())
                     .into(mPhotoImageView);
+            mDeletePhotoImageView.setVisibility(View.VISIBLE);
+
+        } else {
+            mDeletePhotoImageView.setVisibility(View.GONE);
         }
 
 
@@ -245,6 +278,7 @@ public class EditBookDetailActivity extends BasicActivity {
                 Glide.with(mPhotoImageView.getContext())
                         .load(imgUri)
                         .into(mPhotoImageView);
+                mDeletePhotoImageView.setVisibility(View.VISIBLE);
             }
 
         } else if (requestCode == ScanUtility.RC_SCAN) {

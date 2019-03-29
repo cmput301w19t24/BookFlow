@@ -97,5 +97,9 @@
     <string name="editboxTitle">How will you rate this book?</string>
     <string name="delete_book_success">Delete book success!</string>
     <string name="delete_book_fail">Failed to delete a book, Please try again</string>
+    <string name="book_image">Book Image</string>
+    <string name="delete_image">delete image</string>
+    <string name="book_photo_deleted">Book photo deleted!</string>
+    <string name="book_photo_delete_failed">Failed to delete photo. Try again?</string>
 
 </resources>
