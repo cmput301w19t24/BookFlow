@@ -46,4 +46,10 @@
         android:layout_toEndOf="@+id/searchItemImage"
         android:text="TextView"
         android:textSize="20dp" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
 </RelativeLayout>
