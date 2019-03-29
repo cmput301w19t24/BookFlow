@@ -209,20 +209,6 @@ public class UserProfileActivity extends BasicActivity {
     }
 
     /**
-     * setup the list of all books offered
-     */
-    private void setUpOfferList() {
-            ;
-    }
-
-    /**
-     * setup the list of all books requested
-     */
-    private void setUpRequestList() {
-        ;
-    }
-
-    /**
      * display informations on textview
      * @param name username
      * @param intro self intro
@@ -291,8 +277,6 @@ public class UserProfileActivity extends BasicActivity {
 
         layout = findViewById(R.id.offerLayout);
         layout.setVisibility(LinearLayout.GONE);
-
-        setUpReviewList();
     }
 
     /**
@@ -314,7 +298,5 @@ public class UserProfileActivity extends BasicActivity {
 
         layout = findViewById(R.id.offerLayout);
         layout.setVisibility(LinearLayout.VISIBLE);
-
-        setUpOfferList();
     }
 }
