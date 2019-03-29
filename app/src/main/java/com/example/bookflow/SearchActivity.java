@@ -244,7 +244,7 @@ public class SearchActivity extends BasicActivity {
          * @param ctx             current context
          * @param userName
          * @param userEmail
-         * @param userPhoneNumber
+         * @param userintro
          * @param userImage
          */
         public void setDetails(Context ctx, String userName, String userEmail, String userintro, String userImage) {
@@ -252,10 +252,22 @@ public class SearchActivity extends BasicActivity {
             TextView user_email = (TextView) mView.findViewById(R.id.searchDetail3);
             TextView user_selfintro = (TextView) mView.findViewById(R.id.searchDetail2);
             ImageView user_image = (ImageView) mView.findViewById(R.id.searchItemImage);
-
+            user_name.setTextColor(Color.BLACK);
+            user_name.setGravity(Gravity.CENTER);
             user_name.setText(userName);
+
+            user_email.setTextColor(Color.BLUE);
+            user_email.setTextSize(15);
+            user_email.setGravity(Gravity.CENTER);
             user_email.setText(userEmail);
-            user_selfintro.setText(userintro);
+
+            user_selfintro.setGravity(Gravity.CENTER);
+            user_selfintro.setTextSize(15);
+            if(userintro == ""){
+                user_selfintro.setText("This guy is lazy and don't have a introduction yet");
+            }else {
+                user_selfintro.setText(userintro);
+            }
             Glide.with(ctx).load(userImage).into(user_image);
         }
     }
