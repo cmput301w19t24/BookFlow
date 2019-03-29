@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,7 +47,6 @@ public class AddBookActivity extends BasicActivity {
      *  UI components
      */
     private ImageView mPhotoImageView;
-    private ImageView mSaveImageView;
     private EditText mBookTitleEditText;
     private EditText mAuthorEditText;
     private EditText mIsbnEditText;
@@ -71,7 +72,6 @@ public class AddBookActivity extends BasicActivity {
         mAuthorEditText = findViewById(R.id.add_book_author_name_et);
         mIsbnEditText = findViewById(R.id.add_book_isbn_et);
         mDescriptionEditText = findViewById(R.id.add_book_description_et);
-        mSaveImageView = findViewById(R.id.add_book_save_iv);
         mProgressbar = findViewById(R.id.add_book_progress_bar);
         mScanButton = findViewById(R.id.add_book_scan_button);
 
@@ -86,10 +86,36 @@ public class AddBookActivity extends BasicActivity {
             }
         });
 
-        mSaveImageView.setOnClickListener(new View.OnClickListener() {
+        mScanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // check all required field and save the data
+                Intent intent = new Intent(AddBookActivity.this, ScanActivity.class);
+                startActivityForResult(intent, ScanUtility.RC_SCAN);
+            }
+        });
+
+        mProgressbar.setVisibility(View.GONE);
+
+        // ask for permission
+        PhotoUtility.checkCameraPermission(this);
+        PhotoUtility.checkWriteExternalPermission(this);
+    }
+
+    /**
+     * Inflate the menu; this adds items to the action bar if it is present.
+     * @param menu the menu
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_add_book, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_book_save:
                 Book mybook = extractBookInfo();
                 if (mybook != null) {
                     mProgressbar.setVisibility(View.VISIBLE);
@@ -110,22 +136,10 @@ public class AddBookActivity extends BasicActivity {
                         }
                     });
                 }
-            }
-        });
-
-        mScanButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AddBookActivity.this, ScanActivity.class);
-                startActivityForResult(intent, ScanUtility.RC_SCAN);
-            }
-        });
-
-        mProgressbar.setVisibility(View.GONE);
-
-        // ask for permission
-        PhotoUtility.checkCameraPermission(this);
-        PhotoUtility.checkWriteExternalPermission(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
