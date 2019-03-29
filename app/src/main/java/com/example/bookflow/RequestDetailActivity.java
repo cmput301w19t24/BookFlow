@@ -19,7 +19,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+
 public class RequestDetailActivity extends BasicActivity {
+    public static final String PARAMETERS= "com.example.bookflow.MESSAGE";
     private FirebaseDatabase mDatabase;
     private FirebaseAuth mAuth;
 
@@ -168,5 +171,16 @@ public class RequestDetailActivity extends BasicActivity {
         intent.putExtra("requestId", requestId);
         startActivity(intent);
 
+    }
+
+    public void accept(View v) {
+        Intent intent = new Intent(this, MapsActivity.class);
+        ArrayList<String> infos = new ArrayList<>();
+        infos.add(this.ownerId);
+        infos.add(this.bookId);
+        infos.add(this.status);
+        infos.add(this.requestId);
+        intent.putExtra(PARAMETERS, infos);
+        startActivity(intent);
     }
 }
