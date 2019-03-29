@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -57,8 +58,8 @@ public class SearchActivity extends BasicActivity {
     private RecyclerView recyclerView;
     FirebaseRecyclerAdapter<User, UserViewHolder> firebaseUserRecyclerAdapter;
     FirebaseRecyclerAdapter<Book, BookViewHolder> firebaseBookRecyclerAdapter;
-    private List<Book> books;
-    private List<Book> filtered_books;
+    private ArrayList<Book> books;
+    private ArrayList<Book> filtered_books;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +116,7 @@ public class SearchActivity extends BasicActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Book book = (Book) dataSnapshot.getValue(Book.class);
                 books.add(book);
-                Log.i("booklist", "add book name = " + book.getTitle());
+//                Log.i("booklist", "add book name = " + book.getTitle());
             }
 
             @Override
@@ -134,7 +135,70 @@ public class SearchActivity extends BasicActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
+
+
     }
+
+    public class LinearAdapter extends RecyclerView.Adapter <LinearAdapter.LinearViewHolder>{
+        //context
+        private Context mContext;
+        public LinearAdapter(Context context){
+            this.mContext=context;
+       ;
+        }
+
+        public LinearAdapter(SearchActivity context) {
+            this.mContext=context;
+
+        }
+
+        @Override
+        public LinearAdapter.LinearViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new LinearViewHolder(LayoutInflater.from(mContext).inflate(R.layout.searchitem,parent,false));
+        }
+
+
+        @Override
+        public void onBindViewHolder(LinearAdapter.LinearViewHolder holder, int position) {
+            holder.setData(mContext,position);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
+
+
+        @Override
+        public int getItemCount() {
+            return filtered_books.size();
+        }
+
+
+        class LinearViewHolder extends RecyclerView.ViewHolder{
+            private TextView title;
+            private TextView isbn;
+            private TextView author;
+            private ImageView photo;
+
+            public LinearViewHolder(View itemView){
+                super(itemView);
+                title = itemView.findViewById(R.id.searchDetail1);
+                isbn = itemView.findViewById(R.id.searchDetail2);
+                author = itemView.findViewById(R.id.searchDetail3);
+                photo = itemView.findViewById(R.id.searchItemImage);
+            }
+            public void setData(Context ctx,int i){
+                title.setText(filtered_books.get(i).getTitle());
+                isbn.setText(filtered_books.get(i).getIsbn());
+                author.setText(filtered_books.get(i).getAuthor());
+                Glide.with(ctx).load(filtered_books.get(i).getPhotoUri()).into(photo);
+            }
+
+        }
+    }
+
 
 
     /**
@@ -326,6 +390,15 @@ public class SearchActivity extends BasicActivity {
 
 
     private void searchBook(String searchText,String status){
+        try {
+            firebaseUserRecyclerAdapter.stopListening();
+        } catch (Exception e) {
+
+        }
+        filterBooks(searchText,status);
+        Log.i("filter",filtered_books.toString());
+        LinearAdapter madapter = new LinearAdapter(this);
+        recyclerView.setAdapter(madapter);
 
     }
 
@@ -348,37 +421,37 @@ public class SearchActivity extends BasicActivity {
                 selectedButton = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
                 status = selectedButton.getText().toString().toUpperCase();
                 constraint = "title";
-                searchBook(searchText, constraint, status);
+                searchBook(searchText, status);
                 break;
             case "search by book author":
                 selectedButton = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
                 status = selectedButton.getText().toString().toUpperCase();
                 constraint = "author";
-                searchBook(searchText, constraint, status);
+                searchBook(searchText, status);
                 break;
             case "search by book ISBN":
                 selectedButton = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
                 status = selectedButton.getText().toString().toUpperCase();
                 constraint = "isbn";
-                searchBook(searchText, constraint, status);
+                searchBook(searchText, status);
         }
 
     }
 
     private void filterBooks(String searchText, String status){
         String[] words = searchText.split("\\s");
-        Boolean flag = false;
         filtered_books.clear();
+        for(Book book:books){
+            filtered_books.add(book);
+        }
         for(Book book:books) {
-            flag = true;
-            for (String w : words) {
-                if(!book.getBookInfo().contains(w)){
-                    flag = false;
-                }
+            if(!(book.getStatus().toString().equals(status))){
+                filtered_books.remove(book);
             }
-            if(flag == true && book.getStatus().equals(status)){
-                filtered_books.add(book);
-            }
+        }
+
+        for(Book book:filtered_books){
+            Log.i("status",book.getStatus().toString());
         }
     }
 }
