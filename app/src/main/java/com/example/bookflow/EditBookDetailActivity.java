@@ -201,6 +201,9 @@ public class EditBookDetailActivity extends BasicActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), getString(R.string.delete_book_success), Toast.LENGTH_LONG)
                                     .show();
+                            Intent intent = new Intent(EditBookDetailActivity.this,MainActivity.class);
+                            startActivity(intent);
+
                         } else {
                             Toast.makeText(getApplicationContext(), getString(R.string.delete_book_fail), Toast.LENGTH_LONG)
                                     .show();
