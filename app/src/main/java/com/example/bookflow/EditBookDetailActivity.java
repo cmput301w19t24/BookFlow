@@ -122,7 +122,7 @@ public class EditBookDetailActivity extends BasicActivity {
             @Override
             public void onClick(View v) {
                 mProgressbar.setVisibility(View.VISIBLE);
-                mFirebaseIO.deletePhoto(mThisBook, new OnCompleteListener<Void>() {
+                mFirebaseIO.deletePhoto(mThisBook.getPhotoUri(), new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -172,6 +172,7 @@ public class EditBookDetailActivity extends BasicActivity {
                 Book editedBook = extractBookInfo();
                 if (editedBook != null) {
                     mProgressbar.setVisibility(View.VISIBLE);
+
 
                     mFirebaseIO.updateBook(editedBook, mSelectedPhotoUri, new OnCompleteListener<Void>() {
                         /**

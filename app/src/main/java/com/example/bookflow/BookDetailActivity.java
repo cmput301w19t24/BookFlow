@@ -262,6 +262,12 @@ public class BookDetailActivity extends BasicActivity {
                     DatabaseReference receiverRef = notificationRef.child(ownerId);
                     String notification_id = receiverRef.push().getKey();
                     receiverRef.child(notification_id).setValue(new Notification(borrowerId, bookId, "request", request_id, title, username, timestamp));
+
+                    // transition book state
+                    DatabaseReference bookRef = mDatabase.getReference("Books");
+                    if (bookStatus.equals("AVAILABLE")) {
+                        bookRef.child(bookId).child("status").setValue("REQUESTED");
+                    }
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
