@@ -147,13 +147,13 @@ public class SearchActivity extends BasicActivity {
         private Context mContext;
         public LinearAdapter(Context context){
             this.mContext=context;
-            ;
         }
 
         public LinearAdapter(SearchActivity context) {
             this.mContext=context;
 
         }
+
 
         @Override
         public LinearAdapter.LinearViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -168,9 +168,10 @@ public class SearchActivity extends BasicActivity {
                 @Override
                 public void onClick(View v) {
                     String book_id = filtered_books.get(position).getBookId();
-                    //Intent intent = new Intent(SearchActivity.this,BookDetailActivity.class);
-                    //intent.putExtra("book_id",book_id);
-                    // startActivity(intent);
+                    Log.i("bookid",book_id);
+                    Intent intent = new Intent(SearchActivity.this,BookDetailActivity.class);
+                    intent.putExtra("book_id",book_id);
+                    startActivity(intent);
                 }
             });
         }
