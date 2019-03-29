@@ -4,6 +4,14 @@
  */
 package com.example.bookflow.Model;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 /**
@@ -38,6 +46,12 @@ public class User implements Owner,Borrower{
         this.password = password;
     }
 
+    public void setUser(User user) {
+        this.uid = user.getUid();
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.imageurl = user.getImageurl();
+    }
 
     /**
      * self intro getter

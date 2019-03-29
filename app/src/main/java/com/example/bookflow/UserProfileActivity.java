@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,6 +31,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,16 +51,21 @@ import java.util.UUID;
  * it also provides a button, an access to edit profile page
  */
 public class UserProfileActivity extends BasicActivity {
-    private DatabaseReference dbRef;
-    private String email, phoneNum, username, selfIntro, uid;
-    private ArrayList<Review> reviewList = new ArrayList<Review>();
-    private ListView reviewListView, offerListView;
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    FirebaseStorage storage = FirebaseStorage.getInstance();
+
+    private FirebaseDatabase database;
+    private FirebaseAuth mAuth;
+    private String uid;
+    private Query query_user;
+    private Query query_review;
+    private ArrayList<Review> reviews;
+    private ArrayList<Book> books;
+    private static ListView bookList;
+    private static ListView reviewList;
+    private ReviewAdapter adpReview;
 
     // class of Adapter
-    class MyAdapter extends ArrayAdapter<Review> {
-        MyAdapter(Context c, ArrayList<Review> reviews) {
+    class ReviewAdapter extends ArrayAdapter<Review> {
+        ReviewAdapter(Context c, ArrayList<Review> reviews) {
             super(c,R.layout.user_list, reviews);
         }
 
@@ -69,194 +77,95 @@ public class UserProfileActivity extends BasicActivity {
                 v = LayoutInflater.from(getContext()).inflate(R.layout.user_list, parent, false);
             }
             TextView comments = v.findViewById(R.id.review_text);
-            TextView rname = v.findViewById(R.id.reviewer_name);
             TextView rating = v.findViewById(R.id.rating);
-            ImageView mphoto = v.findViewById(R.id.reviewer_photo);
 
-            rname.setText(review.getReviewer().getUsername());
+            setReviewUser(v, String.valueOf(review.getReviewerID()));
+
             comments.setText(review.getComments());
             rating.setText(review.getRating());
-            Glide.with(UserProfileActivity.this).load(review.getReviewer().getImageurl()).into(mphoto);
+
             return v;
         }
+    }
+
+    public void setReviewUser(final View v, final String tmpuid) {
+        query_user.orderByChild("uid").equalTo(tmpuid).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                User user = (User) dataSnapshot.getValue(User.class);
+                TextView rname = v.findViewById(R.id.reviewer_name);
+                rname.setText(user.getUsername());
+                ImageView mphoto = v.findViewById(R.id.reviewer_photo);
+                Glide.with(UserProfileActivity.this).load(user.getImageurl()).into(mphoto);
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+
+        database = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        uid = mAuth.getCurrentUser().getUid();
+        query_user = database.getReference().child("Users");
+        query_review = database.getReference().child("Reviews");
+
+        reviews = new ArrayList<Review>();
+        books = new ArrayList<Book>();
+
+        adpReview = new ReviewAdapter(this, reviews);
+
+        setUserProfile();
+        loadReviewList();
     }
 
-    /**
-     * onStart method get all needed data in this page from firebase
-     * and convert them to strings, integers, users which we can directly use
-     */
-    @Override
-    protected void onStart() {
-        super.onStart();
-        reviewListView = (ListView) findViewById(R.id.reviewList);
-        offerListView = (ListView) findViewById(R.id.offerList);
-        dbRef = FirebaseDatabase.getInstance().getReference();
+    private void setUserProfile() {
 
-        // determine whether it's yourself visiting your profile or other user visiting your profile
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
-        if (message != null) {
-            ImageView imageButton = findViewById(R.id.editPersonInfo);
-            imageButton.setEnabled(false);
-            imageButton.setVisibility(View.INVISIBLE);
-            uid = message;
-        } else  {
-            FirebaseUser user = mAuth.getCurrentUser();
-            uid = user.getUid();
-        }
-
-//        try {
-//            wait(1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-        setUpImageView();
-        setUpBasicInfo();
-        setUpReviewList();
     }
 
-    /**
-     * This function prepares a review and add it to review list
-     * @param eachReview a review object from firebase
-     */
-    private void prepareReviewList(@NonNull DataSnapshot eachReview) {
-        // prepare uuid, rating, comments
-        String test1 = eachReview.child("rating").getValue().toString();
-        String comments = eachReview.child("comments").getValue().toString();
-        int rating = Integer.parseInt(eachReview.child("rating").getValue().toString());
-
-
-        // prepare reviewer and reviewee
-        User reviewer = new User();
-        User reviewee = new User();
-
-        reviewer.setUsername(eachReview.child("reviewer").getValue().toString());
-
-        reviewee.setUsername(username);
-        reviewee.setEmail(email);
-        reviewee.setPhoneNumber(phoneNum);
-        reviewee.setUid(uid);
-
-        // create a review base on prepared information
-        Review review = new Review(reviewer, reviewee, comments, rating);
-
-        // append to review list
-        if (!reviewList.contains(review))
-            reviewList.add(review);
-    }
-
-    /**
-     * setup Username, user self intro, user email and user phone.
-     */
-    private void setUpBasicInfo() {
-        // get user information from the database
-        ValueEventListener userInfoListener = new ValueEventListener() {
+    private void loadReviewList() {
+        reviewList = (ListView) findViewById(R.id.reviewList);
+        reviews.clear();
+        // add user's book to adapter
+        query_review.orderByChild("reviewee").equalTo(uid).addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                DataSnapshot targetUser = dataSnapshot.child(uid);
-                email = targetUser.child("email").getValue().toString();
-                phoneNum = targetUser.child("phoneNumber").getValue().toString();
-                username = targetUser.child("username").getValue().toString();
-                selfIntro = targetUser.child("selfIntro").getValue().toString();
-
-
-                setUpTextView(username, selfIntro, email, phoneNum);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w("listener cancelled", databaseError.toException());
-            }
-        };
-        dbRef.child("Users").addListenerForSingleValueEvent(userInfoListener);
-    }
-
-    /**
-     * setup the list of all reviews
-     */
-    private void setUpReviewList() {
-        // get all reviews from database
-        ValueEventListener reviewsListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot eachReview: dataSnapshot.getChildren()){
-                    if (uid.equals(eachReview.child("reviewee").getValue().toString())){
-                        prepareReviewList(eachReview);
-                    }
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Review review = (Review) dataSnapshot.getValue(Review.class);
+                review.setReviewer(dataSnapshot.child("reviewer").getValue().toString());
+                if (!reviews.contains(review)) {
+                    adpReview.add(review);
                 }
-//                ArrayList<String> stringList = reviewList.toStringArray();
-//                if (stringList.size() == 0) {
-//                    stringList.add("No Review");
-//                }
-                MyAdapter adapter1 = new MyAdapter(UserProfileActivity.this,
-                        reviewList);
-                reviewListView.setAdapter(adapter1);
             }
-
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                loadReviewList();
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                loadReviewList();
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w("listener cancelled", databaseError.toException());
-            }
-        };
-        dbRef.child("Reviews").addListenerForSingleValueEvent(reviewsListener);
-    }
-
-    /**
-     * display informations on textview
-     * @param name username
-     * @param intro self intro
-     * @param email user email
-     * @param phone user phone number
-     */
-    private void setUpTextView(String name, String intro, String email, String phone) {
-        TextView textView = findViewById(R.id.profileName);
-        textView.setText(name);
-
-        textView = findViewById(R.id.selfIntro);
-        textView.setText(intro);
-
-        textView = findViewById(R.id.emailToBeChange);
-        textView.setText(email);
-
-        textView = findViewById(R.id.phoneToBeChange);
-        textView.setText(phone);
-    }
-
-    /**
-     * download image from firebase storage and load it into the image view
-     */
-    private void setUpImageView() {
-        // download user image from storage and update
-        StorageReference storageRef;
-        try {
-            storageRef = storage.getReference().child("users").child(uid);
-        } catch (Exception e) {
-            return ;
-        }
-
-        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                ImageView userImage = findViewById(R.id.userPicture);
-                Glide.with(UserProfileActivity.this).load(uri).into(userImage);
             }
         });
-    }
-
-    /**
-     * This is onClick method for button "edit profile"
-     * @param view  onClick method needed
-     */
-    public void editProfile(View view) {
-        Intent intent = new Intent(this, MapsActivity.class);
-        startActivity(intent);
+        reviewList.setAdapter(adpReview);
     }
 
     /**
@@ -292,11 +201,19 @@ public class UserProfileActivity extends BasicActivity {
         button.setBackgroundResource(R.drawable.tab_select);
         ((TextView)findViewById(R.id.offer_switch)).setTextColor(getResources().getColor(R.color.colorPrimary));
 
-
         LinearLayout layout = findViewById(R.id.reviewsLayout);
         layout.setVisibility(LinearLayout.GONE);
 
         layout = findViewById(R.id.offerLayout);
         layout.setVisibility(LinearLayout.VISIBLE);
+    }
+
+    /**
+     * This is onClick method for button "edit profile"
+     * @param view  onClick method needed
+     */
+    public void editProfile(View view) {
+        Intent intent = new Intent(this, MapsActivity.class);
+        startActivity(intent);
     }
 }
