@@ -16,9 +16,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -83,6 +85,7 @@ public class SearchActivity extends BasicActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mDatabase = FirebaseDatabase.getInstance().getReference();
         search_Text = findViewById(R.id.searchText);
+
         spinner = findViewById(R.id.spinner);
 
 
@@ -136,6 +139,41 @@ public class SearchActivity extends BasicActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+        search_Text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    String searchOption = spinner.getSelectedItem().toString();
+                    String searchText = search_Text.getText().toString();
+                    String constraint = "title";
+                    String status;
+                    switch (searchOption) {
+                        case "search user":
+                            searchUser(searchText);
+                            break;
+                        case "search by book name":
+                            selectedButton = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
+                            status = selectedButton.getText().toString().toUpperCase();
+                            constraint = "title";
+                            searchBook(searchText, status);
+                            break;
+                        case "search by book author":
+                            selectedButton = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
+                            status = selectedButton.getText().toString().toUpperCase();
+                            constraint = "author";
+                            searchBook(searchText, status);
+                            break;
+                        case "search by book ISBN":
+                            selectedButton = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
+                            status = selectedButton.getText().toString().toUpperCase();
+                            constraint = "isbn";
+                            searchBook(searchText, status);
+                    }
+                }
+                return false;
             }
         });
 
@@ -263,7 +301,7 @@ public class SearchActivity extends BasicActivity {
 
             user_selfintro.setGravity(Gravity.LEFT);
             user_selfintro.setTextSize(15);
-            if(userintro == ""){
+            if(userintro == "" || userintro == null){
                 user_selfintro.setText("This guy is lazy and don't have a introduction yet");
             }else {
                 user_selfintro.setText(userintro);
