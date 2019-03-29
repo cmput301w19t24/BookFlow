@@ -372,7 +372,7 @@ public class SearchActivity extends BasicActivity {
                             public void onClick(View v) {
                                 String book_id = getRef(position).getKey();
                                 Intent intent = new Intent(SearchActivity.this, BookDetailActivity.class);
-                                intent.putExtra("book_id", book_id);
+                                intent.putExtra(BookDetailActivity.INTENT_EXTRA, book_id);
                                 startActivity(intent);
                             }
                         });
