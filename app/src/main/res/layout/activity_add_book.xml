@@ -106,15 +106,7 @@
         </LinearLayout>
 
     </ScrollView>
-
-    <include
-        android:id="@+id/include"
-        layout="@layout/activity_basic"
-        tools:layout_editor_absoluteX="37dp"
-        tools:layout_editor_absoluteY="0dp"
-        android:elevation="10dp"/>
-
-
+    
     <ProgressBar
         android:id="@+id/add_book_progress_bar"
         style="?android:attr/progressBarStyleLarge"
