@@ -221,4 +221,34 @@ public class RequestDetailActivity extends BasicActivity {
         intent.putExtra(PARAMETERS, infos);
         startActivity(intent);
     }
+
+    public void cancelRequest(View v) {
+        DatabaseReference sentReqRef = mDatabase.getReference("RequestsSentByUser").child(borrowerId).child(requestId);
+        sentReqRef.removeValue();
+
+        DatabaseReference bookReqRef = mDatabase.getReference("RequestsReceivedByBook").child(bookId).child(requestId).child("status");
+        bookReqRef.setValue("Cancelled");
+
+        // delete notification
+        final DatabaseReference notificationRef = mDatabase.getReference("Notifications").child(ownerId);
+        ValueEventListener notificationListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot child : dataSnapshot.getChildren() ){
+                    Notification n = child.getValue(Notification.class);
+                    if (n.getTransactionId().equals(requestId)) {
+                        notificationRef.child(child.getKey()).removeValue();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("cancelled", databaseError.toException());
+            }
+        };
+        notificationRef.addListenerForSingleValueEvent(notificationListener);
+        finish();
+
+
+    }
 }

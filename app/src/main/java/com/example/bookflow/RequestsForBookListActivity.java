@@ -118,13 +118,19 @@ public class RequestsForBookListActivity extends BasicActivity {
                                 String bookId = dataSnapshot.child("bookId").getValue().toString();
                                 String status = dataSnapshot.child("status").getValue().toString();
 
-                                Intent intent = new Intent(RequestsForBookListActivity.this, RequestDetailActivity.class);
-                                intent.putExtra("ownerId", ownerId);
-                                intent.putExtra("borrowerId", borrowerId);
-                                intent.putExtra("bookId", bookId);
-                                intent.putExtra("status", status);
-                                intent.putExtra("requestId", requestId);
-                                startActivity(intent);
+                                if (status.equals("Cancelled")) {
+                                    dbRef.removeValue();
+                                }
+                                else {
+
+                                    Intent intent = new Intent(RequestsForBookListActivity.this, RequestDetailActivity.class);
+                                    intent.putExtra("ownerId", ownerId);
+                                    intent.putExtra("borrowerId", borrowerId);
+                                    intent.putExtra("bookId", bookId);
+                                    intent.putExtra("status", status);
+                                    intent.putExtra("requestId", requestId);
+                                    startActivity(intent);
+                                }
                             }
                             @Override
                             public void onCancelled(DatabaseError databaseError) {

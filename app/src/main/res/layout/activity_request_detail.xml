@@ -111,6 +111,7 @@
         android:background="@android:color/holo_red_light"
         android:text="Cancel Request"
         android:textColor="@android:color/white"
+        android:onClick="cancelRequest"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

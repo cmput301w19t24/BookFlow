@@ -247,7 +247,9 @@ public class RequestHolder extends RecyclerView.ViewHolder{
         }
         else if (status.equals("Rejected")){
             request_status.setTextColor(Color.parseColor("#FF1A00"));
-
+        }
+        else if (status.equals("Cancelled")){
+            request_status.setTextColor(Color.parseColor("#FF1A00"));
         }
     }
 }
