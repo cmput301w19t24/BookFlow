@@ -408,6 +408,7 @@ public class SearchActivity extends BasicActivity {
                                 Intent intent = new Intent(SearchActivity.this, BookDetailActivity.class);
                                 intent.putExtra("book_id", book_id);
                                 startActivity(intent);
+
                             }
                         });
                     }
@@ -495,6 +496,5 @@ public class SearchActivity extends BasicActivity {
             }
 
         }
-
     }
 }
