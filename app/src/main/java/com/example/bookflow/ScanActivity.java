@@ -12,6 +12,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 import com.example.bookflow.Util.PhotoUtility;
 import com.google.android.gms.vision.CameraSource;
@@ -41,7 +42,7 @@ public class ScanActivity extends AppCompatActivity {
 
     /**
      * Initialize UI elements, barcode detector, camera source and camera view.
-     * @param savedInstanceState
+     * @param savedInstanceState saved instance state
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class ScanActivity extends AppCompatActivity {
 
         mCameraSource = new CameraSource
                 .Builder(this, mBarcodeDetector)
+                .setAutoFocusEnabled(true)
                 .build();
 
         mCameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
