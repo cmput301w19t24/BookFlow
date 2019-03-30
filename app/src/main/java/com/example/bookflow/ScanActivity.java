@@ -1,5 +1,5 @@
 /**
-
+    ScanActivity: the isbn scanner
  */
 
 package com.example.bookflow;
@@ -12,7 +12,6 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 
 import com.example.bookflow.Util.PhotoUtility;
 import com.google.android.gms.vision.CameraSource;
