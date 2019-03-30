@@ -229,8 +229,10 @@ public class RequestDetailActivity extends BasicActivity {
 
 
     public void accept(View v) {
-        DatabaseReference booksRef = mDatabase.getReference("Books").child(bookId).child("status");
-        booksRef.setValue("ACCEPTED");
+        DatabaseReference thebookRef = mDatabase.getReference("Books").child(bookId);
+        thebookRef.child("status").setValue("ACCEPTED");
+        thebookRef.child("borrowerId").setValue(borrowerId);
+
 
         DatabaseReference sentReqRef = mDatabase.getReference("RequestsSentByUser").child(borrowerId).child(requestId);
         sentReqRef.child("status").setValue("Accepted");
