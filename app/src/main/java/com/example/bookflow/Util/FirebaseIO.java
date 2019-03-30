@@ -201,7 +201,6 @@ public class FirebaseIO {
                         throw task.getException();
                     }
 
-                    // TODO: delete the original image first
                     Uri downloadUri = task.getResult();
                     Log.d(TAG, "downloadUri = " + downloadUri.toString());
 
@@ -215,14 +214,16 @@ public class FirebaseIO {
                     return bookRef.setValue(mybook);
                 }
             }).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (!mybook.getPhotoUri().equals(lastPhotoUri)) {
-                                deletePhoto(lastPhotoUri, listener);
-                            } else {
-                                listener.onComplete(task);
-                            }
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        // delete old photo
+                        if (lastPhotoUri != null && !mybook.getPhotoUri().equals(lastPhotoUri)) {
+                            deletePhoto(lastPhotoUri, listener);
+                        } else {
+                            listener.onComplete(task);
                         }
+                    }
                     });
 
         } else {

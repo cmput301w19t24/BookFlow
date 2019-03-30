@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -58,17 +57,7 @@ public class BookDetailActivity extends BasicActivity {
     private Button transactionButton;
 
     private String bookId;
-    private String ownerId;
-    private String borrowerId;
-    private String title;
-    private String author;
-    private String isbn;
-    private String bookStatus;
-    private String borrowerName;
-    private String username;
-    private String photoUri;
-    private String comments;
-    private float rating;
+    private Book mThisBook;
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference notificationRef;
@@ -110,9 +99,12 @@ public class BookDetailActivity extends BasicActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                populateBookData(dataSnapshot);
+                mThisBook = dataSnapshot.getValue(Book.class);
+                if (mThisBook != null) {
+                    populateBookData();
 
-                controlVisual();
+                    controlVisual();
+                }
 
             }
 
@@ -130,9 +122,11 @@ public class BookDetailActivity extends BasicActivity {
     private void controlVisual() {
         String curUser = mAuth.getCurrentUser().getUid();
 
+        String bookStatus = mThisBook.getStatus().toString();
+
         boolean isReadyForTrans = bookStatus.equals("ACCEPTED") || bookStatus.equals("BORROWED");
-        boolean isOwner = curUser.equals(ownerId);
-        boolean isBorrower = curUser.equals(borrowerId);
+        boolean isOwner = curUser.equals(mThisBook.getOwnerId());
+        boolean isBorrower = curUser.equals(mThisBook.getBorrowerId());
         boolean isParticipant = isOwner || isBorrower;
 
 
@@ -155,72 +149,19 @@ public class BookDetailActivity extends BasicActivity {
 
     /**
      * Populate data from firebase database into views
-     * @param dataSnapshot data snapshot from firebase
      */
-    private void populateBookData(DataSnapshot dataSnapshot) {
-        try {
-            title = dataSnapshot.child("title").getValue().toString();
+    private void populateBookData() {
+        if (mThisBook != null) {
+            titleField.setText(mThisBook.getTitle());
+            authorField.setText("by " + mThisBook.getAuthor());
+            isbnField.setText("ISBN: " + mThisBook.getIsbn());
+            statusField.setText(mThisBook.getStatus().toString());
+            commentField.setText(mThisBook.getDescription());
+            ratingBar.setRating(mThisBook.getRating());
+            Glide.with(getApplicationContext())
+                    .load(mThisBook.getPhotoUri())
+                    .into(bookImage);
         }
-        catch (Exception e){
-            title = "None Found";
-        }
-
-        try {
-            author = dataSnapshot.child("author").getValue().toString();
-        }
-        catch (Exception e){
-            author = "None Found";
-        }
-
-        try {
-            isbn = dataSnapshot.child("isbn").getValue().toString();
-        }
-        catch (Exception e){
-            isbn = "Not Found";
-        }
-        try {
-            ownerId = dataSnapshot.child("ownerId").getValue().toString();
-        }
-        catch(Exception e) {
-            ownerId = "Not Found";
-        }
-        try {
-            photoUri = dataSnapshot.child("photoUri").getValue().toString();
-        }
-        catch (Exception e){
-            photoUri = "android.resource://com.example.bookflow/" + R.drawable.image_placeholder;
-        }
-
-        try {
-            comments = dataSnapshot.child("description").getValue().toString();
-        }
-        catch (Exception e) {
-            comments = "";
-        }
-
-        try {
-            bookStatus = dataSnapshot.child("status").getValue().toString();
-
-        }
-        catch(Exception e){
-            bookStatus = "Not Found";
-        }
-
-        try{
-            rating = Float.valueOf(dataSnapshot.child("rating").getValue().toString());
-        }catch(Exception e){
-            rating = 3;
-        }
-
-        titleField.setText(title);
-        authorField.setText("by " + author);
-        isbnField.setText("ISBN: " + isbn);
-        statusField.setText(bookStatus);
-        commentField.setText(comments);
-        ratingBar.setRating(rating);
-        Glide.with(getApplicationContext())
-                .load(photoUri)
-                .into(bookImage);
     }
 
     /**
@@ -230,51 +171,53 @@ public class BookDetailActivity extends BasicActivity {
 
     public void request(View v) {
         FirebaseUser user = mAuth.getCurrentUser();
-        borrowerId = user.getUid();
+        mThisBook.setBorrowerId(user.getUid());
 
-        if (ownerId.equals(borrowerId)) {
+        if (mThisBook.getOwnerId().equals(mThisBook.getBorrowerId())) {
             Toast toast = Toast.makeText(getApplicationContext(),
                     "you cannot request your own book",
                     Toast.LENGTH_SHORT);
             toast.show();
         }
         else {
-            ValueEventListener userListener = new ValueEventListener() {
+            mDatabase.getReference()
+                    .child("Users/" + mThisBook.getBorrowerId())
+                    .addListenerForSingleValueEvent( new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    username = dataSnapshot.child("username").getValue().toString();
+                    String username = dataSnapshot.child("username").getValue().toString();
 
                     //create request
-                    Request req = new Request(ownerId, borrowerId, bookId);
+                    Request req = new Request(mThisBook.getOwnerId(), mThisBook.getBorrowerId(), bookId);
 
                     // add request to list of sent requests by user
                     DatabaseReference requestsSentReference = mDatabase.getReference("RequestsSentByUser");
-                    String request_id = requestsSentReference.push().getKey();
-                    requestsSentReference.child(borrowerId).child(request_id).setValue(req);
+                    String requestId = requestsSentReference.push().getKey();
+                    requestsSentReference.child(mThisBook.getBorrowerId()).child(requestId).setValue(req);
 
                     // add request to list of received requests for book
                     DatabaseReference receivedRequestsByBookReference = mDatabase.getReference("RequestsReceivedByBook");
-                    receivedRequestsByBookReference.child(bookId).child(request_id).setValue(req);
+                    receivedRequestsByBookReference.child(bookId).child(requestId).setValue(req);
 
                     // send notification
                     SimpleDateFormat formatter = new SimpleDateFormat("HH:mm MM/dd");
                     String timestamp = formatter.format(new Date());
-                    DatabaseReference receiverRef = notificationRef.child(ownerId);
+                    DatabaseReference receiverRef = notificationRef.child(mThisBook.getOwnerId());
                     String notification_id = receiverRef.push().getKey();
-                    receiverRef.child(notification_id).setValue(new Notification(borrowerId, bookId, "request", request_id, title, username, timestamp));
+                    receiverRef.child(notification_id).setValue(new Notification(mThisBook.getBorrowerId(), bookId, "request", requestId, mThisBook.getTitle(), username, timestamp));
 
                     // transition book state
                     DatabaseReference bookRef = mDatabase.getReference("Books");
-                    if (bookStatus.equals("AVAILABLE")) {
+                    if (mThisBook.getStatus().toString().equals("AVAILABLE")) {
                         bookRef.child(bookId).child("status").setValue("REQUESTED");
                     }
                 }
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     Log.w("cancelled", databaseError.toException());
                 }
-            };
-            mDatabase.getReference().child("Users").child(borrowerId).addListenerForSingleValueEvent(userListener);
+            });
             Toast toast = Toast.makeText(getApplicationContext(),
                     "request sent",
                     Toast.LENGTH_SHORT);
@@ -292,7 +235,7 @@ public class BookDetailActivity extends BasicActivity {
         Intent intent = new Intent(BookDetailActivity.this, EditBookDetailActivity.class);
         intent.putExtra(EditBookDetailActivity.INTENT_KEY, bookId);
         Log.e("bookid", bookId);
-        startActivityForResult(intent, RC_EDIT_BOOK);
+        startActivity(intent);
     }
 
     public void viewRequests(View v) {
@@ -327,11 +270,6 @@ public class BookDetailActivity extends BasicActivity {
                     completeTransaction(isbn);
                 }
             }
-        } else if (requestCode == RC_EDIT_BOOK) {
-            if (resultCode == RESULT_OK) {
-                // reload the book data
-
-            }
         }
     }
 
@@ -344,7 +282,7 @@ public class BookDetailActivity extends BasicActivity {
         boolean isTransactionSuccessful = false;
 
         // first check if the scanned isbn matches the target book
-        if (isbn == null || !isbn.equals(this.isbn)) {
+        if (isbn == null || !isbn.equals(mThisBook.getIsbn())) {
             Toast.makeText(this, getString(R.string.isbn_doesnt_match), Toast.LENGTH_LONG).show();
             return;
         }
@@ -352,17 +290,18 @@ public class BookDetailActivity extends BasicActivity {
         String currUserId = mAuth.getCurrentUser().getUid();
         DatabaseReference thisBookRef = mBookRef.child(bookId);
         DatabaseReference statusRef = thisBookRef.child("status");
-        DatabaseReference borrowIdRef = thisBookRef.child("borrowerId");
+        DatabaseReference borrowerIdRef = thisBookRef.child("borrowerId");
 
-        final boolean isParticipant = ownerId.equals(currUserId) || borrowerId.equals(currUserId);
-        if (bookStatus.equals("ACCEPTED") && isParticipant) {
+        final boolean isParticipant = mThisBook.getOwnerId().equals(currUserId) || mThisBook.getBorrowerId().equals(currUserId);
+        if (mThisBook.getStatus().toString().equals("ACCEPTED") && isParticipant) {
             // the owner marks the book as borrowed
             statusRef.setValue(Book.BookStatus.BORROWED);
             isTransactionSuccessful = true;
 
-        } else if (bookStatus.equals("BORROWED") && isParticipant) {
+        } else if (mThisBook.getStatus().toString().equals("BORROWED") && isParticipant) {
             /* the borrowed marks the book as available */
             statusRef.setValue(Book.BookStatus.AVAILABLE);
+            borrowerIdRef.removeValue();
             isTransactionSuccessful = true;
         }
 

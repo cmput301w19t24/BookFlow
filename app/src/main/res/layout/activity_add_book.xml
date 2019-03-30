@@ -8,6 +8,8 @@
     android:layout_height="match_parent"
     tools:context=".AddBookActivity">
 
+
+
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -104,8 +106,7 @@
         </LinearLayout>
 
     </ScrollView>
-
-
+    
     <ProgressBar
         android:id="@+id/add_book_progress_bar"
         style="?android:attr/progressBarStyleLarge"
