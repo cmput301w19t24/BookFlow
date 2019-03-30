@@ -216,16 +216,16 @@ public class RequestDetailActivity extends BasicActivity {
         finish();
     }
 
-//    public void accept(View v) {
-//        Intent intent = new Intent(this, MapsActivity.class);
-//        ArrayList<String> infos = new ArrayList<>();
-//        infos.add(this.ownerId);
-//        infos.add(this.bookId);
-//        infos.add(this.status);
-//        infos.add(this.requestId);
-//        intent.putExtra(PARAMETERS, infos);
-//        startActivity(intent);
-//    }
+    public void selectLocation(View v) {
+        Intent intent = new Intent(this, MapsActivity.class);
+        ArrayList<String> infos = new ArrayList<>();
+        infos.add(this.ownerId);
+        infos.add(this.bookId);
+        infos.add(this.status);
+        infos.add(this.requestId);
+        intent.putExtra(PARAMETERS, infos);
+        startActivity(intent);
+    }
 
 
     public void accept(View v) {
@@ -318,9 +318,10 @@ public class RequestDetailActivity extends BasicActivity {
                 Log.w("cancelled", databaseError.toException());
             }
         };
+        selectLocation(v);
         bookRef.addListenerForSingleValueEvent(reqListener);
         Intent intent = new Intent(RequestDetailActivity.this, BookDetailActivity.class);
-        intent.putExtra(BookDetailActivity.INTENT_EXTRA, bookId);
+        intent.putExtra("book_id", bookId);
         startActivity(intent);
         //finish();
     }
