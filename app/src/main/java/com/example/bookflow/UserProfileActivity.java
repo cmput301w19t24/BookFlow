@@ -159,6 +159,24 @@ public class UserProfileActivity extends BasicActivity {
         loadReviewList();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // determine whether it's yourself visiting your profile or other user visiting your profile
+        Intent intent = getIntent();
+        String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
+        if (message != null) {
+            ImageView imageButton = findViewById(R.id.editPersonInfo);
+            imageButton.setEnabled(false);
+            imageButton.setVisibility(View.INVISIBLE);
+            uid = message;
+        } else  {
+            FirebaseUser user = mAuth.getCurrentUser();
+            uid = user.getUid();
+        }
+    }
+
     private void setUserProfile() {
         query_user.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
