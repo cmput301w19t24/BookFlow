@@ -57,11 +57,13 @@ public class UserProfileActivity extends BasicActivity {
     private String uid;
     private Query query_user;
     private Query query_review;
+    private Query query_book;
     private ArrayList<Review> reviews;
     private ArrayList<Book> books;
     private static ListView bookList;
     private static ListView reviewList;
     private ReviewAdapter adpReview;
+    private BookAdapter adpBook;
 
     // class of Review Adapter
     class ReviewAdapter extends ArrayAdapter<Review> {
@@ -92,26 +94,25 @@ public class UserProfileActivity extends BasicActivity {
     class BookAdapter extends ArrayAdapter<Book> {
         BookAdapter(Context c, ArrayList<Book> reviews) {
             // TODO:
-            super(c,R.layout.user_list, reviews);
+            super(c,R.layout.profile_book_item, reviews);
         }
 
-//        @Override
-//        public View getView(int position, View v, ViewGroup parent) {
-//            Book book = this.getItem(position);
-//
-//            if (v == null) {
-//                v = LayoutInflater.from(getContext()).inflate(R.layout.user_list, parent, false);
-//            }
-//            TextView comments = v.findViewById(R.id.review_text);
-//            TextView rating = v.findViewById(R.id.rating);
-//
-//            setReviewUser(v, String.valueOf(review.getReviewerID()));
-//
-//            comments.setText(review.getComments());
-//            rating.setText(review.getRating());
-//
-//            return v;
-//        }
+        @Override
+        public View getView(int position, View v, ViewGroup parent) {
+            Book book = this.getItem(position);
+
+            if (v == null) {
+                v = LayoutInflater.from(getContext()).inflate(R.layout.profile_book_item, parent, false);
+            }
+            TextView mauthor = v.findViewById(R.id.uauthor);
+            TextView mtitle = v.findViewById(R.id.utitle);
+            ImageView mphoto = v.findViewById(R.id.uphoto);
+
+            mauthor.setText(book.getAuthor());
+            mtitle.setText(book.getTitle());
+            Glide.with(UserProfileActivity.this).load(book.getPhotoUri()).into(mphoto);
+            return v;
+        }
     }
 
     public void setReviewUser(final View v, final String tmpuid) {
@@ -149,14 +150,13 @@ public class UserProfileActivity extends BasicActivity {
         uid = mAuth.getCurrentUser().getUid();
         query_user = database.getReference().child("Users");
         query_review = database.getReference().child("Reviews");
+        query_book = database.getReference().child("Books");
 
         reviews = new ArrayList<Review>();
         books = new ArrayList<Book>();
 
         adpReview = new ReviewAdapter(this, reviews);
-
-        setUserProfile();
-        loadReviewList();
+        adpBook = new BookAdapter(this, books);
     }
 
     @Override
@@ -175,6 +175,10 @@ public class UserProfileActivity extends BasicActivity {
             FirebaseUser user = mAuth.getCurrentUser();
             uid = user.getUid();
         }
+
+        setUserProfile();
+        loadReviewList();
+        loadBookList();
     }
 
     private void setUserProfile() {
@@ -218,6 +222,43 @@ public class UserProfileActivity extends BasicActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    private void loadBookList() {
+        bookList = (ListView) findViewById(R.id.offerList);
+        // add user's book to adapter
+        query_book.orderByChild("ownerId").equalTo(uid).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Book book = (Book)dataSnapshot.getValue(Book.class);
+                if (!books.contains(book)) {
+                    adpBook.add(book);
+                }
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                loadBookList();
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                loadBookList();
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
+        bookList.setAdapter(adpBook);
+        bookList.setClickable(true);
+        bookList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent_detail = new Intent(UserProfileActivity.this, BookDetailActivity.class);
+                String book_id = adpBook.getItem(position).getBookId();
+                intent_detail.putExtra(BookDetailActivity.INTENT_EXTRA, book_id);
+                startActivity(intent_detail);
             }
         });
     }
