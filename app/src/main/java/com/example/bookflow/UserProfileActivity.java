@@ -65,10 +65,6 @@ public class UserProfileActivity extends BasicActivity {
     private ReviewAdapter adpReview;
     private BookAdapter adpBook;
 
-    public String getUid() {
-        return uid;
-    }
-
     // class of Review Adapter
     class ReviewAdapter extends ArrayAdapter<Review> {
         ReviewAdapter(Context c, ArrayList<Review> reviews) {
