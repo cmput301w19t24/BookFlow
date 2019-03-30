@@ -352,7 +352,6 @@ public class BookDetailActivity extends BasicActivity {
         String currUserId = mAuth.getCurrentUser().getUid();
         DatabaseReference thisBookRef = mBookRef.child(bookId);
         DatabaseReference statusRef = thisBookRef.child("status");
-        DatabaseReference borrowIdRef = thisBookRef.child("borrowerId");
 
         final boolean isParticipant = ownerId.equals(currUserId) || borrowerId.equals(currUserId);
         if (bookStatus.equals("ACCEPTED") && isParticipant) {
