@@ -63,7 +63,7 @@ public class UserProfileActivity extends BasicActivity {
     private static ListView reviewList;
     private ReviewAdapter adpReview;
 
-    // class of Adapter
+    // class of Review Adapter
     class ReviewAdapter extends ArrayAdapter<Review> {
         ReviewAdapter(Context c, ArrayList<Review> reviews) {
             super(c,R.layout.user_list, reviews);
@@ -72,6 +72,32 @@ public class UserProfileActivity extends BasicActivity {
         @Override
         public View getView(int position, View v, ViewGroup parent) {
             Review review = this.getItem(position);
+
+            if (v == null) {
+                v = LayoutInflater.from(getContext()).inflate(R.layout.user_list, parent, false);
+            }
+            TextView comments = v.findViewById(R.id.review_text);
+            TextView rating = v.findViewById(R.id.rating);
+
+            setReviewUser(v, String.valueOf(review.getReviewerID()));
+
+            comments.setText(review.getComments());
+            rating.setText(review.getRating());
+
+            return v;
+        }
+    }
+
+    // class of Book Adapter
+    class BookAdapter extends ArrayAdapter<Book> {
+        BookAdapter(Context c, ArrayList<Book> reviews) {
+            // TODO:
+            super(c,R.layout.user_list, reviews);
+        }
+
+        @Override
+        public View getView(int position, View v, ViewGroup parent) {
+            Book book = this.getItem(position);
 
             if (v == null) {
                 v = LayoutInflater.from(getContext()).inflate(R.layout.user_list, parent, false);
