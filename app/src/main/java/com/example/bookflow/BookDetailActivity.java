@@ -43,7 +43,6 @@ import java.util.Date;
 public class BookDetailActivity extends BasicActivity {
     public static final String INTENT_EXTRA = "book_id";
 
-    private static final int RC_EDIT_BOOK = 1;
     private TextView titleField;
     private TextView authorField;
     private TextView isbnField;
@@ -62,7 +61,6 @@ public class BookDetailActivity extends BasicActivity {
     private FirebaseDatabase mDatabase;
     private DatabaseReference notificationRef;
     private DatabaseReference mBookRef;
-
 
     private FirebaseAuth mAuth;
 
@@ -86,7 +84,7 @@ public class BookDetailActivity extends BasicActivity {
         statusField = findViewById(R.id.book_detail_book_status);
         bookImage = findViewById(R.id.book_detail_book_image);
         commentField = findViewById(R.id.book_detail_book_comments);
-        ratingBar = (RatingBar)findViewById(R.id.ratingBar);
+        ratingBar = findViewById(R.id.ratingBar);
         requestButton = findViewById(R.id.book_detail_request_button);
         editButton = findViewById(R.id.book_detail_edit_book_button);
         viewRequestsButton = findViewById(R.id.book_detail_view_requests_button);
@@ -168,7 +166,6 @@ public class BookDetailActivity extends BasicActivity {
      * When the request button is clicked, this function creates a request
      * and sends a notification to the owner of the book
      */
-
     public void request(View v) {
         FirebaseUser user = mAuth.getCurrentUser();
         mThisBook.setBorrowerId(user.getUid());
@@ -229,8 +226,9 @@ public class BookDetailActivity extends BasicActivity {
      * when the edit button is clicked, this transitions
      * user to the edit book page where they can edit
      * the book description
+     *
+     * @param v view of the button, not used
      */
-
     public void edit(View v) {
         Intent intent = new Intent(BookDetailActivity.this, EditBookDetailActivity.class);
         intent.putExtra(EditBookDetailActivity.INTENT_KEY, bookId);
@@ -238,6 +236,13 @@ public class BookDetailActivity extends BasicActivity {
         startActivity(intent);
     }
 
+    /**
+     * when the "view request" button is clicked, this transitions
+     * user to the edit book page where they see all requests of
+     * the book
+     *
+     * @param v view of the button, not used
+     */
     public void viewRequests(View v) {
         Intent intent = new Intent(BookDetailActivity.this, RequestsForBookListActivity.class);
         intent.putExtra(RequestsForBookListActivity.INTENT_KEY, bookId);
@@ -246,7 +251,7 @@ public class BookDetailActivity extends BasicActivity {
 
     /**
      * start a transaction process by opening the scanner
-     * @param view
+     * @param view view of the button, not used
      */
     public void startTransactionProcess(View view) {
         Intent intent = new Intent(BookDetailActivity.this, ScanActivity.class);
@@ -256,9 +261,9 @@ public class BookDetailActivity extends BasicActivity {
     /**
      * handles the return of other activities, including EditBookActivity
      *
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * @param requestCode request code
+     * @param resultCode result code
+     * @param data intent data
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -275,7 +280,7 @@ public class BookDetailActivity extends BasicActivity {
 
     /**
      * Update the book status after scanning the ISBN.
-     * @param isbn
+     * @param isbn the isbn of the book to be borrowed/returned
      */
     private void completeTransaction(String isbn) {
 
@@ -314,7 +319,7 @@ public class BookDetailActivity extends BasicActivity {
         }
     }
 
-    // Use dialog interface for editting and deleting feelings
+    // Use dialog interface for editing and deleting feelings
     public void showEditbox() {
         final Dialog dialog = new Dialog(BookDetailActivity.this);
         dialog.setTitle("Rating book");
