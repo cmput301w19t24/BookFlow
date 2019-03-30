@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 /**
@@ -19,7 +22,7 @@ import java.util.ArrayList;
  */
 public class BasicActivity extends AppCompatActivity {
     private ArrayList<Class> mActivityClasses;
-
+    private String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,8 @@ public class BasicActivity extends AppCompatActivity {
         mActivityClasses.add(AddBookActivity.class);
         mActivityClasses.add(NotificationActivity.class);
         mActivityClasses.add(UserProfileActivity.class);
+
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     /**
@@ -45,7 +50,6 @@ public class BasicActivity extends AppCompatActivity {
             startActivity(intent);
             slideAnimation(MainActivity.class);
         }
-
     }
 
     /**
@@ -87,8 +91,20 @@ public class BasicActivity extends AppCompatActivity {
      * profile page button click on method
      * @param v main page button view
      */
-    public void clickProfileButton(View v){
-        if(this.getClass() != UserProfileActivity.class) {
+    public void clickProfileButton(View v) {
+        String passuid = String.valueOf(uid);
+        try {
+            Class<?> c = this.getClass();
+            Field f = this.getClass().getField("uid");
+            f.setAccessible(true);
+            passuid = String.valueOf((String)f.get(this));
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        if(this.getClass() != UserProfileActivity.class || !passuid.equals(uid)) {
             Intent intent = new Intent(this, UserProfileActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

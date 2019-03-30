@@ -54,7 +54,7 @@ public class UserProfileActivity extends BasicActivity {
 
     private FirebaseDatabase database;
     private FirebaseAuth mAuth;
-    private String uid;
+    public String uid;
     private Query query_user;
     private Query query_review;
     private Query query_book;
@@ -64,6 +64,10 @@ public class UserProfileActivity extends BasicActivity {
     private static ListView reviewList;
     private ReviewAdapter adpReview;
     private BookAdapter adpBook;
+
+    public String getUid() {
+        return uid;
+    }
 
     // class of Review Adapter
     class ReviewAdapter extends ArrayAdapter<Review> {
