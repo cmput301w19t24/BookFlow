@@ -123,7 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="200dp"
-            android:layout_marginTop="-40dp"
+            android:layout_marginTop="-31dp"
             android:text="Accepted" />
 
 
@@ -144,7 +144,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="200dp"
-            android:layout_marginTop="-40dp"
+            android:layout_marginTop="-31dp"
             android:text="Borrowed" />
 
     </RadioGroup>

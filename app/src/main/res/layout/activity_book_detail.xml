@@ -9,8 +9,8 @@
     <include
         android:id="@+id/include"
         layout="@layout/activity_basic"
-        tools:layout_editor_absoluteX="37dp"
-        tools:layout_editor_absoluteY="0dp" />
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="32dp" />
 
     <TextView
         android:id="@+id/book_detail_isbn"
@@ -112,34 +112,32 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/include"
-        app:layout_constraintTop_toBottomOf="@+id/book_detail_book_comments"
-        tools:layout_editor_absoluteX="16dp"
-        android:orientation="vertical">
+        android:layout_margin="4dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar">
 
         <Button
             android:id="@+id/book_detail_request_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:visibility="gone"
             android:background="@color/colorPrimary"
-            android:textColor="@color/common_google_signin_btn_text_dark_default"
             android:onClick="request"
-            android:text="@string/request" />
+            android:text="@string/request"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/book_detail_scan_for_transaction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:visibility="gone"
-            android:onClick="startTransactionProcess"
             android:background="@android:color/holo_green_light"
+            android:onClick="startTransactionProcess"
             android:text="@string/transaction"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
 
     </LinearLayout>
 
@@ -151,12 +149,17 @@
         android:rating="3.0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_margin="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/book_detail_book_comments" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/book_detail_guide_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="683dp" />
 
 
 </android.support.constraint.ConstraintLayout>
