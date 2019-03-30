@@ -67,7 +67,6 @@ public class BasicActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AddBookActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-            slideAnimation(AddBookActivity.class);
         }
     }
 
