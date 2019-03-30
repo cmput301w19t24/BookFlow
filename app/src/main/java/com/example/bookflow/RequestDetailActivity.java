@@ -320,7 +320,9 @@ public class RequestDetailActivity extends BasicActivity {
         };
         selectLocation(v);
         bookRef.addListenerForSingleValueEvent(reqListener);
-
+        Intent intent = new Intent(RequestDetailActivity.this, BookDetailActivity.class);
+        intent.putExtra("book_id", bookId);
+        startActivity(intent);
         //finish();
     }
 
