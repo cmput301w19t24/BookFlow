@@ -95,23 +95,23 @@ public class UserProfileActivity extends BasicActivity {
             super(c,R.layout.user_list, reviews);
         }
 
-        @Override
-        public View getView(int position, View v, ViewGroup parent) {
-            Book book = this.getItem(position);
-
-            if (v == null) {
-                v = LayoutInflater.from(getContext()).inflate(R.layout.user_list, parent, false);
-            }
-            TextView comments = v.findViewById(R.id.review_text);
-            TextView rating = v.findViewById(R.id.rating);
-
-            setReviewUser(v, String.valueOf(review.getReviewerID()));
-
-            comments.setText(review.getComments());
-            rating.setText(review.getRating());
-
-            return v;
-        }
+//        @Override
+//        public View getView(int position, View v, ViewGroup parent) {
+//            Book book = this.getItem(position);
+//
+//            if (v == null) {
+//                v = LayoutInflater.from(getContext()).inflate(R.layout.user_list, parent, false);
+//            }
+//            TextView comments = v.findViewById(R.id.review_text);
+//            TextView rating = v.findViewById(R.id.rating);
+//
+//            setReviewUser(v, String.valueOf(review.getReviewerID()));
+//
+//            comments.setText(review.getComments());
+//            rating.setText(review.getRating());
+//
+//            return v;
+//        }
     }
 
     public void setReviewUser(final View v, final String tmpuid) {
