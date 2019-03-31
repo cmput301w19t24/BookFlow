@@ -41,7 +41,7 @@ public class NotificationActivity extends BasicActivity {
     private FirebaseAuth mAuth;
     private FirebaseRecyclerAdapter<Notification, NotificationHolder> myFirebaseRecyclerAdapter;
     private String photoUri;
-
+    public boolean new_notif;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +93,7 @@ public class NotificationActivity extends BasicActivity {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 //String notificationId = dbRef.getKey();
+                                findViewById(R.id.notification_button).setBackgroundResource(R.drawable.notif_new);
                                 Notification n = dataSnapshot.getValue(Notification.class);
                                 String requestId = n.getTransactionId();
                                 String bookId = n.getBookId();
@@ -152,6 +153,8 @@ public class NotificationActivity extends BasicActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        new_notif = false;
+        findViewById(R.id.notification_button).setBackgroundResource(R.drawable.notif_select);
         myFirebaseRecyclerAdapter.startListening();
     }
 

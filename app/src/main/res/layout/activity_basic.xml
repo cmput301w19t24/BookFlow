@@ -8,19 +8,18 @@
 
     <ImageButton
         android:id="@+id/main_page_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
         android:layout_marginStart="36dp"
         android:layout_marginBottom="8dp"
-        android:background="@null"
+        android:background="@drawable/main_page_icon"
         android:contentDescription="@null"
         android:onClick="clickMainPageButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/search_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/main_page_icon" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/search_button"
@@ -28,14 +27,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="8dp"
-        android:background="@null"
         android:contentDescription="@null"
         android:onClick="clickSearchPageButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/add_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/main_page_button"
-        app:srcCompat="@drawable/search_icon" />
+        android:background="@drawable/search_icon" />
 
     <ImageButton
         android:id="@+id/add_button"
@@ -43,14 +41,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="8dp"
-        android:background="@null"
         android:contentDescription="@null"
         android:onClick="clickAddButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/notification_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/search_button"
-        app:srcCompat="@drawable/add_icon" />
+        android:background="@drawable/add_icon" />
 
     <ImageButton
         android:id="@+id/notification_button"
@@ -58,14 +55,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="8dp"
-        android:background="@null"
         android:contentDescription="@null"
         android:onClick="clickNotificationButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/profile_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/add_button"
-        app:srcCompat="@drawable/notification_icon" />
+        android:background="@drawable/notification_icon" />
 
     <ImageButton
         android:id="@+id/profile_button"
@@ -74,14 +70,13 @@
         android:layout_marginStart="13dp"
         android:layout_marginEnd="36dp"
         android:layout_marginBottom="8dp"
-        android:background="@null"
         android:contentDescription="@null"
         android:onClick="clickProfileButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/notification_button"
-        app:srcCompat="@drawable/person_icon" />
+        android:background="@drawable/person_icon" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline3"

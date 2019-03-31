@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,13 +29,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 
@@ -42,6 +48,8 @@ import java.util.ArrayList;
  * Main Activity Class
  */
 public class MainActivity extends BasicActivity {
+
+    private static final String TAG = "MainActivity";
 
     private static ListView myBookList;
     private static ListView myBorrowList;
@@ -59,6 +67,7 @@ public class MainActivity extends BasicActivity {
     ArrayList<Book> borrows;
     ArrayList<Book> nonfiltered_borrows;
     ArrayList<Book> filtered_borrows;
+
 
     // class of Adapter
     class MyAdapter extends ArrayAdapter<Book> {
@@ -112,11 +121,46 @@ public class MainActivity extends BasicActivity {
         filtered_borrows = new ArrayList<Book>();
         nonfiltered_borrows = new ArrayList<Book>();
         adpBorrow = new MyAdapter(this, borrows);
+
+        // add firebase token to user
+        final DatabaseReference currUserRef = database.getReference("Users").child(uid);
+        currUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.hasChild("notificationToken")) {
+                    FirebaseInstanceId.getInstance()
+                            .getInstanceId()
+                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Get new Instance ID token
+                                        String token = task.getResult().getToken();
+
+                                        Log.i(TAG, "ntfctn token = " + token);
+
+                                        currUserRef.child("notificationToken")
+                                                .setValue(token);
+                                    }
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        findViewById(R.id.main_page_button).setBackgroundResource(R.drawable.home_select);
 
         books.clear();
         borrows.clear();

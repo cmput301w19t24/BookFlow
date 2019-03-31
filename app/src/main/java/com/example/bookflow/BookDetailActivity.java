@@ -357,7 +357,7 @@ public class BookDetailActivity extends BasicActivity {
 
         if (isTransactionSuccessful) {
             Toast.makeText(BookDetailActivity.this, getString(R.string.scan_successful), Toast.LENGTH_SHORT).show();
-            //Todo Dialog rating
+
             if (isReturn) {
                 showEditbox();
             }
@@ -366,7 +366,9 @@ public class BookDetailActivity extends BasicActivity {
         }
     }
 
-    // Use dialog interface for editing and deleting feelings
+    /**
+     * dialog to rate book
+     */
     public void showEditbox() {
         final Dialog dialog = new Dialog(BookDetailActivity.this);
         dialog.setTitle("Rating book");
@@ -379,7 +381,9 @@ public class BookDetailActivity extends BasicActivity {
                 final float rating = ratingBar.getRating();
                 mThisBook.transCountInc();
                 mThisBook.setRating((mThisBook.getRating()*(mThisBook.getTransCount()-1)+rating)/ mThisBook.getTransCount());
-                FirebaseIO.getInstance().updateBook(mThisBook,null,null);
+                mBookRef.child(mThisBook.getBookId()).child("rating").setValue(mThisBook.getRating());
+                mBookRef.child(mThisBook.getBookId()).child("transCount").setValue(mThisBook.getTransCount());
+                //FirebaseIO.getInstance().updateBook(mThisBook,null,null);
                 dialog.dismiss();
             }
         });
@@ -388,6 +392,10 @@ public class BookDetailActivity extends BasicActivity {
         dialog.show();
     }
 
+    /**
+     * show location of requested book
+     * @param view location button
+     */
     public void showLocation(View view) {
 
         DatabaseReference dbRef = mDatabase.getReference("RequestsReceivedByBook")

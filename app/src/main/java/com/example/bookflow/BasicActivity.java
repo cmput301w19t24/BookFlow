@@ -8,11 +8,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 /**
@@ -37,6 +35,12 @@ public class BasicActivity extends AppCompatActivity {
         mActivityClasses.add(UserProfileActivity.class);
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     /**
@@ -114,7 +118,7 @@ public class BasicActivity extends AppCompatActivity {
 
     /**
      * select animation based on relative position of the buttons
-     * @param targetClass
+     * @param targetClass destination activity class
      */
     private void slideAnimation(Class targetClass) {
         int currClassIdx = mActivityClasses.indexOf(this.getClass());
