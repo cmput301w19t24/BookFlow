@@ -349,7 +349,9 @@ public class BookDetailActivity extends BasicActivity {
                 final float rating = ratingBar.getRating();
                 mThisBook.transCountInc();
                 mThisBook.setRating((mThisBook.getRating()*(mThisBook.getTransCount()-1)+rating)/ mThisBook.getTransCount());
-                FirebaseIO.getInstance().updateBook(mThisBook,null,null);
+                mBookRef.child(mThisBook.getBookId()).child("rating").setValue(mThisBook.getRating());
+                mBookRef.child(mThisBook.getBookId()).child("transCount").setValue(mThisBook.getTransCount());
+                //FirebaseIO.getInstance().updateBook(mThisBook,null,null);
                 dialog.dismiss();
             }
         });
