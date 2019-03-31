@@ -114,6 +114,9 @@ public class SearchActivity extends BasicActivity {
         });
         books = new ArrayList<Book>();
         filtered_books = new ArrayList<Book>();
+        /**
+         * add all books to booklist
+         */
         mDatabase.child("Books").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -176,6 +179,9 @@ public class SearchActivity extends BasicActivity {
 
     }
 
+    /**
+     * Book search linear adapter
+     */
     public class LinearAdapter extends RecyclerView.Adapter <LinearAdapter.LinearViewHolder>{
         //context
         private Context mContext;
@@ -194,16 +200,21 @@ public class SearchActivity extends BasicActivity {
             return new LinearViewHolder(LayoutInflater.from(mContext).inflate(R.layout.searchitem,parent,false));
         }
 
-
+        /**
+         * bind view holder to adapter
+         * @param holder
+         * @param position
+         */
         @Override
         public void onBindViewHolder(LinearAdapter.LinearViewHolder holder, final int position) {
             holder.setData(mContext,position);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
+                /**
+                 * click item to go to book detail page
+                 */
                 public void onClick(View v) {
                     String book_id = filtered_books.get(position).getBookId();
-                    Log.i("bookid",book_id);
-
                     Intent intent = new Intent(SearchActivity.this,BookDetailActivity.class);
                     intent.putExtra("book_id",book_id);
                     startActivity(intent);
@@ -217,24 +228,37 @@ public class SearchActivity extends BasicActivity {
             return filtered_books.size();
         }
 
-
+        /**
+         * View holder for book search
+         */
         class LinearViewHolder extends RecyclerView.ViewHolder{
             private TextView title;
             private TextView status;
             private TextView author;
             private ImageView photo;
 
+            /**
+             * view holder constructor
+             * @param itemView
+             */
             public LinearViewHolder(View itemView){
                 super(itemView);
                 title = itemView.findViewById(R.id.searchDetail1);
                 status = itemView.findViewById(R.id.searchDetail3);
                 author = itemView.findViewById(R.id.searchDetail2);
                 photo = itemView.findViewById(R.id.searchItemImage);
-
             }
 
+            /**
+             * set data detail to book item
+             * @param ctx
+             * @param i
+             */
             public void setData(Context ctx,final int i){
                 final String owner_id = filtered_books.get(i).getOwnerId();
+                /**
+                 * get ownername
+                 */
                 mDatabase.child("Users").addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -280,16 +304,10 @@ public class SearchActivity extends BasicActivity {
                 author.setGravity(Gravity.CENTER);
                 author.setText("by "+filtered_books.get(i).getAuthor());
 
-
-
                 Glide.with(ctx).load(filtered_books.get(i).getPhotoUri()).into(photo);
-
-
             }
-
         }
     }
-
 
 
     /**
@@ -297,7 +315,6 @@ public class SearchActivity extends BasicActivity {
      */
     public static class UserViewHolder extends RecyclerView.ViewHolder {
         View mView;
-
         /**
          * Constructor for view holder
          *
