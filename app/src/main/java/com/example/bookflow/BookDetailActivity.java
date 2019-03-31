@@ -20,7 +20,10 @@ import com.bumptech.glide.Glide;
 import com.example.bookflow.Model.Book;
 import com.example.bookflow.Model.Request;
 import com.example.bookflow.Model.Notification;
+import com.example.bookflow.Util.FirebaseIO;
 import com.example.bookflow.Util.ScanUtility;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -346,6 +349,7 @@ public class BookDetailActivity extends BasicActivity {
                 final float rating = ratingBar.getRating();
                 mThisBook.transCountInc();
                 mThisBook.setRating((mThisBook.getRating()*(mThisBook.getTransCount()-1)+rating)/ mThisBook.getTransCount());
+                FirebaseIO.getInstance().updateBook(mThisBook,null,null);
                 dialog.dismiss();
             }
         });
