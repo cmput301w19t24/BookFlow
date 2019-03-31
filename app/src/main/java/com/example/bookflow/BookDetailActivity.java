@@ -23,6 +23,7 @@ import com.example.bookflow.Model.Notification;
 import com.example.bookflow.Util.ScanUtility;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -337,14 +338,38 @@ public class BookDetailActivity extends BasicActivity {
         final Dialog dialog = new Dialog(BookDetailActivity.this);
         dialog.setTitle("Rating book");
         dialog.setContentView(R.layout.editbox);
-        final EditText reviewText = dialog.findViewById(R.id.reviewText);
         Button confirmButton = dialog.findViewById(R.id.reviewButton);
         final RatingBar ratingBar = dialog.findViewById(R.id.ratingBar2);
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String review = reviewText.getText().toString();
                 float rating = ratingBar.getRating();
+                mBookRef.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        Book book = (Book) dataSnapshot.getValue(Book.class);
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
 
                 dialog.dismiss();
