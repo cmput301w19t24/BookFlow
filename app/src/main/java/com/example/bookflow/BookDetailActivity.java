@@ -344,8 +344,8 @@ public class BookDetailActivity extends BasicActivity {
             @Override
             public void onClick(View v) {
                 final float rating = ratingBar.getRating();
-                mThisBook.countIncrease();
-                mThisBook.setRating((mThisBook.getRating()*(mThisBook.getCount()-1)+rating)/ mThisBook.getCount());
+                mThisBook.transCountInc();
+                mThisBook.setRating((mThisBook.getRating()*(mThisBook.getTransCount()-1)+rating)/ mThisBook.getTransCount());
                 dialog.dismiss();
             }
         });

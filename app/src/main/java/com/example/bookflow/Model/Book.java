@@ -15,6 +15,7 @@ public class Book {
     private String ownerId;
     private String borrowerId;
     private int requestCount;
+    private int transactionCount;
     private String photoUri;
     private String description;
     private String bookId;
@@ -30,6 +31,7 @@ public class Book {
         this.isbn = isbn;
         this.rating = 0;
         this.requestCount = 0;
+        this.transactionCount =0;
         this.status = BookStatus.AVAILABLE;
         this.description = "";
     }
@@ -48,6 +50,7 @@ public class Book {
         ownerId = rhs.ownerId;
         borrowerId = rhs.borrowerId;
         requestCount = rhs.requestCount;
+        transactionCount = rhs.transactionCount;
         photoUri = rhs.photoUri;
         description = rhs.description;
         bookId = rhs.bookId;
@@ -209,8 +212,19 @@ public class Book {
     public void countIncrease(){
         this.requestCount ++;
     }
-    
-    /*getter of count*/
+
+    /**
+     * inc count
+     */
+    public void transCountInc(){this.transactionCount++;}
+
+    /**
+     * getter of count
+     * @return
+     */
+    public int getTransCount(){return this.transactionCount;}
+
+
 
     /**
      * get request counter
