@@ -112,15 +112,15 @@ public class SearchActivity extends BasicActivity {
 
 
         });
-        books = new ArrayList<Book>();
-        filtered_books = new ArrayList<Book>();
-        /**
-         * add all books to booklist
-         */
+        books = new ArrayList<>();
+        filtered_books = new ArrayList<>();
+
+
+        //add all books to booklist
         mDatabase.child("Books").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Book book = (Book) dataSnapshot.getValue(Book.class);
+                Book book =  dataSnapshot.getValue(Book.class);
                 books.add(book);
             }
 
@@ -147,28 +147,24 @@ public class SearchActivity extends BasicActivity {
                 if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
                     String searchOption = spinner.getSelectedItem().toString();
                     String searchText = search_Text.getText().toString();
-                    String constraint = "title";
                     String status;
                     switch (searchOption) {
                         case "search user":
                             searchUser(searchText);
                             break;
                         case "search by book name":
-                            selectedButton = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
+                            selectedButton = findViewById(radioGroup.getCheckedRadioButtonId());
                             status = selectedButton.getText().toString().toUpperCase();
-                            constraint = "title";
                             searchBook(searchText, status);
                             break;
                         case "search by book author":
-                            selectedButton = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
+                            selectedButton = findViewById(radioGroup.getCheckedRadioButtonId());
                             status = selectedButton.getText().toString().toUpperCase();
-                            constraint = "author";
                             searchBook(searchText, status);
                             break;
                         case "search by book ISBN":
-                            selectedButton = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
+                            selectedButton = findViewById(radioGroup.getCheckedRadioButtonId());
                             status = selectedButton.getText().toString().toUpperCase();
-                            constraint = "isbn";
                             searchBook(searchText, status);
                     }
                 }
@@ -185,11 +181,8 @@ public class SearchActivity extends BasicActivity {
     public class LinearAdapter extends RecyclerView.Adapter <LinearAdapter.LinearViewHolder>{
         //context
         private Context mContext;
-        public LinearAdapter(Context context){
-            this.mContext=context;
-        }
 
-        public LinearAdapter(SearchActivity context) {
+        private LinearAdapter(SearchActivity context) {
             this.mContext=context;
 
         }
@@ -202,17 +195,15 @@ public class SearchActivity extends BasicActivity {
 
         /**
          * bind view holder to adapter
-         * @param holder
-         * @param position
+         * @param holder view holder
+         * @param position position in view
          */
         @Override
         public void onBindViewHolder(LinearAdapter.LinearViewHolder holder, final int position) {
             holder.setData(mContext,position);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                /**
-                 * click item to go to book detail page
-                 */
+                //click item to go to book detail page
                 public void onClick(View v) {
                     String book_id = filtered_books.get(position).getBookId();
                     Intent intent = new Intent(SearchActivity.this,BookDetailActivity.class);
@@ -239,9 +230,9 @@ public class SearchActivity extends BasicActivity {
 
             /**
              * view holder constructor
-             * @param itemView
+             * @param itemView item in view
              */
-            public LinearViewHolder(View itemView){
+            private LinearViewHolder(View itemView){
                 super(itemView);
                 title = itemView.findViewById(R.id.searchDetail1);
                 status = itemView.findViewById(R.id.searchDetail3);
@@ -251,18 +242,18 @@ public class SearchActivity extends BasicActivity {
 
             /**
              * set data detail to book item
-             * @param ctx
-             * @param i
+             * @param ctx context
+             * @param i position
              */
-            public void setData(Context ctx,final int i){
+            private void setData(Context ctx,final int i){
                 final String owner_id = filtered_books.get(i).getOwnerId();
-                /**
-                 * get ownername
-                 */
+
+                //get ownername
+
                 mDatabase.child("Users").addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        User user = (User) dataSnapshot.getValue(User.class);
+                        User user = dataSnapshot.getValue(User.class);
                         if(user.getUid().equals(owner_id)){
                             String ownerName = user.getUsername();
                             status.setTextColor(Color.BLUE);
@@ -318,9 +309,9 @@ public class SearchActivity extends BasicActivity {
         /**
          * Constructor for view holder
          *
-         * @param itemView
+         * @param itemView item view for user
          */
-        public UserViewHolder(@NonNull View itemView) {
+        private UserViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
         }
@@ -329,26 +320,26 @@ public class SearchActivity extends BasicActivity {
          * get view element and set details
          *
          * @param ctx             current context
-         * @param userName
-         * @param userEmail
-         * @param userintro
-         * @param userImage
+         * @param userName        username
+         * @param userEmail       user email
+         * @param userintro       user self intro
+         * @param userImage       user image
          */
-        public void setDetails(Context ctx, String userName, String userEmail, String userintro, String userImage) {
-            TextView user_name = (TextView) mView.findViewById(R.id.searchDetail1);
-            TextView user_email = (TextView) mView.findViewById(R.id.searchDetail3);
-            TextView user_selfintro = (TextView) mView.findViewById(R.id.searchDetail2);
-            ImageView user_image = (ImageView) mView.findViewById(R.id.searchItemImage);
+        private void setDetails(Context ctx, String userName, String userEmail, String userintro, String userImage) {
+            TextView user_name =  mView.findViewById(R.id.searchDetail1);
+            TextView user_email =  mView.findViewById(R.id.searchDetail3);
+            TextView user_selfintro =  mView.findViewById(R.id.searchDetail2);
+            ImageView user_image = mView.findViewById(R.id.searchItemImage);
             user_name.setTextColor(Color.BLACK);
-            user_name.setGravity(Gravity.LEFT);
+            user_name.setGravity(Gravity.START);
             user_name.setText(userName);
 
             user_email.setTextColor(Color.BLUE);
             user_email.setTextSize(15);
-            user_email.setGravity(Gravity.LEFT);
+            user_email.setGravity(Gravity.START);
             user_email.setText(userEmail);
 
-            user_selfintro.setGravity(Gravity.LEFT);
+            user_selfintro.setGravity(Gravity.START);
             user_selfintro.setTextSize(15);
             if(userintro == null || userintro.equals("") ){
                 user_selfintro.setText("This guy is lazy and don't have a introduction yet");
@@ -392,12 +383,11 @@ public class SearchActivity extends BasicActivity {
                             /**
                              * item click on method
                              * jump to user profile page
-                             * @param v
+                             * @param v v
                              */
                             @Override
                             public void onClick(View v) {
                                 String user_id = getRef(position).getKey();
-                                Log.i("userid", user_id);
                                 Intent intent = new Intent(SearchActivity.this, UserProfileActivity.class);
                                 intent.putExtra(EXTRA_MESSAGE, user_id);
                                 startActivity(intent);
@@ -427,7 +417,7 @@ public class SearchActivity extends BasicActivity {
          *
          * @param itemView
          */
-        public BookViewHolder(@NonNull View itemView) {
+        private BookViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
         }
@@ -436,10 +426,10 @@ public class SearchActivity extends BasicActivity {
          * get view element and set details
          *
          * @param ctx       current context
-         * @param isbn
-         * @param title
-         * @param author
-         * @param bookImage
+         * @param isbn      isbn
+         * @param title     title
+         * @param author    author
+         * @param bookImage book image
          */
         public void setDetails(Context ctx, String isbn, String title, String author, String bookImage) {
             TextView book_isbn = (TextView) mView.findViewById(R.id.searchDetail1);
@@ -540,22 +530,9 @@ public class SearchActivity extends BasicActivity {
             case "search user":
                 searchUser(searchText);
                 break;
-            case "search by book name":
-                selectedButton = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
+            case "search book":
+                selectedButton =  findViewById(radioGroup.getCheckedRadioButtonId());
                 status = selectedButton.getText().toString().toUpperCase();
-                constraint = "title";
-                searchBook(searchText, status);
-                break;
-            case "search by book author":
-                selectedButton = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
-                status = selectedButton.getText().toString().toUpperCase();
-                constraint = "author";
-                searchBook(searchText, status);
-                break;
-            case "search by book ISBN":
-                selectedButton = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
-                status = selectedButton.getText().toString().toUpperCase();
-                constraint = "isbn";
                 searchBook(searchText, status);
         }
 

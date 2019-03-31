@@ -42,9 +42,8 @@
     <!-- array for spinner -->
     <string-array name="searchSelection">
         <item>search user</item>
-        <item>search by book name</item>
-        <item>search by book author</item>
-        <item>search by book ISBN</item>
+        <item>search book</item>
+
 
     </string-array>
 
