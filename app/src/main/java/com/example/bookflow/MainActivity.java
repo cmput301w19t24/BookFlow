@@ -31,6 +31,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.bookflow.Model.Notification;
+import com.example.bookflow.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -62,13 +63,15 @@ public class MainActivity extends BasicActivity {
     private String uid;
     private Query query;
 
-    ArrayList<Book> books;
-    ArrayList<Book> nonfiltered_books;
-    ArrayList<Book> filtered_books;
-    boolean firstgrab;
-    ArrayList<Book> borrows;
-    ArrayList<Book> nonfiltered_borrows;
-    ArrayList<Book> filtered_borrows;
+    private long notif_count;
+
+    private ArrayList<Book> books;
+    private ArrayList<Book> nonfiltered_books;
+    private ArrayList<Book> filtered_books;
+    private boolean firstgrab;
+    private ArrayList<Book> borrows;
+    private  ArrayList<Book> nonfiltered_borrows;
+    private ArrayList<Book> filtered_borrows;
 
 
     // class of Adapter
@@ -89,6 +92,15 @@ public class MainActivity extends BasicActivity {
             TextView mtitle = v.findViewById(R.id.ititle);
             ImageView mphoto = v.findViewById(R.id.iphoto);
 
+            String userID;
+            if (parent == findViewById(R.id.myBookList)) {
+                userID = String.valueOf(book.getBorrowerId());
+            } else {
+                userID = String.valueOf(book.getOwnerId());
+            }
+
+            setUser(v, userID);
+
             mauthor.setText(book.getAuthor());
             mstatus.setText(book.getStatus().toString());
             mtitle.setText(book.getTitle());
@@ -96,6 +108,31 @@ public class MainActivity extends BasicActivity {
 
             return v;
         }
+    }
+
+    private void setUser (final View v, final String tmpuid) {
+        database.getReference().child("Users").orderByChild("uid").equalTo(tmpuid).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                User user = (User) dataSnapshot.getValue(User.class);
+                TextView rname = v.findViewById(R.id.iuser);
+                rname.setText(user.getUsername());
+                TextView rby = v.findViewById(R.id.iby2);
+                rby.setVisibility(View.VISIBLE);
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 
     /**
@@ -162,16 +199,19 @@ public class MainActivity extends BasicActivity {
         ValueEventListener notificationListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-
+                long tmp = dataSnapshot.getChildrenCount();
+                if (firstgrab) {
+                    notif_count = tmp;
+                } else if (notif_count != tmp) {
+                    findViewById(R.id.notification_button).setBackgroundResource(R.drawable.notif_new);
+                }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.w("cancelled", databaseError.toException());
             }
         };
-//        dbRef.addListenerForSingleValueEvent(notificationListener);
+        database.getReference().child("Notifications").addListenerForSingleValueEvent(notificationListener);
     }
 
     @Override
@@ -184,6 +224,7 @@ public class MainActivity extends BasicActivity {
         firstgrab = true;
         bookList();
         borrowList();
+        handleNotif();
     }
 
     @Override

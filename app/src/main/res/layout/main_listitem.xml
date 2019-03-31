@@ -20,14 +20,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="16dp">
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginLeft="8dp">
+                android:orientation="vertical"
+                android:layout_marginLeft="16dp">
 
                 <TextView
                     android:id="@+id/ititle"
@@ -40,49 +39,79 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="8dp">
+
+                    <TextView
+                        android:id="@+id/iby"
+                        android:layout_width="24dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="sans-serif"
+                        android:padding="2dp"
+                        android:text="by"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/iauthor"
+                        android:layout_width="164dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="sans-serif"
+                        android:padding="3dp"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/istatus"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="8dp"
                     android:gravity="end"
                     android:fontFamily="sans-serif"
                     android:padding="2dp"
                     android:textColor="@color/colorAccent"
                     android:textSize="14sp"
                     android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginLeft="8dp">
 
                 <TextView
-                    android:id="@+id/iby"
-                    android:layout_width="20dp"
+                    android:id="@+id/iby2"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:fontFamily="sans-serif"
-                    android:padding="2dp"
-                    android:text="by"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="12sp"
+                    android:gravity="end"
+                    android:padding="3dp"
+                    android:text="by       "
+                    android:visibility="gone"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/iauthor"
-                    android:layout_width="298dp"
+                    android:id="@+id/iuser"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
+                    android:gravity="end"
                     android:fontFamily="sans-serif"
                     android:padding="3dp"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorAccent"
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
-
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
