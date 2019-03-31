@@ -339,7 +339,7 @@ public class UserProfileActivity extends BasicActivity {
      * @param view  onClick method needed
      */
     public void editProfile(View view) {
-        Intent intent = new Intent(this, MapsActivity.class);
+        Intent intent = new Intent(this, EditProfileActivity.class);
         startActivity(intent);
     }
 }
