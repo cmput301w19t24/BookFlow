@@ -121,6 +121,9 @@ public class RequestHolder extends RecyclerView.ViewHolder{
                             else if (stat.equals("Accepted")){
                                 outString =  "You have accepted " +requesterName + "'s request for \"" + bookTitle + "\"";
                             }
+                            else if (stat.equals("Cancelled")){
+                                outString = requesterName + " has cancelled their request for \"" + bookTitle + "\"";
+                            }
                         }
                         else if (myType.equals("sent")) {
                             if(stat.equals("Pending")) {
