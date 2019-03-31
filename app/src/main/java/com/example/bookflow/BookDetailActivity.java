@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.example.bookflow.Model.Book;
 import com.example.bookflow.Model.Request;
 import com.example.bookflow.Model.Notification;
+import com.example.bookflow.Model.User;
 import com.example.bookflow.Util.FirebaseIO;
 import com.example.bookflow.Util.ScanUtility;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -165,7 +167,38 @@ public class BookDetailActivity extends BasicActivity {
             titleField.setText(mThisBook.getTitle());
             authorField.setText("by " + mThisBook.getAuthor());
             isbnField.setText("ISBN: " + mThisBook.getIsbn());
-            statusField.setText(mThisBook.getStatus().toString());
+            final String owner_id = mThisBook.getOwnerId();
+            mDatabase.getReference().child("Users").addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    User user = dataSnapshot.getValue(User.class);
+                    if(user.getUid().equals(owner_id)){
+                        String ownerName = user.getUsername();
+                        statusField.setText("Owned by " + ownerName + " Currently "+ mThisBook.getStatus().toString());
+                    }
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
             commentField.setText(mThisBook.getDescription());
             ratingBar.setRating(mThisBook.getRating());
             Glide.with(getApplicationContext())

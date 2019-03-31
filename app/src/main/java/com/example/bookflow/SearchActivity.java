@@ -207,7 +207,6 @@ public class SearchActivity extends BasicActivity {
         @Override
         public void onBindViewHolder(LinearAdapter.LinearViewHolder holder, final int position) {
             holder.setData(mContext,position);
-            if(filtered_books.get(position).getStatus().equals("AVAILABLE") ||filtered_books.get(position).getStatus().equals("REQUESTED")) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     //click item to go to book detail page
@@ -218,7 +217,7 @@ public class SearchActivity extends BasicActivity {
                         startActivity(intent);
                     }
                 });
-            }
+
         }
 
 
@@ -561,7 +560,7 @@ public class SearchActivity extends BasicActivity {
 
             } else{
                 for(String w:words){
-                    if(!(book.getBookInfo().contains(w))){
+                    if(!(book.getBookInfo().toLowerCase().contains(w.toLowerCase()))){
                         filtered_books.remove(book);
                     }
                 }

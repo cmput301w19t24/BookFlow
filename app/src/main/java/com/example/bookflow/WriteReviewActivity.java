@@ -18,7 +18,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * You
+ * You can write a review to a user and rate the user
+ * Rating is 0,1,2,3,4,5.
  */
 public class WriteReviewActivity extends AppCompatActivity {
     DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
@@ -30,6 +31,13 @@ public class WriteReviewActivity extends AppCompatActivity {
     private SeekBar seekBarView;
     private TextView showRating;
 
+    /**
+     * onCreate method
+     * initialize reviewee and reviewer
+     * get view of seekBar, review text and rating number
+     * set seekBar function listener
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,12 +65,21 @@ public class WriteReviewActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * If cancel is pressed, back to the previous activity
+     * @param view button
+     */
     public void reviewCancel(View view) {
         Intent intent = new Intent(this, UserProfileActivity.class);
         intent.putExtra("com.example.bookflow.MESSAGE",reviewee);
         startActivity(intent);
     }
 
+    /**
+     * If done is pressed, upload (comments, date, rating, reviewee, reviewer, uuid) to firebase
+     * then go back to user profile activity
+     * @param view button
+     */
     public void reviewDone (View view) {
         String reviewId = dbRef.child("Reviews").push().getKey();
 
