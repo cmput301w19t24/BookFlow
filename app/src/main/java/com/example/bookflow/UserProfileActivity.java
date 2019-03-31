@@ -80,11 +80,13 @@ public class UserProfileActivity extends BasicActivity {
             }
             TextView comments = v.findViewById(R.id.review_text);
             TextView rating = v.findViewById(R.id.rating);
+            TextView date = v.findViewById(R.id.review_date);
 
             setReviewUser(v, String.valueOf(review.getReviewerID()));
 
             comments.setText(review.getComments());
             rating.setText(review.getRating());
+            date.setText(review.getDate());
 
             return v;
         }
@@ -170,6 +172,8 @@ public class UserProfileActivity extends BasicActivity {
             ImageView imageButton = findViewById(R.id.editPersonInfo);
             imageButton.setEnabled(false);
             imageButton.setVisibility(View.INVISIBLE);
+            Button writeReview = findViewById(R.id.write_review);
+            writeReview.setVisibility(View.VISIBLE);
             uid = message;
         } else  {
             FirebaseUser user = mAuth.getCurrentUser();
@@ -198,7 +202,6 @@ public class UserProfileActivity extends BasicActivity {
                 textView = findViewById(R.id.phoneToBeChange);
                 textView.setText(user.getPhoneNumber());
 
-                // TODO: replace the photo uri in the database
 
                 ImageView userImage = findViewById(R.id.userPicture);
                 Glide.with(UserProfileActivity.this).load(user.getImageurl()).into(userImage);
@@ -271,7 +274,18 @@ public class UserProfileActivity extends BasicActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Review review = (Review) dataSnapshot.getValue(Review.class);
-                review.setReviewer(dataSnapshot.child("reviewer").getValue().toString());
+                DataSnapshot reviewerUid = dataSnapshot.child("reviewer");
+                DataSnapshot dateData = dataSnapshot.child("date");
+                if (null != reviewerUid.getValue()) {
+                    review.setReviewer(reviewerUid.getValue().toString());
+                } else {
+                    review.setReviewer("Unknown");
+                }
+
+                if (null != dateData.getValue()) {
+                    review.setDate(dateData.getValue().toString());
+                }
+
                 if (!reviews.contains(review)) {
                     adpReview.add(review);
                 }
@@ -340,6 +354,12 @@ public class UserProfileActivity extends BasicActivity {
      */
     public void editProfile(View view) {
         Intent intent = new Intent(this, EditProfileActivity.class);
+        startActivity(intent);
+    }
+
+    public void writeReview(View view) {
+        Intent intent = new Intent(this, WriteReviewActivity.class);
+        intent.putExtra("reviewee", uid);
         startActivity(intent);
     }
 }
