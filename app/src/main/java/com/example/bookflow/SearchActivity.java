@@ -119,7 +119,6 @@ public class SearchActivity extends BasicActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Book book = (Book) dataSnapshot.getValue(Book.class);
                 books.add(book);
-//                Log.i("booklist", "add book name = " + book.getTitle());
             }
 
             @Override
