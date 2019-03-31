@@ -44,6 +44,7 @@
                     android:id="@+id/istatus"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:gravity="end"
                     android:fontFamily="sans-serif"
                     android:padding="2dp"
