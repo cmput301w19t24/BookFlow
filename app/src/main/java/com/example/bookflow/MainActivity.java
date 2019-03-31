@@ -161,7 +161,6 @@ public class MainActivity extends BasicActivity {
         super.onStart();
 
         findViewById(R.id.main_page_button).setBackgroundResource(R.drawable.home_select);
-
         books.clear();
         borrows.clear();
         firstgrab = true;
