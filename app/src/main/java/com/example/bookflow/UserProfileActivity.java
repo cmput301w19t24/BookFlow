@@ -109,9 +109,11 @@ public class UserProfileActivity extends BasicActivity {
             TextView mauthor = v.findViewById(R.id.uauthor);
             TextView mtitle = v.findViewById(R.id.utitle);
             ImageView mphoto = v.findViewById(R.id.uphoto);
+            TextView mstatus = v.findViewById(R.id.ustatus);
 
             mauthor.setText(book.getAuthor());
             mtitle.setText(book.getTitle());
+            mstatus.setText(book.getStatus().toString());
             Glide.with(UserProfileActivity.this).load(book.getPhotoUri()).into(mphoto);
             return v;
         }

@@ -36,8 +36,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 /**
@@ -114,7 +112,6 @@ public class MainActivity extends BasicActivity {
         filtered_borrows = new ArrayList<Book>();
         nonfiltered_borrows = new ArrayList<Book>();
         adpBorrow = new MyAdapter(this, borrows);
-
     }
 
     @Override
