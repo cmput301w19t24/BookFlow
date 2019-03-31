@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -65,6 +66,8 @@ public class MapsActivity extends FragmentActivity implements
             requestId = infos.get(3);
             mode = 0;
         } else {
+            Button doneButton = findViewById(R.id.googlemap_done);
+            doneButton.setVisibility(View.GONE);
             infos = getIntent().getStringArrayListExtra("lat_lon");
             lat = Float.parseFloat(infos.get(0));
             lon = Float.parseFloat(infos.get(1));
@@ -145,6 +148,9 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     public void upload(View view) {
+        if (null == meetingPlace) {
+            return;
+        }
         lat = meetingPlace.getPosition().latitude;
         lon = meetingPlace.getPosition().longitude;
 
