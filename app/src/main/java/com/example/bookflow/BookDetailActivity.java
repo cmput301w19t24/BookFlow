@@ -3,6 +3,7 @@ package com.example.bookflow;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -54,6 +56,7 @@ public class BookDetailActivity extends BasicActivity {
     private Button viewRequestsButton;
     private RatingBar ratingBar;
     private Button transactionButton;
+    private Button locationButton;
 
     private String bookId;
     private Book mThisBook;
@@ -89,6 +92,7 @@ public class BookDetailActivity extends BasicActivity {
         editButton = findViewById(R.id.book_detail_edit_book_button);
         viewRequestsButton = findViewById(R.id.book_detail_view_requests_button);
         transactionButton = findViewById(R.id.book_detail_scan_for_transaction);
+        locationButton = findViewById(R.id.book_detail_view_map);
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -142,6 +146,10 @@ public class BookDetailActivity extends BasicActivity {
 
         if (isParticipant && isReadyForTrans) {
             transactionButton.setVisibility(View.VISIBLE);
+        }
+
+        if (bookStatus.equals("ACCEPTED") && (isBorrower || isOwner)) {
+            locationButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -342,5 +350,33 @@ public class BookDetailActivity extends BasicActivity {
         dialog.show();
     }
 
+    public void showLocation(View view) {
+
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference()
+                .child("RequestsReceivedByBook")
+                .child(bookId);
+
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<String> latlon = new ArrayList<>();
+                for (DataSnapshot request: dataSnapshot.getChildren()) {
+                    String lat = request.child("latitude").getValue().toString();
+                    String lon = request.child("longitude").getValue().toString();
+                    latlon.add(lat);
+                    latlon.add(lon);
+                    break;
+                }
+                Intent mapActivity = new Intent(BookDetailActivity.this, MapsActivity.class);
+                mapActivity.putExtra("lat_lon", latlon);
+                startActivity(mapActivity);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 }
 

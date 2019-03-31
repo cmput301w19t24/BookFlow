@@ -17,6 +17,7 @@
     <string name="ISBN">ISBN</string>
     <string name="bookStatus">Status</string>
     <string name="borrower">Current Borrower</string>
+    <string name="LOCATION">LOCATION</string>
 
     <!-- Strings for user profile screen -->
     <string name="email">Email:\t\t\t</string>
