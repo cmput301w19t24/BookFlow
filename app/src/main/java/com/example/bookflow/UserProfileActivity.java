@@ -49,24 +49,32 @@ import java.util.UUID;
  * This class is for user profile page
  * It fills all information of a user profile, including
  * name, phone, self-intro, email, books offered and review list
- * it also provides a button, an access to edit profile page
+ * button for edit profile (if it's your own profile)
+ * button for write review (if you are visiting other's profile)
  */
 public class UserProfileActivity extends BasicActivity {
 
     private FirebaseDatabase database;
     private FirebaseAuth mAuth;
     public String uid;
+
     private Query query_user;
     private Query query_review;
     private Query query_book;
+
     private ArrayList<Review> reviews;
     private ArrayList<Book> books;
+
     private static ListView bookList;
     private static ListView reviewList;
+
     private ReviewAdapter adpReview;
     private BookAdapter adpBook;
 
-    // class of Review Adapter
+    /**
+     * class of review list adapter
+     * it puts comments, reviewer icon, date and rating into an item of the review list
+     */
     class ReviewAdapter extends ArrayAdapter<Review> {
         ReviewAdapter(Context c, ArrayList<Review> reviews) {
             super(c,R.layout.user_list, reviews);
@@ -79,12 +87,14 @@ public class UserProfileActivity extends BasicActivity {
             if (v == null) {
                 v = LayoutInflater.from(getContext()).inflate(R.layout.user_list, parent, false);
             }
+            // get three views
             TextView comments = v.findViewById(R.id.review_text);
             RatingBar rating = v.findViewById(R.id.review_rating);
             TextView date = v.findViewById(R.id.review_date);
 
             setReviewUser(v, String.valueOf(review.getReviewerID()));
 
+            // set three views
             comments.setText(review.getComments());
             rating.setRating(Float.parseFloat(review.getRating()));
             date.setText(review.getDate());
@@ -93,10 +103,11 @@ public class UserProfileActivity extends BasicActivity {
         }
     }
 
-    // class of Book Adapter
+    /**
+     * Class of offered book list, the same as the one in the main page
+     */
     class BookAdapter extends ArrayAdapter<Book> {
         BookAdapter(Context c, ArrayList<Book> reviews) {
-            // TODO:
             super(c,R.layout.profile_book_item, reviews);
         }
 
@@ -107,11 +118,14 @@ public class UserProfileActivity extends BasicActivity {
             if (v == null) {
                 v = LayoutInflater.from(getContext()).inflate(R.layout.profile_book_item, parent, false);
             }
+
+            // get view of author, title, photo, status
             TextView mauthor = v.findViewById(R.id.uauthor);
             TextView mtitle = v.findViewById(R.id.utitle);
             ImageView mphoto = v.findViewById(R.id.uphoto);
             TextView mstatus = v.findViewById(R.id.ustatus);
 
+            // set author, title, photo, and status
             mauthor.setText(book.getAuthor());
             mtitle.setText(book.getTitle());
             mstatus.setText(book.getStatus().toString());
@@ -120,6 +134,11 @@ public class UserProfileActivity extends BasicActivity {
         }
     }
 
+    /**
+     * get the reviewee data from the database and bind them to views
+     * @param v view
+     * @param tmpuid uid
+     */
     public void setReviewUser(final View v, final String tmpuid) {
         query_user.orderByChild("uid").equalTo(tmpuid).addChildEventListener(new ChildEventListener() {
             @Override
@@ -145,6 +164,11 @@ public class UserProfileActivity extends BasicActivity {
         });
     }
 
+    /**
+     * onCreate method
+     * also initializes variables
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,6 +188,12 @@ public class UserProfileActivity extends BasicActivity {
         adpBook = new BookAdapter(this, books);
     }
 
+    /**
+     * onStart method
+     * check it's (visiting your own profile) or (viewing other's profile),
+     * and according to this, set (write review button) or (edit profile button) to GONE
+     * call other initializing methods
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -193,6 +223,10 @@ public class UserProfileActivity extends BasicActivity {
         loadBookList();
     }
 
+    /**
+     * initialize user profile (basic informations)
+     * like user name, user self intro, user phone, user email and user photo
+     */
     private void setUserProfile() {
         query_user.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -213,22 +247,6 @@ public class UserProfileActivity extends BasicActivity {
                 ImageView userImage = findViewById(R.id.userPicture);
                 Glide.with(UserProfileActivity.this).load(user.getImageurl()).into(userImage);
 
-//                // download user image from storage and update
-//                StorageReference storageRef;
-//                FirebaseStorage storage = FirebaseStorage.getInstance();
-//                try {
-//                    storageRef = storage.getReference().child("users").child(uid);
-//                } catch (Exception e) {
-//                    return ;
-//                }
-//
-//                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                    @Override
-//                    public void onSuccess(Uri uri) {
-//                        ImageView userImage = findViewById(R.id.userPicture);
-//                        Glide.with(UserProfileActivity.this).load(uri).into(userImage);
-//                    }
-//                });
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -236,6 +254,9 @@ public class UserProfileActivity extends BasicActivity {
         });
     }
 
+    /**
+     * load book list from database and add to adapter
+     */
     private void loadBookList() {
         bookList = (ListView) findViewById(R.id.offerList);
         // add user's book to adapter
@@ -273,6 +294,9 @@ public class UserProfileActivity extends BasicActivity {
         });
     }
 
+    /**
+     * load review list from database and add to adapter
+     */
     private void loadReviewList() {
         reviewList = (ListView) findViewById(R.id.reviewList);
         reviews.clear();
@@ -364,6 +388,11 @@ public class UserProfileActivity extends BasicActivity {
         startActivity(intent);
     }
 
+    /**
+     * onClick method of write Review button
+     * got to write review activity
+     * @param view
+     */
     public void writeReview(View view) {
         Intent intent = new Intent(this, WriteReviewActivity.class);
         intent.putExtra("reviewee", uid);
