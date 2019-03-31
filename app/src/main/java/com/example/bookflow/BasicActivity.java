@@ -5,15 +5,12 @@
  */
 package com.example.bookflow;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 /**
@@ -39,6 +36,11 @@ public class BasicActivity extends AppCompatActivity {
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     /**
