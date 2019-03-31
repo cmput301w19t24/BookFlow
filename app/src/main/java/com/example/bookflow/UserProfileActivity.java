@@ -165,6 +165,9 @@ public class UserProfileActivity extends BasicActivity {
     protected void onStart() {
         super.onStart();
 
+        books.clear();
+        reviews.clear();
+
         // determine whether it's yourself visiting your profile or other user visiting your profile
         Intent intent = getIntent();
         String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);

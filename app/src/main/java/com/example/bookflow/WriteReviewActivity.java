@@ -78,10 +78,6 @@ public class WriteReviewActivity extends AppCompatActivity {
         dbRef.child("Reviews").child(reviewId).child("reviewer").setValue(reviewer);
         dbRef.child("Reviews").child(reviewId).child("uuid").setValue(reviewId);
 
-
-
-
-
         Intent intent = new Intent(this, UserProfileActivity.class);
         intent.putExtra("com.example.bookflow.MESSAGE",reviewee);
         startActivity(intent);
