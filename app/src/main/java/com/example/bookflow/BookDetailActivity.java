@@ -327,7 +327,7 @@ public class BookDetailActivity extends BasicActivity {
 
         if (isTransactionSuccessful) {
             Toast.makeText(BookDetailActivity.this, getString(R.string.scan_successful), Toast.LENGTH_SHORT).show();
-            //Todo Dialog rating
+
             if (isReturn) {
                 showEditbox();
             }
@@ -336,7 +336,6 @@ public class BookDetailActivity extends BasicActivity {
         }
     }
 
-    // Use dialog interface for editing and deleting feelings
     public void showEditbox() {
         final Dialog dialog = new Dialog(BookDetailActivity.this);
         dialog.setTitle("Rating book");
