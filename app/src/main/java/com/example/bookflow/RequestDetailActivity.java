@@ -174,11 +174,6 @@ public class RequestDetailActivity extends BasicActivity {
         requestReference.addListenerForSingleValueEvent(requestListener);
     }
 
-
-
-
-//
-
     public void reject(View v) {
         Log.e("hello",requestId);
         // display toast
@@ -194,6 +189,10 @@ public class RequestDetailActivity extends BasicActivity {
         // set requester's status to rejected
         DatabaseReference sentReqRef = mDatabase.getReference("RequestsSentByUser").child(borrowerId).child(requestId).child("status");
         sentReqRef.setValue("Rejected");
+
+        // if only request for book rejected, set back to available
+        setToAvailableIfNoRequests();
+
 
         // delete notification
         final DatabaseReference notificationRef = mDatabase.getReference("Notifications").child(ownerId);
@@ -335,6 +334,8 @@ public class RequestDetailActivity extends BasicActivity {
         DatabaseReference bookReqRef = mDatabase.getReference("RequestsReceivedByBook").child(bookId).child(requestId).child("status");
         bookReqRef.setValue("Cancelled");
 
+        setToAvailableIfNoRequests();
+
         // delete notification
         final DatabaseReference notificationRef = mDatabase.getReference("Notifications").child(ownerId);
         ValueEventListener notificationListener = new ValueEventListener() {
@@ -354,7 +355,37 @@ public class RequestDetailActivity extends BasicActivity {
         };
         notificationRef.addListenerForSingleValueEvent(notificationListener);
         finish();
-
-
     }
+    public void setToAvailableIfNoRequests() {
+        DatabaseReference bookReqRef1 = mDatabase.getReference("RequestsReceivedByBook").child(bookId);
+        ValueEventListener bookReqListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    DatabaseReference bookRef = mDatabase.getReference("Books").child(bookId).child("status");
+                    bookRef.setValue("AVAILABLE");
+                }
+                else {
+                    boolean allCancelled = true;
+                    for(DataSnapshot child : dataSnapshot.getChildren() ){
+                        Request r = child.getValue(Request.class);
+                        if (!r.getStatus().equals("Cancelled")) {
+                            allCancelled = false;
+                            break;
+                        }
+                    }
+                    if (allCancelled) {
+                        DatabaseReference bookRef = mDatabase.getReference("Books").child(bookId).child("status");
+                        bookRef.setValue("AVAILABLE");
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("cancelled", databaseError.toException());
+            }
+        };
+        bookReqRef1.addListenerForSingleValueEvent(bookReqListener);
+    }
+
 }
