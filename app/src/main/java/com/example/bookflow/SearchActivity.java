@@ -561,7 +561,7 @@ public class SearchActivity extends BasicActivity {
 
             } else{
                 for(String w:words){
-                    if(!(book.getBookInfo().contains(w))){
+                    if(!(book.getBookInfo().toLowerCase().contains(w.toLowerCase()))){
                         filtered_books.remove(book);
                     }
                 }
