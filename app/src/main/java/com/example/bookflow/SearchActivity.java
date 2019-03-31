@@ -207,16 +207,18 @@ public class SearchActivity extends BasicActivity {
         @Override
         public void onBindViewHolder(LinearAdapter.LinearViewHolder holder, final int position) {
             holder.setData(mContext,position);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                //click item to go to book detail page
-                public void onClick(View v) {
-                    String book_id = filtered_books.get(position).getBookId();
-                    Intent intent = new Intent(SearchActivity.this,BookDetailActivity.class);
-                    intent.putExtra("book_id",book_id);
-                    startActivity(intent);
-                }
-            });
+            if(filtered_books.get(position).getStatus().equals("AVAILABLE") ||filtered_books.get(position).getStatus().equals("REQUESTED")) {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    //click item to go to book detail page
+                    public void onClick(View v) {
+                        String book_id = filtered_books.get(position).getBookId();
+                        Intent intent = new Intent(SearchActivity.this, BookDetailActivity.class);
+                        intent.putExtra("book_id", book_id);
+                        startActivity(intent);
+                    }
+                });
+            }
         }
 
 
