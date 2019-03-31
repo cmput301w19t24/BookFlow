@@ -118,7 +118,7 @@ public class BasicActivity extends AppCompatActivity {
 
     /**
      * select animation based on relative position of the buttons
-     * @param targetClass
+     * @param targetClass destination activity class
      */
     private void slideAnimation(Class targetClass) {
         int currClassIdx = mActivityClasses.indexOf(this.getClass());

@@ -27,6 +27,8 @@ public class User implements Owner,Borrower{
     private String imageurl;
     private String selfIntro;
 
+    private String notificationToken;
+
     private ArrayList<Book> ownedBooks = new ArrayList<Book>();
     private ArrayList<Book> borrowedBooks= new ArrayList<Book>();
     private ArrayList<Request>  requests= new ArrayList<Request>();
@@ -51,6 +53,14 @@ public class User implements Owner,Borrower{
         this.username = user.getUsername();
         this.email = user.getEmail();
         this.imageurl = user.getImageurl();
+    }
+
+    public String getNotificationToken() {
+        return notificationToken;
+    }
+
+    public void setNotificationToken(String notificationToken) {
+        this.notificationToken = notificationToken;
     }
 
     /**

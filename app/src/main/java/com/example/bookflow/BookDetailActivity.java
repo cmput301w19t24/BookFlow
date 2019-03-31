@@ -336,6 +336,9 @@ public class BookDetailActivity extends BasicActivity {
         }
     }
 
+    /**
+     * dialog to rate book
+     */
     public void showEditbox() {
         final Dialog dialog = new Dialog(BookDetailActivity.this);
         dialog.setTitle("Rating book");
@@ -359,6 +362,10 @@ public class BookDetailActivity extends BasicActivity {
         dialog.show();
     }
 
+    /**
+     * show location of requested book
+     * @param view location button
+     */
     public void showLocation(View view) {
 
         DatabaseReference dbRef = mDatabase.getReference("RequestsReceivedByBook")
