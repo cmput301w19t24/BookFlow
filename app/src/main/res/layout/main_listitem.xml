@@ -23,16 +23,34 @@
             android:orientation="vertical"
             android:layout_marginLeft="16dp">
 
-            <TextView
-                android:id="@+id/ititle"
-                android:layout_width="318dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:layout_marginTop="10dp"
-                android:padding="3dp"
-                android:textColor="@color/design_default_color_primary"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:layout_marginLeft="8dp">
+
+                <TextView
+                    android:id="@+id/ititle"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="8dp"
+                    android:padding="2dp"
+                    android:textColor="@color/design_default_color_primary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/istatus"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:fontFamily="sans-serif"
+                    android:padding="2dp"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
