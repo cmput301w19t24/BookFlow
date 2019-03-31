@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences loginPreferences;
     private SharedPreferences.Editor loginPrefsEditor;
     private Boolean saveLogin;
+    private ProgressBar progressBar;
 
     /**
      *
@@ -56,6 +58,9 @@ public class LoginActivity extends AppCompatActivity {
         login = (Button)findViewById(R.id.login);
         signup = (TextView)findViewById(R.id.signup);
         checkBox = (CheckBox)findViewById(R.id.checkBox);
+        progressBar = findViewById(R.id.login_progress_bar);
+        progressBar.setVisibility(View.GONE);
+
         loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
         loginPrefsEditor = loginPreferences.edit();
 
@@ -115,10 +120,12 @@ public class LoginActivity extends AppCompatActivity {
             return;
 
         // try to sign in
+        progressBar.setVisibility(View.VISIBLE);
         mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressBar.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
                             if (checkBox.isChecked()) {
                                 loginPrefsEditor.putBoolean("saveLogin", true);
