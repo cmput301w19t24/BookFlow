@@ -127,6 +127,7 @@ public class EditBookDetailActivity extends BasicActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             mThisBook.setPhotoUri(null);
+                            mSelectedPhotoUri = null;
                             Glide.with(mPhotoImageView.getContext())
                                     .load(getDrawable(R.drawable.add_book_icon))
                                     .into(mPhotoImageView);
