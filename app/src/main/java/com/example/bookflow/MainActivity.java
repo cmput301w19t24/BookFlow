@@ -29,6 +29,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.bookflow.Model.Notification;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -154,6 +156,22 @@ public class MainActivity extends BasicActivity {
         });
 
 
+    }
+
+    private void handleNotif() {
+        ValueEventListener notificationListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("cancelled", databaseError.toException());
+            }
+        };
+//        dbRef.addListenerForSingleValueEvent(notificationListener);
     }
 
     @Override

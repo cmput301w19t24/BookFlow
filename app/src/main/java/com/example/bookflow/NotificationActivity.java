@@ -151,7 +151,6 @@ public class NotificationActivity extends BasicActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        new_notif = false;
         findViewById(R.id.notification_button).setBackgroundResource(R.drawable.notif_select);
         myFirebaseRecyclerAdapter.startListening();
     }
