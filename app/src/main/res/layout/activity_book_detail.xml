@@ -139,6 +139,16 @@
             android:textColor="@android:color/white"
             android:visibility="gone" />
 
+        <Button
+            android:id="@+id/book_detail_view_map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:onClick="showLocation"
+            android:text="@string/LOCATION"
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
+
     </LinearLayout>
 
     <RatingBar

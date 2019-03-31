@@ -46,8 +46,12 @@ public class Review {
         return reviewee;
     }
 
-    public void setDate(Date date) {
-        this.date = date.toString();
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getDate() {
+        return this.date;
     }
 
     public String getUUID() {

@@ -1,6 +1,7 @@
 <resources>
     <!-- Strings used globally -->
-    <string name="app_name">BookFlow</string>    <string name="book_name">book name</string>
+    <string name="app_name">BookFlow</string>
+    <string name="book_name">book name</string>
     <string name="placeholder">Placeholder</string>
     <string name="confirm">Confirm</string>
 
@@ -17,12 +18,20 @@
     <string name="ISBN">ISBN</string>
     <string name="bookStatus">Status</string>
     <string name="borrower">Current Borrower</string>
+    <string name="LOCATION">LOCATION</string>
 
     <!-- Strings for user profile screen -->
     <string name="email">Email:\t\t\t</string>
     <string name="phone">Phone:\t\t</string>
     <string name="booksOffered">Books Offered:</string>
     <string name="review">Reviews:</string>
+    <string name="writeReview">WRITE REVIEW</string>
+
+    <!-- Strings for write a review -->
+    <string name="writingReview">Write Down Your Review</string>
+    <string name="rate_1">Rate This User</string>
+    <string name="cancel_review">Cancel</string>
+    <string name="initRate">5</string>
 
     <!-- main -->
     <string name="more"><![CDATA[>>More]]></string>
@@ -101,5 +110,6 @@
     <string name="delete_image">delete image</string>
     <string name="book_photo_deleted">Book photo deleted!</string>
     <string name="book_photo_delete_failed">Failed to delete photo. Try again?</string>
+    <string name="location_not_set">Location not set for this book.</string>
 
 </resources>

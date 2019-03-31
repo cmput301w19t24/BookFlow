@@ -3,10 +3,10 @@
     package="com.example.bookflow">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -19,30 +19,35 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditProfileActivity"/>
+        <activity android:name=".WriteReviewActivity"></activity>
+        <activity android:name=".EditProfileActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".MapsActivity" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".RequestsForBookListActivity"/>
+        <activity android:name=".RequestsForBookListActivity" />
         <activity android:name=".NotificationActivity" />
         <activity android:name=".UserProfileActivity" />
-        <activity android:name=".SearchActivity"
-                  android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity
+            android:name=".SearchActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".BasicActivity" />
         <activity android:name=".EditBookDetailActivity" />
         <activity
             android:name=".ScanActivity"
             android:label="ScanActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".BookDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".BookDetailActivity"
             android:screenOrientation="portrait" />
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
-        <activity android:name=".AddBookActivity"
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
+        <activity
+            android:name=".AddBookActivity"
             android:exported="true" />
-        <activity android:name=".SentRequestsListActivity"/>
+        <activity android:name=".SentRequestsListActivity" />
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -53,14 +58,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RequestDetailActivity"/>
+        <activity android:name=".RequestDetailActivity" />
 
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="barcode" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDGAAKq-tTo9lIYNZx_ADoe2us8DZ1t-Ws"/>
+            android:value="AIzaSyDGAAKq-tTo9lIYNZx_ADoe2us8DZ1t-Ws" />
     </application>
 
 </manifest>

@@ -2,6 +2,8 @@ package com.example.bookflow;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +18,7 @@ import com.example.bookflow.Model.Request;
 import com.example.bookflow.Model.User;
 import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class RequestDetailActivity extends BasicActivity {
-    public static final String PARAMETERS= "com.example.bookflow.MESSAGE";
     private FirebaseDatabase mDatabase;
     private FirebaseAuth mAuth;
 
@@ -223,22 +225,23 @@ public class RequestDetailActivity extends BasicActivity {
         infos.add(this.bookId);
         infos.add(this.status);
         infos.add(this.requestId);
-        intent.putExtra(PARAMETERS, infos);
+        intent.putExtra("parameter", infos);
         startActivity(intent);
     }
-
 
     public void accept(View v) {
         DatabaseReference thebookRef = mDatabase.getReference("Books").child(bookId);
         thebookRef.child("status").setValue("ACCEPTED");
         thebookRef.child("borrowerId").setValue(borrowerId);
 
-
+        // set accept for AllUserRequests - Borrower - Request
         DatabaseReference sentReqRef = mDatabase.getReference("RequestsSentByUser").child(borrowerId).child(requestId);
         sentReqRef.child("status").setValue("Accepted");
 
+        // set accept for AllBookRequests - Book - Request
         DatabaseReference bookReqRef = mDatabase.getReference("RequestsReceivedByBook").child(bookId).child(requestId);
         bookReqRef.child("status").setValue("Accepted");
+
 
         DatabaseReference notificationRef = mDatabase.getReference("Notifications");
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm MM/dd");
@@ -318,11 +321,8 @@ public class RequestDetailActivity extends BasicActivity {
                 Log.w("cancelled", databaseError.toException());
             }
         };
-        selectLocation(v);
         bookRef.addListenerForSingleValueEvent(reqListener);
-        Intent intent = new Intent(RequestDetailActivity.this, BookDetailActivity.class);
-        intent.putExtra("book_id", bookId);
-        startActivity(intent);
+        selectLocation(v);
         //finish();
     }
 

@@ -44,13 +44,13 @@
                     android:id="@+id/review_date"
                     android:layout_width="168dp"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="10dp"
+                    android:fontFamily="sans-serif"
                     android:padding="1dp"
                     android:textColor="@color/design_default_color_primary"
                     android:textSize="14sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="normal" />
             </LinearLayout>
 
             <TextView

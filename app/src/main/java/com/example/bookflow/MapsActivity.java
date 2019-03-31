@@ -23,6 +23,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -32,10 +34,14 @@ public class MapsActivity extends FragmentActivity implements
 
     private FusedLocationProviderClient fusedLocationClient;
     private int markerCount = 0;
+    private Marker meetingPlace;
     private GoogleMap mMap;
+
+
     private int mode;   // 0 for select location and 1 for view
 
     private String bookId, ownerId, requestId;
+    private double lat, lon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +54,20 @@ public class MapsActivity extends FragmentActivity implements
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        ArrayList<String> infos = getIntent().getStringArrayListExtra(RequestDetailActivity.PARAMETERS);
-        bookId = infos.get(1);
-        ownerId = infos.get(0);
-        requestId = infos.get(3);
 
-        if (infos.size() == 4) {
+        ArrayList<String> infos = getIntent().getStringArrayListExtra("parameter");
+
+
+        // get parameters from calling activity
+        if (null != infos) {
+            bookId = infos.get(1);
+            ownerId = infos.get(0);
+            requestId = infos.get(3);
             mode = 0;
         } else {
+            infos = getIntent().getStringArrayListExtra("lat_lon");
+            lat = Float.parseFloat(infos.get(0));
+            lon = Float.parseFloat(infos.get(1));
             mode = 1;
         }
     }
@@ -91,6 +103,14 @@ public class MapsActivity extends FragmentActivity implements
             ActivityCompat.requestPermissions(MapsActivity.this, permissions, 1);
         }
 
+        if (mode == 1) {
+            LatLng point = new LatLng(lat, lon);
+            meetingPlace = mMap.addMarker(new MarkerOptions()
+                    .position(point)
+                    .title("Meeting Place")
+                    .draggable(true));
+        }
+
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] GrantResults) {
@@ -109,9 +129,12 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onMapLongClick(LatLng point) {
+        // check if there is already a marker
+        // check if it is location selecting mode
+        // if conditions satisfied then add marker
         if (markerCount != 1) {
             if (mode == 0) {
-                Marker meetingPlace = mMap.addMarker(new MarkerOptions()
+                meetingPlace = mMap.addMarker(new MarkerOptions()
                         .position(point)
                         .title("Meeting Place")
                         .draggable(true));
@@ -122,6 +145,20 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     public void upload(View view) {
+        lat = meetingPlace.getPosition().latitude;
+        lon = meetingPlace.getPosition().longitude;
+
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        dbRef.child("RequestsReceivedByBook").child(bookId)
+                .child(requestId)
+                .child("latitude")
+                .setValue(lat);
+        dbRef.child("RequestsReceivedByBook").child(bookId)
+                .child(requestId)
+                .child("longitude")
+                .setValue(lon);
+
+
         Intent intent = new Intent(MapsActivity.this, BookDetailActivity.class);
         intent.putExtra("book_id", bookId);
         startActivity(intent);

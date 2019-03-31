@@ -107,13 +107,18 @@ public class SentRequestsListActivity extends BasicActivity{
                                 if (status.equals("Rejected")) {
                                     dbRef.removeValue();
                                 }
-                                else {
+                                else if (status.equals("Pending")){
                                     Intent intent = new Intent(SentRequestsListActivity.this, RequestDetailActivity.class);
                                     intent.putExtra("ownerId", ownerId);
                                     intent.putExtra("borrowerId", borrowerId);
                                     intent.putExtra("bookId", bookId);
                                     intent.putExtra("status", status);
                                     intent.putExtra("requestId", requestId);
+                                    startActivity(intent);
+                                }
+                                else if (status.equals("Accepted")) {
+                                    Intent intent = new Intent(SentRequestsListActivity.this, BookDetailActivity.class);
+                                    intent.putExtra("book_id", bookId);
                                     startActivity(intent);
                                 }
                             }

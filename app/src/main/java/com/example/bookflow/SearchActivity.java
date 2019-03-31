@@ -24,7 +24,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -43,10 +42,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Search page
@@ -301,7 +298,7 @@ public class SearchActivity extends BasicActivity {
 
             user_selfintro.setGravity(Gravity.LEFT);
             user_selfintro.setTextSize(15);
-            if(userintro == "" || userintro == null){
+            if(userintro.equals("") || userintro == null){
                 user_selfintro.setText("This guy is lazy and don't have a introduction yet");
             }else {
                 user_selfintro.setText(userintro);
@@ -523,7 +520,7 @@ public class SearchActivity extends BasicActivity {
                 filtered_books.remove(book);
             }
 
-            if (searchText==""){
+            if (searchText.equals("")){
 
             } else{
                 for(String w:words){
