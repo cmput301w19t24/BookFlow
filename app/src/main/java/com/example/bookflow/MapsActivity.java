@@ -36,6 +36,7 @@ public class MapsActivity extends FragmentActivity implements
     private int mode;   // 0 for select location and 1 for view
 
     private String bookId, ownerId, requestId;
+    private float lat, lon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +49,20 @@ public class MapsActivity extends FragmentActivity implements
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        ArrayList<String> infos = getIntent().getStringArrayListExtra(RequestDetailActivity.PARAMETERS);
-        bookId = infos.get(1);
-        ownerId = infos.get(0);
-        requestId = infos.get(3);
 
+        ArrayList<String> infos = getIntent().getStringArrayListExtra("parameter");
+
+
+        // get parameters from calling activity
         if (infos.size() == 4) {
+
+            bookId = infos.get(1);
+            ownerId = infos.get(0);
+            requestId = infos.get(3);
             mode = 0;
         } else {
+            lat = Float.parseFloat(infos.get(0));
+            lon = Float.parseFloat(infos.get(1));
             mode = 1;
         }
     }
@@ -109,6 +116,9 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onMapLongClick(LatLng point) {
+        // check if there is already a marker
+        // check if it is location selecting mode
+        // if conditions satisfied then add marker
         if (markerCount != 1) {
             if (mode == 0) {
                 Marker meetingPlace = mMap.addMarker(new MarkerOptions()
