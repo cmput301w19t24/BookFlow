@@ -343,11 +343,15 @@ public class BookDetailActivity extends BasicActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                float rating = ratingBar.getRating();
+                final float rating = ratingBar.getRating();
                 mBookRef.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         Book book = (Book) dataSnapshot.getValue(Book.class);
+                        if(book.getTitle().equals(mThisBook.getTitle())){
+                            mThisBook.countIncrease();
+                            mThisBook.setRating((mThisBook.getRating()*(mThisBook.getCount()-1)+rating)/ mThisBook.getCount());
+                        }
                     }
 
                     @Override
