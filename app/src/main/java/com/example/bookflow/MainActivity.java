@@ -36,6 +36,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 /**
@@ -55,7 +57,7 @@ public class MainActivity extends BasicActivity {
     ArrayList<Book> books;
     ArrayList<Book> nonfiltered_books;
     ArrayList<Book> filtered_books;
-    boolean firstgrab = true;
+    boolean firstgrab;
     ArrayList<Book> borrows;
     ArrayList<Book> nonfiltered_borrows;
     ArrayList<Book> filtered_borrows;
@@ -74,12 +76,15 @@ public class MainActivity extends BasicActivity {
                 v = LayoutInflater.from(getContext()).inflate(R.layout.main_listitem, parent, false);
             }
             TextView mauthor = v.findViewById(R.id.iauthor);
+            TextView mstatus = v.findViewById(R.id.istatus);
             TextView mtitle = v.findViewById(R.id.ititle);
             ImageView mphoto = v.findViewById(R.id.iphoto);
 
             mauthor.setText(book.getAuthor());
+            mstatus.setText(book.getStatus().toString());
             mtitle.setText(book.getTitle());
             Glide.with(MainActivity.this).load(book.getPhotoUri()).into(mphoto);
+
             return v;
         }
     }
@@ -104,12 +109,22 @@ public class MainActivity extends BasicActivity {
         filtered_books = new ArrayList<Book>();
         nonfiltered_books = new ArrayList<Book>();
         adpBook = new MyAdapter(this,books);
-        bookList();
 
         borrows = new ArrayList<Book>();
         filtered_borrows = new ArrayList<Book>();
         nonfiltered_borrows = new ArrayList<Book>();
         adpBorrow = new MyAdapter(this, borrows);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        books.clear();
+        borrows.clear();
+        firstgrab = true;
+        bookList();
         borrowList();
     }
 

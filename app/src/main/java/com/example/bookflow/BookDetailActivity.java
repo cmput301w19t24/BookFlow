@@ -321,7 +321,7 @@ public class BookDetailActivity extends BasicActivity {
         if (isTransactionSuccessful) {
             Toast.makeText(BookDetailActivity.this, getString(R.string.scan_successful), Toast.LENGTH_SHORT).show();
             //Todo Dialog rating
-            //showEditbox();
+            showEditbox();
         } else {
             Toast.makeText(this, getString(R.string.invalid_operation), Toast.LENGTH_LONG).show();
         }
