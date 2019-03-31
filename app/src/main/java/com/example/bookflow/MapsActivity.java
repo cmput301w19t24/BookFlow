@@ -37,12 +37,14 @@ import java.util.ArrayList;
  */
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
-        GoogleMap.OnMapLongClickListener{
+        GoogleMap.OnMapLongClickListener,
+        GoogleMap.OnMyLocationButtonClickListener{
 
     private FusedLocationProviderClient fusedLocationClient;
     private int markerCount = 0;
     private Marker meetingPlace;
     private GoogleMap mMap;
+    private LatLng myLoc;
 
 
     private int mode;   // 0 for select location and 1 for view
@@ -103,7 +105,8 @@ public class MapsActivity extends FragmentActivity implements
                 @Override
                 public void onSuccess(Location location) {
                     LatLng myLatLon = new LatLng(location.getLatitude(), location.getLongitude());
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLon));
+                    myLoc = myLatLon;
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLatLon,14.0f));
                 }
             });
         }
@@ -116,8 +119,7 @@ public class MapsActivity extends FragmentActivity implements
             LatLng point = new LatLng(lat, lon);
             meetingPlace = mMap.addMarker(new MarkerOptions()
                     .position(point)
-                    .title("Meeting Place")
-                    .draggable(true));
+                    .title("Meeting Place"));
         }
 
     }
@@ -130,7 +132,8 @@ public class MapsActivity extends FragmentActivity implements
                 @Override
                 public void onSuccess(Location location) {
                     LatLng myLatLon = new LatLng(location.getLatitude(), location.getLongitude());
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLatLon,4.0f));
+                    myLoc = myLatLon;
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLatLon,14.0f));
                 }
             });
         }
@@ -151,6 +154,12 @@ public class MapsActivity extends FragmentActivity implements
                 markerCount = 1;
             }
         }
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLoc,16.0f));
+        return true;
     }
 
     /**
