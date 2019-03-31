@@ -204,6 +204,7 @@ public class SearchActivity extends BasicActivity {
                 public void onClick(View v) {
                     String book_id = filtered_books.get(position).getBookId();
                     Log.i("bookid",book_id);
+
                     Intent intent = new Intent(SearchActivity.this,BookDetailActivity.class);
                     intent.putExtra("book_id",book_id);
                     startActivity(intent);
@@ -232,7 +233,43 @@ public class SearchActivity extends BasicActivity {
                 photo = itemView.findViewById(R.id.searchItemImage);
 
             }
-            public void setData(Context ctx,int i){
+
+            public void setData(Context ctx,final int i){
+                final String owner_id = filtered_books.get(i).getOwnerId();
+                mDatabase.child("Users").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        User user = (User) dataSnapshot.getValue(User.class);
+                        if(user.getUid().equals(owner_id)){
+                            String ownerName = user.getUsername();
+                            status.setTextColor(Color.BLUE);
+                            status.setTextSize(13);
+                            status.setGravity(Gravity.CENTER);
+                            status.setText("Owned by "+ ownerName + ", Currently "+filtered_books.get(i).getStatus());
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
                 title.setTextColor(Color.BLUE);
                 title.setTypeface(null, Typeface.BOLD_ITALIC);
                 title.setText(filtered_books.get(i).getTitle());
@@ -244,12 +281,11 @@ public class SearchActivity extends BasicActivity {
                 author.setGravity(Gravity.CENTER);
                 author.setText("by "+filtered_books.get(i).getAuthor());
 
-                status.setTextColor(Color.BLUE);
-                status.setTextSize(15);
-                status.setGravity(Gravity.CENTER);
-                status.setText("Currently "+filtered_books.get(i).getStatus());
+
 
                 Glide.with(ctx).load(filtered_books.get(i).getPhotoUri()).into(photo);
+
+
             }
 
         }
@@ -298,7 +334,7 @@ public class SearchActivity extends BasicActivity {
 
             user_selfintro.setGravity(Gravity.LEFT);
             user_selfintro.setTextSize(15);
-            if(userintro.equals("") || userintro == null){
+            if(userintro == null || userintro.equals("") ){
                 user_selfintro.setText("This guy is lazy and don't have a introduction yet");
             }else {
                 user_selfintro.setText(userintro);
