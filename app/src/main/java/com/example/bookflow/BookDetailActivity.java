@@ -293,6 +293,7 @@ public class BookDetailActivity extends BasicActivity {
     private void completeTransaction(String isbn) {
 
         boolean isTransactionSuccessful = false;
+        boolean isReturn = false;
 
         // first check if the scanned isbn matches the target book
         if (isbn == null || !isbn.equals(mThisBook.getIsbn())) {
@@ -310,18 +311,22 @@ public class BookDetailActivity extends BasicActivity {
             // the owner marks the book as borrowed
             statusRef.setValue(Book.BookStatus.BORROWED);
             isTransactionSuccessful = true;
+            isReturn = false;
 
         } else if (mThisBook.getStatus().toString().equals("BORROWED") && isParticipant) {
             /* the borrowed marks the book as available */
             statusRef.setValue(Book.BookStatus.AVAILABLE);
             borrowerIdRef.removeValue();
             isTransactionSuccessful = true;
+            isReturn = true;
         }
 
         if (isTransactionSuccessful) {
             Toast.makeText(BookDetailActivity.this, getString(R.string.scan_successful), Toast.LENGTH_SHORT).show();
             //Todo Dialog rating
-            showEditbox();
+            if (isReturn) {
+                showEditbox();
+            }
         } else {
             Toast.makeText(this, getString(R.string.invalid_operation), Toast.LENGTH_LONG).show();
         }
