@@ -15,7 +15,7 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:layout_marginBottom="10dp"
             android:contentDescription="TODO" />
 
@@ -28,29 +28,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginStart="16dp">
+                android:layout_marginStart="0dp">
                 <TextView
                     android:id="@+id/reviewer_name"
-                    android:layout_width="150dp"
+                    android:layout_width="170dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
                     android:layout_marginTop="5dp"
                     android:padding="1dp"
-                    android:textColor="@color/design_default_color_primary"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="14sp"
                     android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/review_date"
-                    android:layout_width="168dp"
+                    android:layout_width="110dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_marginRight="10dp"
+                    android:gravity="end"
+                    android:layout_marginEnd="10dp"
                     android:fontFamily="sans-serif"
                     android:padding="1dp"
-                    android:textColor="@color/design_default_color_primary"
-                    android:textSize="14sp"
-                    android:textStyle="normal" />
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <TextView
@@ -76,7 +77,7 @@
                     android:fontFamily="sans-serif"
                     android:text="Rating:"
                     android:padding="1dp"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorAccent"
                     android:textSize="10sp"
                     android:textStyle="bold" />
 
@@ -87,7 +88,7 @@
                     android:layout_marginBottom="5dp"
                     android:fontFamily="sans-serif"
                     android:padding="1dp"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorAccent"
                     android:textSize="10sp"
                     android:textStyle="bold" />
             </LinearLayout>
