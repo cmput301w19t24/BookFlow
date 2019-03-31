@@ -320,9 +320,34 @@ public class BookDetailActivity extends BasicActivity {
 
         if (isTransactionSuccessful) {
             Toast.makeText(BookDetailActivity.this, getString(R.string.scan_successful), Toast.LENGTH_SHORT).show();
+            //Todo Dialog rating
+            showEditbox();
         } else {
             Toast.makeText(this, getString(R.string.invalid_operation), Toast.LENGTH_LONG).show();
         }
+    }
+
+    // Use dialog interface for editing and deleting feelings
+    public void showEditbox() {
+        final Dialog dialog = new Dialog(BookDetailActivity.this);
+        dialog.setTitle("Rating book");
+        dialog.setContentView(R.layout.editbox);
+        final EditText reviewText = dialog.findViewById(R.id.reviewText);
+        Button confirmButton = dialog.findViewById(R.id.reviewButton);
+        final RatingBar ratingBar = dialog.findViewById(R.id.ratingBar2);
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String review = reviewText.getText().toString();
+                float rating = ratingBar.getRating();
+
+
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
     }
 
     public void showLocation(View view) {
