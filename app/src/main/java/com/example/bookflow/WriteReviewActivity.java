@@ -24,7 +24,7 @@ public class WriteReviewActivity extends AppCompatActivity {
     DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private String reviewee, reviewer, comments;
-    private int rating = 5;
+    private int rating = 3;
 
     private EditText reviewTextView;
     private SeekBar seekBarView;

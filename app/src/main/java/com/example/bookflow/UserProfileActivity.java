@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -79,13 +80,13 @@ public class UserProfileActivity extends BasicActivity {
                 v = LayoutInflater.from(getContext()).inflate(R.layout.user_list, parent, false);
             }
             TextView comments = v.findViewById(R.id.review_text);
-            TextView rating = v.findViewById(R.id.rating);
+            RatingBar rating = v.findViewById(R.id.review_rating);
             TextView date = v.findViewById(R.id.review_date);
 
             setReviewUser(v, String.valueOf(review.getReviewerID()));
 
             comments.setText(review.getComments());
-            rating.setText(review.getRating());
+            rating.setRating(Float.parseFloat(review.getRating()));
             date.setText(review.getDate());
 
             return v;

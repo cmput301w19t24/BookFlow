@@ -81,6 +81,16 @@
                     android:textSize="10sp"
                     android:textStyle="bold" />
 
+                <RatingBar
+                    android:id="@+id/review_rating"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:numStars="5"
+                    android:rating="3"
+                    android:stepSize="1" />
+
                 <TextView
                     android:id="@+id/rating"
                     android:layout_width="248dp"
@@ -90,7 +100,8 @@
                     android:padding="1dp"
                     android:textColor="@color/colorAccent"
                     android:textSize="10sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
