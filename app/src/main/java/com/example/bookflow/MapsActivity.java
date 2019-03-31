@@ -52,6 +52,12 @@ public class MapsActivity extends FragmentActivity implements
     private String bookId, requestId;
     private double lat, lon;
 
+    /**
+     * onCreate method
+     * get parameters from calling activity (latitude,longitude) or (bookId, requestId)
+     * and decide whether it's viewing mode or selecting mode.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,8 +102,11 @@ public class MapsActivity extends FragmentActivity implements
     public void onMapReady(GoogleMap googleMap) throws SecurityException {
         mMap = googleMap;
 
-        // enable
+        // enable long click on google map
         mMap.setOnMapLongClickListener(this);
+        /* Check if the app has location permission
+        * if yes then find the user location, move and zoom the camera to there
+        * if no then ask for permission*/
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
@@ -115,6 +124,7 @@ public class MapsActivity extends FragmentActivity implements
             ActivityCompat.requestPermissions(MapsActivity.this, permissions, 1);
         }
 
+        // if it's viewing mode, then just simply add a non-draggable marker
         if (mode == 1) {
             LatLng point = new LatLng(lat, lon);
             meetingPlace = mMap.addMarker(new MarkerOptions()
@@ -124,6 +134,14 @@ public class MapsActivity extends FragmentActivity implements
 
     }
 
+    /**
+     * Ask for the location using permission from the user
+     * If the user allows location permission,
+     * find user location, move and zoom camera to there.
+     * @param requestCode 1
+     * @param permissions the permission type
+     * @param GrantResults the permission result
+     */
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] GrantResults) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -139,6 +157,12 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
+    /**
+     * When the user long click a position on the map,
+     * if it's selecting mode and there are no markers existing
+     * add a marker at the clicked position
+     * @param point: the location being long clicked
+     */
     @Override
     public void onMapLongClick(LatLng point) {
         // check if there is already a marker
@@ -156,6 +180,11 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
+    /**
+     * When my location button on the top right corner is clicked
+     * the camera go to my location
+     * @return true
+     */
     @Override
     public boolean onMyLocationButtonClick() {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLoc,16.0f));
@@ -164,6 +193,8 @@ public class MapsActivity extends FragmentActivity implements
 
     /**
      * On click method of button "done"
+     * Up load the latitude and longitude to firebase
+     * If no location is selected, do nothing
      */
     public void upload(View view) {
         // if no location selected, do nothing
