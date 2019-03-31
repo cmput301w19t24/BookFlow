@@ -344,38 +344,8 @@ public class BookDetailActivity extends BasicActivity {
             @Override
             public void onClick(View v) {
                 final float rating = ratingBar.getRating();
-                mBookRef.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        Book book = (Book) dataSnapshot.getValue(Book.class);
-                        if(book.getTitle().equals(mThisBook.getTitle())){
-                            mThisBook.countIncrease();
-                            mThisBook.setRating((mThisBook.getRating()*(mThisBook.getCount()-1)+rating)/ mThisBook.getCount());
-                        }
-                    }
-
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-
+                mThisBook.countIncrease();
+                mThisBook.setRating((mThisBook.getRating()*(mThisBook.getCount()-1)+rating)/ mThisBook.getCount());
                 dialog.dismiss();
             }
         });
