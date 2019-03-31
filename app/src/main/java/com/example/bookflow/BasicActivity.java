@@ -5,6 +5,7 @@
  */
 package com.example.bookflow;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -37,6 +38,7 @@ public class BasicActivity extends AppCompatActivity {
         mActivityClasses.add(UserProfileActivity.class);
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
     }
 
     /**
