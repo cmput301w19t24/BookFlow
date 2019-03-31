@@ -20,7 +20,10 @@ import com.bumptech.glide.Glide;
 import com.example.bookflow.Model.Book;
 import com.example.bookflow.Model.Request;
 import com.example.bookflow.Model.Notification;
+import com.example.bookflow.Util.FirebaseIO;
 import com.example.bookflow.Util.ScanUtility;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -324,7 +327,7 @@ public class BookDetailActivity extends BasicActivity {
 
         if (isTransactionSuccessful) {
             Toast.makeText(BookDetailActivity.this, getString(R.string.scan_successful), Toast.LENGTH_SHORT).show();
-            //Todo Dialog rating
+
             if (isReturn) {
                 showEditbox();
             }
@@ -333,7 +336,6 @@ public class BookDetailActivity extends BasicActivity {
         }
     }
 
-    // Use dialog interface for editing and deleting feelings
     public void showEditbox() {
         final Dialog dialog = new Dialog(BookDetailActivity.this);
         dialog.setTitle("Rating book");
@@ -344,38 +346,11 @@ public class BookDetailActivity extends BasicActivity {
             @Override
             public void onClick(View v) {
                 final float rating = ratingBar.getRating();
-                mBookRef.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        Book book = (Book) dataSnapshot.getValue(Book.class);
-                        if(book.getTitle().equals(mThisBook.getTitle())){
-                            mThisBook.countIncrease();
-                            mThisBook.setRating((mThisBook.getRating()*(mThisBook.getCount()-1)+rating)/ mThisBook.getCount());
-                        }
-                    }
-
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-
+                mThisBook.transCountInc();
+                mThisBook.setRating((mThisBook.getRating()*(mThisBook.getTransCount()-1)+rating)/ mThisBook.getTransCount());
+                mBookRef.child(mThisBook.getBookId()).child("rating").setValue(mThisBook.getRating());
+                mBookRef.child(mThisBook.getBookId()).child("transCount").setValue(mThisBook.getTransCount());
+                //FirebaseIO.getInstance().updateBook(mThisBook,null,null);
                 dialog.dismiss();
             }
         });
