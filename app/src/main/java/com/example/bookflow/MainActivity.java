@@ -57,7 +57,7 @@ public class MainActivity extends BasicActivity {
     ArrayList<Book> books;
     ArrayList<Book> nonfiltered_books;
     ArrayList<Book> filtered_books;
-    boolean firstgrab = true;
+    boolean firstgrab;
     ArrayList<Book> borrows;
     ArrayList<Book> nonfiltered_borrows;
     ArrayList<Book> filtered_borrows;
@@ -109,12 +109,22 @@ public class MainActivity extends BasicActivity {
         filtered_books = new ArrayList<Book>();
         nonfiltered_books = new ArrayList<Book>();
         adpBook = new MyAdapter(this,books);
-        bookList();
 
         borrows = new ArrayList<Book>();
         filtered_borrows = new ArrayList<Book>();
         nonfiltered_borrows = new ArrayList<Book>();
         adpBorrow = new MyAdapter(this, borrows);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        books.clear();
+        borrows.clear();
+        firstgrab = true;
+        bookList();
         borrowList();
     }
 
