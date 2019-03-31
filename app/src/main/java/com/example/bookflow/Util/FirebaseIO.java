@@ -227,9 +227,7 @@ public class FirebaseIO {
                     });
 
         } else {
-            // no photo uploaded
-            mybook.setPhotoUri(null);
-
+            // no new photo uploaded
             DatabaseReference bookRef = null;
             if (mybook.getBookId() != null) {
                 // this is an existed book
@@ -237,16 +235,7 @@ public class FirebaseIO {
             }
 
             bookRef.setValue(mybook)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (lastPhotoUri != null) {
-                                deletePhoto(lastPhotoUri, listener);
-                            } else {
-                                listener.onComplete(task);
-                            }
-                        }
-                    });
+                    .addOnCompleteListener(listener);
         }
     }
 
