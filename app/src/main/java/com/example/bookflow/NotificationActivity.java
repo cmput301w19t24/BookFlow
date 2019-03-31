@@ -48,6 +48,7 @@ public class NotificationActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_notification);
+        findViewById(R.id.notification_button).setBackgroundResource(R.drawable.notif_select);
 
         //REMOVE
         Button tempMyReqButton = findViewById(R.id.tempMySentRequests);

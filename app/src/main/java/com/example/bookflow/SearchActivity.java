@@ -179,6 +179,12 @@ public class SearchActivity extends BasicActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        findViewById(R.id.search_button).setBackgroundResource(R.drawable.search_select);
+    }
+
     /**
      * Book search linear adapter
      */

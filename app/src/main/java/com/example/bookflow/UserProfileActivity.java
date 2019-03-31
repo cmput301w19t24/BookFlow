@@ -171,6 +171,8 @@ public class UserProfileActivity extends BasicActivity {
         books.clear();
         reviews.clear();
 
+        findViewById(R.id.profile_button).setBackgroundResource(R.drawable.profile_select);
+
         // determine whether it's yourself visiting your profile or other user visiting your profile
         Intent intent = getIntent();
         String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
