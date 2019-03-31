@@ -352,20 +352,26 @@ public class BookDetailActivity extends BasicActivity {
 
     public void showLocation(View view) {
 
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference()
-                .child("RequestsReceivedByBook")
+        DatabaseReference dbRef = mDatabase.getReference("RequestsReceivedByBook")
                 .child(bookId);
 
-        dbRef.addValueEventListener(new ValueEventListener() {
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ArrayList<String> latlon = new ArrayList<>();
                 for (DataSnapshot request: dataSnapshot.getChildren()) {
-                    String lat = request.child("latitude").getValue().toString();
-                    String lon = request.child("longitude").getValue().toString();
-                    latlon.add(lat);
-                    latlon.add(lon);
-                    break;
+                    try {
+                        String lat = request.child("latitude").getValue().toString();
+                        String lon = request.child("longitude").getValue().toString();
+                        latlon.add(lat);
+                        latlon.add(lon);
+                        break;
+                    } catch (NullPointerException e) {
+                        // request doesn't have location info.
+                        Toast.makeText(getApplicationContext(), getString(R.string.location_not_set), Toast.LENGTH_LONG)
+                                .show();
+                        return;
+                    }
                 }
                 Intent mapActivity = new Intent(BookDetailActivity.this, MapsActivity.class);
                 mapActivity.putExtra("lat_lon", latlon);
