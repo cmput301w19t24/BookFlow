@@ -207,7 +207,6 @@ public class UserProfileActivity extends BasicActivity {
                 textView = findViewById(R.id.phoneToBeChange);
                 textView.setText(user.getPhoneNumber());
 
-
                 ImageView userImage = findViewById(R.id.userPicture);
                 Glide.with(UserProfileActivity.this).load(user.getImageurl()).into(userImage);
 
