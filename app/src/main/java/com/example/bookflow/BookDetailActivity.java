@@ -182,56 +182,86 @@ public class BookDetailActivity extends BasicActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         mThisBook.setBorrowerId(user.getUid());
 
-        if (mThisBook.getOwnerId().equals(mThisBook.getBorrowerId())) {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "you cannot request your own book",
-                    Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        else {
-            mDatabase.getReference()
-                    .child("Users/" + mThisBook.getBorrowerId())
-                    .addListenerForSingleValueEvent( new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    String username = dataSnapshot.child("username").getValue().toString();
+        mDatabase.getReference()
+                .child("RequestsSentByUser")
+                .child(mThisBook.getBorrowerId())
+                .addListenerForSingleValueEvent( new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        boolean alreadyRequested = false;
+                        for(DataSnapshot child : dataSnapshot.getChildren() ){
+                            Request r = child.getValue(Request.class);
+                            if (r.getBorrowerId().equals(mThisBook.getBorrowerId()) && r.getBookId().equals(bookId) && !r.getStatus().equals("Rejected")){
+                                alreadyRequested = true;
+                                Log.d("testing", "caught by conditional");
+                                break;
+                            }
+                        }
+                        if (alreadyRequested) {
+                            Toast toast = Toast.makeText(getApplicationContext(),
+                                    "you have already requested this book",
+                                    Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                        else {
+                            if (mThisBook.getOwnerId().equals(mThisBook.getBorrowerId())) {
+                                Toast toast = Toast.makeText(getApplicationContext(),
+                                        "you cannot request your own book",
+                                        Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                            else {
+                                mDatabase.getReference()
+                                        .child("Users/" + mThisBook.getBorrowerId())
+                                        .addListenerForSingleValueEvent( new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                String username = dataSnapshot.child("username").getValue().toString();
 
-                    //create request
-                    Request req = new Request(mThisBook.getOwnerId(), mThisBook.getBorrowerId(), bookId);
+                                                //create request
+                                                Request req = new Request(mThisBook.getOwnerId(), mThisBook.getBorrowerId(), bookId);
 
-                    // add request to list of sent requests by user
-                    DatabaseReference requestsSentReference = mDatabase.getReference("RequestsSentByUser");
-                    String requestId = requestsSentReference.push().getKey();
-                    requestsSentReference.child(mThisBook.getBorrowerId()).child(requestId).setValue(req);
+                                                // add request to list of sent requests by user
+                                                DatabaseReference requestsSentReference = mDatabase.getReference("RequestsSentByUser");
+                                                String requestId = requestsSentReference.push().getKey();
+                                                requestsSentReference.child(mThisBook.getBorrowerId()).child(requestId).setValue(req);
 
-                    // add request to list of received requests for book
-                    DatabaseReference receivedRequestsByBookReference = mDatabase.getReference("RequestsReceivedByBook");
-                    receivedRequestsByBookReference.child(bookId).child(requestId).setValue(req);
+                                                // add request to list of received requests for book
+                                                DatabaseReference receivedRequestsByBookReference = mDatabase.getReference("RequestsReceivedByBook");
+                                                receivedRequestsByBookReference.child(bookId).child(requestId).setValue(req);
 
-                    // send notification
-                    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm MM/dd");
-                    String timestamp = formatter.format(new Date());
-                    DatabaseReference receiverRef = notificationRef.child(mThisBook.getOwnerId());
-                    String notification_id = receiverRef.push().getKey();
-                    receiverRef.child(notification_id).setValue(new Notification(mThisBook.getBorrowerId(), bookId, "request", requestId, mThisBook.getTitle(), username, timestamp));
+                                                // send notification
+                                                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm MM/dd");
+                                                String timestamp = formatter.format(new Date());
+                                                DatabaseReference receiverRef = notificationRef.child(mThisBook.getOwnerId());
+                                                String notification_id = receiverRef.push().getKey();
+                                                receiverRef.child(notification_id).setValue(new Notification(mThisBook.getBorrowerId(), bookId, "request", requestId, mThisBook.getTitle(), username, timestamp));
 
-                    // transition book state
-                    DatabaseReference bookRef = mDatabase.getReference("Books");
-                    if (mThisBook.getStatus().toString().equals("AVAILABLE")) {
-                        bookRef.child(bookId).child("status").setValue("REQUESTED");
+                                                // transition book state
+                                                DatabaseReference bookRef = mDatabase.getReference("Books");
+                                                if (mThisBook.getStatus().toString().equals("AVAILABLE")) {
+                                                    bookRef.child(bookId).child("status").setValue("REQUESTED");
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                                Log.w("cancelled", databaseError.toException());
+                                            }
+                                        });
+                                Toast toast = Toast.makeText(getApplicationContext(),
+                                        "request sent",
+                                        Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        }
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Log.w("cancelled", databaseError.toException());
-                }
-            });
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "request sent",
-                    Toast.LENGTH_SHORT);
-            toast.show();
-        }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("cancelled", databaseError.toException());
+                    }
+                });
     }
 
     /**
