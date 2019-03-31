@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,6 +30,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+/**
+ * Show google map with your current location (if allowed)
+ * If in selecting mode, long click to add marker, long click marker to drag, press done to finish
+ * If in viewing mode, show marker
+ */
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
         GoogleMap.OnMapLongClickListener{
@@ -41,7 +47,7 @@ public class MapsActivity extends FragmentActivity implements
 
     private int mode;   // 0 for select location and 1 for view
 
-    private String bookId, ownerId, requestId;
+    private String bookId, requestId;
     private double lat, lon;
 
     @Override
@@ -58,11 +64,10 @@ public class MapsActivity extends FragmentActivity implements
 
         ArrayList<String> infos = getIntent().getStringArrayListExtra("parameter");
 
-
-        // get parameters from calling activity
+        /* get parameters from calling activity, bookId and requestId are needed in selecting mode
+         * (mode = 0), latitude and longitude are needed in viewing mode (mode = 1) */
         if (null != infos) {
             bookId = infos.get(1);
-            ownerId = infos.get(0);
             requestId = infos.get(3);
             mode = 0;
         } else {
@@ -89,6 +94,7 @@ public class MapsActivity extends FragmentActivity implements
     public void onMapReady(GoogleMap googleMap) throws SecurityException {
         mMap = googleMap;
 
+        // enable
         mMap.setOnMapLongClickListener(this);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -124,7 +130,7 @@ public class MapsActivity extends FragmentActivity implements
                 @Override
                 public void onSuccess(Location location) {
                     LatLng myLatLon = new LatLng(location.getLatitude(), location.getLongitude());
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLon));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLatLon,4.0f));
                 }
             });
         }
@@ -147,13 +153,19 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
+    /**
+     * On click method of button "done"
+     */
     public void upload(View view) {
+        // if no location selected, do nothing
         if (null == meetingPlace) {
             return;
         }
+        // else, get the lat and lon of marker
         lat = meetingPlace.getPosition().latitude;
         lon = meetingPlace.getPosition().longitude;
 
+        // upload latitude and longitude to firebase
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
         dbRef.child("RequestsReceivedByBook").child(bookId)
                 .child(requestId)
@@ -164,7 +176,7 @@ public class MapsActivity extends FragmentActivity implements
                 .child("longitude")
                 .setValue(lon);
 
-
+        // go to book detail activity
         Intent intent = new Intent(MapsActivity.this, BookDetailActivity.class);
         intent.putExtra("book_id", bookId);
         startActivity(intent);

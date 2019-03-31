@@ -17,10 +17,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * You
+ */
 public class WriteReviewActivity extends AppCompatActivity {
     DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-    private String reviewee, reviewer, comments, uid;
+    private String reviewee, reviewer, comments;
     private int rating = 5;
 
     private EditText reviewTextView;
@@ -62,16 +65,20 @@ public class WriteReviewActivity extends AppCompatActivity {
 
     public void reviewDone (View view) {
         String reviewId = dbRef.child("Reviews").push().getKey();
+
+        // check if comment is empty
         comments = reviewTextView.getText().toString();
         if (comments.isEmpty()) {
             comments = "No Comments";
         }
 
+
         Date date = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy-hh:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd\nhh:mm:ss");
         String dateStr = df.format(date);
         dbRef.child("Reviews").child(reviewId).child("date").setValue(dateStr);
 
+        // upload informations of a review
         dbRef.child("Reviews").child(reviewId).child("comments").setValue(comments);
         dbRef.child("Reviews").child(reviewId).child("rating").setValue(rating);
         dbRef.child("Reviews").child(reviewId).child("reviewee").setValue(reviewee);
