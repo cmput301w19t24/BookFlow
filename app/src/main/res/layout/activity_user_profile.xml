@@ -22,7 +22,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
-        android:gravity="center_horizontal|center_vertical"
+        android:gravity="center_horizontal|top"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/linearLayout2"
@@ -32,11 +32,11 @@
             android:id="@+id/editPersonInfo"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_gravity="end"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
             android:background="@drawable/round_border"
             android:contentDescription="@string/placeholder"
-            android:layout_marginTop="8dp"
             android:onClick="editProfile"
             android:padding="10dp"
             app:layout_constraintBottom_toTopOf="@+id/userInfoDetail"
@@ -216,7 +216,8 @@
                 android:id="@+id/reviewList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="0dp" />
+                android:layout_margin="0dp"
+                android:clickable="true" />
         </LinearLayout>
 
         <LinearLayout
