@@ -161,36 +161,36 @@ public class MainActivity extends BasicActivity {
         nonfiltered_borrows = new ArrayList<Book>();
         adpBorrow = new MyAdapter(this, borrows);
 
-//        // add firebase token to user
-//        final DatabaseReference currUserRef = database.getReference("Users").child(uid);
-//        currUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if (!dataSnapshot.hasChild("notificationToken")) {
-//                    FirebaseInstanceId.getInstance()
-//                            .getInstanceId()
-//                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
-//                                    if (task.isSuccessful()) {
-//                                        // Get new Instance ID token
-//                                        String token = task.getResult().getToken();
-//
-//                                        Log.i(TAG, "ntfctn token = " + token);
-//
-//                                        currUserRef.child("notificationToken")
-//                                                .setValue(token);
-//                                    }
-//                                }
-//                            });
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
+        // add firebase token to user
+        final DatabaseReference currUserRef = database.getReference("Users").child(uid);
+        currUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.hasChild("notificationToken")) {
+                    FirebaseInstanceId.getInstance()
+                            .getInstanceId()
+                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Get new Instance ID token
+                                        String token = task.getResult().getToken();
+
+                                        Log.i(TAG, "ntfctn token = " + token);
+
+                                        currUserRef.child("notificationToken")
+                                                .setValue(token);
+                                    }
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
     }
