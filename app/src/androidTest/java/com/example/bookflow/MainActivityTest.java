@@ -50,7 +50,7 @@ public class MainActivityTest extends ActivityTestRule<MainActivity> {
     public void setUp() throws Exception{
         solo = new Solo(getInstrumentation(), rule.getActivity());
         mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword("shengyao@ualberta.ca", "123456");
+        mAuth.signInWithEmailAndPassword("shengyao@ualberta.ca", "112233");
     }
     @Test
     public void start() throws Exception{
