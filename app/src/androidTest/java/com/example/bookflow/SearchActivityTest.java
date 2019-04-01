@@ -68,48 +68,19 @@ public class SearchActivityTest extends ActivityTestRule<SearchActivity> {
 
 
     @Test
-    public void checkBookIsbnSearch(){
+    public void checkBookSearch(){
         solo.assertCurrentActivity("Wrong Activity", SearchActivity.class);
         View view1 = solo.getView(Spinner.class, 0);
         solo.clickOnView(view1);
         solo.scrollToTop();
-        solo.clickOnText("search by book ISBN");
-
+        solo.clickOnText("search book");
         solo.enterText((EditText) solo.getView(R.id.searchText), "9788");
         solo.clickOnView(solo.getView(R.id.goSearch));
-        solo.waitForText("9788711222102");
         solo.waitForText("George's Marvelous Medicine");
         solo.waitForText("Roald Dahl");
     }
 
-    @Test
-    public void checkBookAuthorSearch(){
-        solo.assertCurrentActivity("Wrong Activity", SearchActivity.class);
-        View view1 = solo.getView(Spinner.class, 0);
-        solo.clickOnView(view1);
-        solo.scrollToTop();
-        solo.clickOnText("search by book author");
-        solo.enterText((EditText) solo.getView(R.id.searchText), "Roald");
-        solo.clickOnView(solo.getView(R.id.goSearch));
-        solo.waitForText("9788711222102");
-        solo.waitForText("George's Marvelous Medicine");
-        solo.waitForText("Roald Dahl");
-    }
 
-    @Test
-    public void checkBookNameSearch(){
-        solo.assertCurrentActivity("Wrong Activity", SearchActivity.class);
-        View view1 = solo.getView(Spinner.class, 0);
-        solo.clickOnView(view1);
-        solo.scrollToTop();
-        solo.clickOnText("search by book name");
-
-        solo.enterText((EditText) solo.getView(R.id.searchText), "Geo");
-        solo.clickOnView(solo.getView(R.id.goSearch));
-        solo.waitForText("9788711222102");
-        solo.waitForText("George's Marvelous Medicine");
-        solo.waitForText("Roald Dahl");
-    }
 
     @Test
     public void checkBookDetailPage(){
