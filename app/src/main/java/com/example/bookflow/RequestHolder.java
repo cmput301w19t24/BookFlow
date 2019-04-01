@@ -16,6 +16,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
+/**
+ * Request holder class
+ */
 public class RequestHolder extends RecyclerView.ViewHolder{
 
     private final ImageView request_item_icon;

@@ -55,18 +55,35 @@ public class NotificationHolder extends RecyclerView.ViewHolder{
         mClickListener = clickListener;
     }
 
+    /**
+     * set the text of the notification
+     * @param s text
+     */
     public void setNotificationText(String s) {
         notification_text.setText(s);
     }
 
+    /**
+     * set the type of the notification
+     * @param s type
+     */
     public void setNotificationType(String s) {
         notification_type.setText(s);
     }
 
+    /**
+     * set the icon of the notification
+     * @param s storage reference of the icon; should be load-able by Glide
+     */
     public void setNotificationSenderIcon(StorageReference s) {
         Glide.with(itemView.getContext())
                 .load(s).into(notification_sender_icon);
     }
+
+    /**
+     * set the timestamp of the notification
+     * @param s timestamp
+     */
     public void setNotificationTimestamp(String s) {
         notification_timestamp.setText(s);
     }
