@@ -377,6 +377,7 @@ public class BookDetailActivity extends AppCompatActivity {
         if (mThisBook.getStatus().toString().equals("ACCEPTED") && isParticipant) {
             // the owner marks the book as borrowed
             statusRef.setValue(Book.BookStatus.BORROWED);
+            deleteBookRequestsOnTransaction();
             isTransactionSuccessful = true;
             isReturn = false;
 
