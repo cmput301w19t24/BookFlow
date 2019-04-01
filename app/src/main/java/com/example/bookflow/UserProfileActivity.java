@@ -191,7 +191,7 @@ public class UserProfileActivity extends BasicActivity {
 
         // determine whether it's yourself visiting your profile or other user visiting your profile
         Intent intent = getIntent();
-        String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
+        String message = intent.getStringExtra("com.example.bookflow.MESSAGE");
         if (message != null) {
             ImageView imageButton = findViewById(R.id.editPersonInfo);
             imageButton.setEnabled(false);
@@ -318,6 +318,19 @@ public class UserProfileActivity extends BasicActivity {
                 if (!reviews.contains(review) && pleaseAdd) {
                     adpReview.add(review);
                     reviewList.setAdapter(adpReview);
+                    reviewList.setClickable(true);
+                    reviewList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent intent_detail = new Intent(UserProfileActivity.this, UserProfileActivity.class);
+                            String targetUid = adpReview.getItem(position).getReviewerID();
+                            String myUid = mAuth.getCurrentUser().getUid();
+                            if (! targetUid.equals(myUid)) {
+                                intent_detail.putExtra("com.example.bookflow.MESSAGE", targetUid);
+                            }
+                            startActivity(intent_detail);
+                        }
+                    });
                 }
             }
             @Override
