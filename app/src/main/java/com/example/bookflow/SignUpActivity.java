@@ -135,6 +135,14 @@ public class SignUpActivity extends BasicActivity {
                     final StorageReference storageRef = storage.getReference("users").child(uid);
                     final User user = new User();
 
+                    // store user information to firebase
+                    user.setUsername(id.getText().toString());
+                    user.setEmail(email.getText().toString());
+                    user.setPhoneNumber(phone.getText().toString());
+                    user.setUid(uid);
+                    user.setSelfIntro("No introduction");
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(uid).setValue(user);
+
                     // add user icon
                     if (imageUri!=null) {
                         storageRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -146,7 +154,7 @@ public class SignUpActivity extends BasicActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Uri> task) {
                                             String imageurl = task.toString();
-                                            user.setImageurl(imageurl);
+                                            FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("imageurl").setValue(imageurl);
                                         }                                    });
                                 } else {
                                     Toast.makeText(SignUpActivity.this, "Failed to add icon", Toast.LENGTH_SHORT).show();
@@ -154,13 +162,7 @@ public class SignUpActivity extends BasicActivity {
                             }
                         });
                     }
-                    // store user information to firebase
-                    user.setUsername(id.getText().toString());
-                    user.setEmail(email.getText().toString());
-                    user.setPhoneNumber(phone.getText().toString());
-                    user.setUid(uid);
-                    user.setSelfIntro("No introduction");
-                    FirebaseDatabase.getInstance().getReference().child("Users").child(uid).setValue(user);
+
                     // start main activity
                     Intent intent_main = new Intent(SignUpActivity.this, MainActivity.class);
                     startActivity(intent_main);
