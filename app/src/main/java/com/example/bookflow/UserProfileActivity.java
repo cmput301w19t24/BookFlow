@@ -201,8 +201,6 @@ public class UserProfileActivity extends BasicActivity {
         books.clear();
         reviews.clear();
 
-        findViewById(R.id.profile_button).setBackgroundResource(R.drawable.profile_select);
-
         // determine whether it's yourself visiting your profile or other user visiting your profile
         Intent intent = getIntent();
         String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
@@ -216,6 +214,7 @@ public class UserProfileActivity extends BasicActivity {
         } else  {
             FirebaseUser user = mAuth.getCurrentUser();
             uid = user.getUid();
+            findViewById(R.id.profile_button).setBackgroundResource(R.drawable.profile_select);
         }
 
         setUserProfile();
@@ -276,6 +275,8 @@ public class UserProfileActivity extends BasicActivity {
      */
     private void loadBookList() {
         bookList = (ListView) findViewById(R.id.offerList);
+        books.clear();
+        adpBook.clear();
         // add user's book to adapter
         query_book.orderByChild("ownerId").equalTo(uid).addChildEventListener(new ChildEventListener() {
             @Override
@@ -317,6 +318,7 @@ public class UserProfileActivity extends BasicActivity {
     private void loadReviewList() {
         reviewList = (ListView) findViewById(R.id.reviewList);
         reviews.clear();
+        adpReview.clear();
         // add user's book to adapter
         query_review.orderByChild("reviewee").equalTo(uid).addChildEventListener(new ChildEventListener() {
             @Override
@@ -337,11 +339,10 @@ public class UserProfileActivity extends BasicActivity {
                 if (!reviews.contains(review)) {
                     adpReview.add(review);
                 }
-
-                reviewList.setAdapter(adpReview);
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                loadReviewList();
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
@@ -354,6 +355,7 @@ public class UserProfileActivity extends BasicActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
+        reviewList.setAdapter(adpReview);
     }
 
     /**

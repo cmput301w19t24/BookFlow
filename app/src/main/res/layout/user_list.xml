@@ -44,7 +44,7 @@
                     android:id="@+id/review_date"
                     android:layout_width="110dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="0dp"
                     android:gravity="end"
                     android:layout_marginEnd="10dp"
                     android:fontFamily="sans-serif"

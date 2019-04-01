@@ -107,8 +107,6 @@ public class MainActivity extends BasicActivity {
             mtitle.setText(book.getTitle());
             Glide.with(MainActivity.this).load(book.getPhotoUri()).into(mphoto);
 
-
-
             return v;
         }
     }
@@ -318,6 +316,7 @@ public class MainActivity extends BasicActivity {
         books.clear();
         filtered_books.clear();
         nonfiltered_books.clear();
+        adpBook.clear();
         bookList();
     }
 
@@ -325,6 +324,7 @@ public class MainActivity extends BasicActivity {
         firstgrab = true;
         borrows.clear();
         filtered_borrows.clear();
+        adpBorrow.clear();
         nonfiltered_borrows.clear();
         borrowList();
     }
@@ -346,11 +346,11 @@ public class MainActivity extends BasicActivity {
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                reloadBookList();
+                reloadBookList();
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//                reloadBookList();
+                reloadBookList();
             }
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
