@@ -50,7 +50,7 @@ public class MainActivityTest extends ActivityTestRule<MainActivity> {
     public void setUp() throws Exception{
         solo = new Solo(getInstrumentation(), rule.getActivity());
         mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword("shengyao@ualberta.ca", "123456");
+        mAuth.signInWithEmailAndPassword("shengyao@ualberta.ca", "112233");
     }
     @Test
     public void start() throws Exception{
@@ -85,7 +85,9 @@ public class MainActivityTest extends ActivityTestRule<MainActivity> {
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         ListView booklist = (ListView)solo.getView("myBookList");
+        solo.sleep(2000);
         if (booklist.getCount()>0) {
+
             View v = booklist.getChildAt(0);
             TextView author = (TextView)v.findViewById(R.id.iauthor);
             solo.clickInList(0);
