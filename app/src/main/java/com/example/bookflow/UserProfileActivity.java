@@ -316,7 +316,7 @@ public class UserProfileActivity extends BasicActivity {
                 }
 
                 if (!reviews.contains(review) && pleaseAdd) {
-                    adpReview.add(review);
+                    reviews.add(review);
                     reviewList.setAdapter(adpReview);
                     reviewList.setClickable(true);
                     reviewList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
