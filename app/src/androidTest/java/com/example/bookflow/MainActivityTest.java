@@ -13,6 +13,7 @@ package com.example.bookflow;
 import android.app.Activity;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -49,7 +50,7 @@ public class MainActivityTest extends ActivityTestRule<MainActivity> {
     public void setUp() throws Exception{
         solo = new Solo(getInstrumentation(), rule.getActivity());
         mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword("shengyao@ualberta.ca", "123456");
+        mAuth.signInWithEmailAndPassword("shengyao@ualberta.ca", "112233");
     }
     @Test
     public void start() throws Exception{
@@ -63,6 +64,19 @@ public class MainActivityTest extends ActivityTestRule<MainActivity> {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         TextView myBorrows = (TextView)solo.getView("title_myborrow");
         solo.clickOnView(myBorrows);
+        onView(withId(R.id.myBorrowList)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+        onView(withId(R.id.myBookList)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
+    }
+
+    @Test
+    public void clickMyBooks(){
+        MainActivity activity = (MainActivity) solo.getCurrentActivity();
+
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        TextView myBooks = (TextView)solo.getView("title_mybook");
+        solo.clickOnView(myBooks);
+        onView(withId(R.id.myBookList)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+        onView(withId(R.id.myBorrowList)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
     }
 
     @Test
@@ -70,13 +84,17 @@ public class MainActivityTest extends ActivityTestRule<MainActivity> {
         MainActivity activity = (MainActivity) solo.getCurrentActivity();
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-//        onView(withId(R.id.offer_switch)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
         ListView booklist = (ListView)solo.getView("myBookList");
-        if (booklist.getVisibility() == ListView.VISIBLE) {
-            solo.clickInList(0);
-        }
+        solo.sleep(2000);
+        if (booklist.getCount()>0) {
 
-        solo.assertCurrentActivity("Wrong Activity", BookDetailActivity.class);
+            View v = booklist.getChildAt(0);
+            TextView author = (TextView)v.findViewById(R.id.iauthor);
+            solo.clickInList(0);
+            solo.assertCurrentActivity("Wrong Activity", BookDetailActivity.class);
+            String book_name = String.valueOf(author.getText());
+            solo.waitForText(book_name,1, 2000);
+        }
     }
 
     @After

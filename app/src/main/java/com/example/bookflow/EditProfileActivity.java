@@ -9,8 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.regex.Pattern;
 
@@ -44,7 +44,6 @@ public class EditProfileActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseStorage storage;
     private DatabaseReference dbRef;
-    private static final int PICK_FROM_ALBUM = 10;
     private boolean iconChanged = false;
 
     @Override
@@ -113,19 +112,24 @@ public class EditProfileActivity extends AppCompatActivity {
      * Choose your icon from album
      */
     private void update() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(intent, PICK_FROM_ALBUM);
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setFixAspectRatio(true)
+                .setAspectRatio(1, 1)
+                .start(EditProfileActivity.this);
     }
 
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == PICK_FROM_ALBUM && resultCode == RESULT_OK) {
-            imageUri = data.getData();
-            Glide.with(EditProfileActivity.this).load(imageUri).into(userIcon);
-            iconChanged = true;
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                imageUri = result.getUri();
+                Glide.with(EditProfileActivity.this).load(imageUri).into(userIcon);
+                iconChanged = true;
+            }
         }
     }
 

@@ -21,8 +21,8 @@
 
         <ImageView
             android:id="@+id/edit_profile_img"
-            android:layout_width="80dp"
-            android:layout_height="0dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_marginBottom="15dp"
             android:layout_weight="4"
             android:background="@color/common_google_signin_btn_text_dark_disabled"
@@ -179,12 +179,5 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.0" />
 
-    <include
-        layout="@layout/activity_basic"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

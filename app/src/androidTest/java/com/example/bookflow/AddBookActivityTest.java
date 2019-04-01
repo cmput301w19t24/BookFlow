@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.robotium.solo.Solo;
@@ -28,7 +28,7 @@ public class AddBookActivityTest extends ActivityTestRule<AddBookActivity> {
     public AddBookActivityTest() {
         super(AddBookActivity.class);
         mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword("shengyao@ualberta.ca", "123456");
+        mAuth.signInWithEmailAndPassword("shengyao@ualberta.ca", "112233");
     }
 
     @Rule
@@ -50,10 +50,10 @@ public class AddBookActivityTest extends ActivityTestRule<AddBookActivity> {
 
         solo.enterText((EditText) solo.getView(R.id.add_book_title_et), "Solo Test Book");
         solo.enterText((EditText) solo.getView(R.id.add_book_author_name_et), "Solo");
-        solo.enterText((EditText) solo.getView(R.id.add_book_isbn_et), "7010");
+        solo.enterText((EditText) solo.getView(R.id.add_book_isbn_et), "11122233344");
         solo.enterText((EditText) solo.getView(R.id.add_book_description_et), "Solo Test Book lalaba labala hei");
 
-        ImageView addbook = (ImageView) solo.getView("add_book_save_iv");
+        ActionMenuItemView addbook = (ActionMenuItemView) solo.getView("action_add_book_save");
         solo.clickOnView(addbook);
 
     }
@@ -62,7 +62,7 @@ public class AddBookActivityTest extends ActivityTestRule<AddBookActivity> {
     public void enterScan() {
         solo.assertCurrentActivity("wrong activity!", AddBookActivity.class);
 
-        solo.clickOnButton(0);
+        solo.clickOnButton("scan");
         solo.assertCurrentActivity("wrong activity", ScanActivity.class);
 
         solo.goBack();
