@@ -338,31 +338,31 @@ public class MainActivity extends BasicActivity {
         myBorrowList.setAdapter(adpBorrow);
     }
 
-    /**
-     * Clear the books arraylists
-     * reset the boolean and retrieve the book list
-     */
-    private void reloadBookList() {
-        firstgrab = true;
-        books.clear();
-        filtered_books.clear();
-        nonfiltered_books.clear();
-        adpBook.clear();
-        bookList();
-    }
+//    /**
+//     * Clear the books arraylists
+//     * reset the boolean and retrieve the book list
+//     */
+//    private void reloadBookList() {
+//        firstgrab = true;
+//        books.clear();
+//        filtered_books.clear();
+//        nonfiltered_books.clear();
+//        adpBook.clear();
+//        bookList();
+//    }
 
-    /**
-     * Clear the borrows arraylists
-     * reset the boolean and retrieve the borrow list
-     */
-    private void reloadBorrowList() {
-        firstgrab = true;
-        borrows.clear();
-        filtered_borrows.clear();
-        adpBorrow.clear();
-        nonfiltered_borrows.clear();
-        borrowList();
-    }
+//    /**
+//     * Clear the borrows arraylists
+//     * reset the boolean and retrieve the borrow list
+//     */
+//    private void reloadBorrowList() {
+//        firstgrab = true;
+//        borrows.clear();
+//        filtered_borrows.clear();
+//        adpBorrow.clear();
+//        nonfiltered_borrows.clear();
+//        borrowList();
+//    }
 
     /**
      * view book list method
@@ -383,11 +383,28 @@ public class MainActivity extends BasicActivity {
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                reloadBookList();
+                Book book = (Book)dataSnapshot.getValue(Book.class);
+                String bookID = book.getBookId();
+                for (int i=0; i<books.size(); i++) {
+                    if (bookID.equals(books.get(i).getBookId())) {
+                        books.remove(books.get(i));
+                    }
+                }
+                books.add(book);
+                myBookList.setAdapter(adpBook);
+                firstgrab = true;
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                reloadBookList();
+                Book book = (Book)dataSnapshot.getValue(Book.class);
+                String bookID = book.getBookId();
+                for (int i=0; i<books.size(); i++) {
+                    if (bookID.equals(books.get(i).getBookId())) {
+                        books.remove(books.get(i));
+                    }
+                }
+                myBookList.setAdapter(adpBook);
+                firstgrab = true;
             }
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
@@ -427,11 +444,28 @@ public class MainActivity extends BasicActivity {
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                reloadBorrowList();
+                Book borrow = (Book)dataSnapshot.getValue(Book.class);
+                String bookID = borrow.getBookId();
+                for (int i=0; i<borrows.size(); i++) {
+                    if (bookID.equals(borrows.get(i).getBookId())) {
+                        borrows.remove(borrows.get(i));
+                    }
+                }
+                borrows.add(borrow);
+                myBorrowList.setAdapter(adpBorrow);
+                firstgrab = true;
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                reloadBorrowList();
+                Book borrow = (Book)dataSnapshot.getValue(Book.class);
+                String bookID = borrow.getBookId();
+                for (int i=0; i<borrows.size(); i++) {
+                    if (bookID.equals(borrows.get(i).getBookId())) {
+                        borrows.remove(borrows.get(i));
+                    }
+                }
+                myBorrowList.setAdapter(adpBorrow);
+                firstgrab = true;
             }
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }

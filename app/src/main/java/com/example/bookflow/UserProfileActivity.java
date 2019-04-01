@@ -371,7 +371,13 @@ public class UserProfileActivity extends BasicActivity {
                 } else {
                     pleaseAdd = false;
                 }
-                if (!reviews.contains(review) && pleaseAdd) {
+                if (pleaseAdd) {
+                    String reviewID = review.getUUID();
+                    for (int i=0; i<reviews.size(); i++) {
+                        if (reviewID.equals(reviews.get(i).getUUID())) {
+                            reviews.remove(reviews.get(i));
+                        }
+                    }
                     reviews.add(review);
                     reviewList.setAdapter(adpReview);
                 }
