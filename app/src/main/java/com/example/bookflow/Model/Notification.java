@@ -13,6 +13,7 @@ public class Notification {
     private String bookTitle;
     private String transactionId;
     private String timestamp;
+    private String viewed;
 
     public String getTimestamp() {
         return timestamp;
@@ -71,6 +72,13 @@ public class Notification {
         this.transactionId = transactionId;
     }
 
+    public String getViewed(){
+        return this.viewed;
+    }
+    public void setViewed(){
+        this.viewed = "true";
+    }
+
     public Notification(){}
     public Notification(String senderId, String bookId, String type, String transactionId, String bookTitle, String senderName, String timestamp) {
         this.senderId = senderId;
@@ -80,5 +88,6 @@ public class Notification {
         this.bookTitle = bookTitle;
         this.senderName = senderName;
         this.timestamp = timestamp;
+        this.viewed = "false";
     }
 }
