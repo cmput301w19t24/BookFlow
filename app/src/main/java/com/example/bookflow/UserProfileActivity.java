@@ -253,26 +253,35 @@ public class UserProfileActivity extends BasicActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Book book = (Book)dataSnapshot.getValue(Book.class);
-                if (!books.contains(book)) {
-                    adpBook.add(book);
+                if (null != book.getIsbn() && null != book.getPhotoUri()) {
+
+                    if (!books.contains(book)) {
+                        books.add(book);
+                    }
+                    bookList.setAdapter(adpBook);
                 }
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Book book = (Book)dataSnapshot.getValue(Book.class);
-                if (null != book.getIsbn() && null != book.getPhotoUri())
-                    loadBookList();
+                if (null != book.getIsbn() && null != book.getPhotoUri()) {
+                    if (!books.contains(book)) {
+                        books.add(book);
+                    }
+                    bookList.setAdapter(adpBook);
+                }
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                loadBookList();
+                Book book = (Book)dataSnapshot.getValue(Book.class);
+                if (null != book.getIsbn() && null != book.getPhotoUri())
+                    loadBookList();
             }
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
-        bookList.setAdapter(adpBook);
         bookList.setClickable(true);
         bookList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

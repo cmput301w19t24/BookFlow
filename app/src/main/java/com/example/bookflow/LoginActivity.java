@@ -107,13 +107,13 @@ public class LoginActivity extends AppCompatActivity {
         String emailPat = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
         if (!Pattern.matches(emailPat, email.getText().toString())) {
             email.setError("Invalid email address");
-            email = null;
+            email.setText("");
             valid = false;
         }
         String passwordPat = "^(.{6,20})$";
         if (!Pattern.matches(passwordPat, password.getText().toString())) {
             password.setError("password should more than 6 and less than 20 characters");
-            password = null;
+            password.setText("");
             valid = false;
         }
         if (!valid)

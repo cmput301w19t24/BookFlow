@@ -83,7 +83,7 @@ public class SignUpActivity extends AppCompatActivity {
         String usernamePat = "^([a-z0-9A-Z]{3,20})$";
         if (!Pattern.matches(usernamePat, id.getText().toString())) {
             id.setError("username should more 6 and less than 20 characters with only letters or numbers");
-            id = null;
+            id.setText("");
             valid = false;
         }
         // regex password
@@ -91,18 +91,18 @@ public class SignUpActivity extends AppCompatActivity {
         if (!password.getText().toString().equals(repassword.getText().toString())) {
             password.setError("Password not match!");
             repassword.setError("Password not match!");
-            password = null;
-            repassword = null;
+            password.setText("");
+            repassword.setText("");
             valid = false;
         } else {
             if (!Pattern.matches(passwordPat, password.getText().toString())) {
                 password.setError("password should more 6 and less than 20 characters");
-                password = null;
+                password.setText("");
                 valid = false;
             }
             if (!Pattern.matches(passwordPat, repassword.getText().toString())) {
                 repassword.setError("password should more than 6 and less than 20 characters");
-                repassword = null;
+                repassword.setText("");
                 valid = false;
             }
         }
@@ -110,14 +110,14 @@ public class SignUpActivity extends AppCompatActivity {
         String emailPat = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
         if (!Pattern.matches(emailPat, email.getText().toString())) {
             email.setError("Invalid email address");
-            email = null;
+            email.setText("");
             valid = false;
         }
         // regex phone
         String phonePat = "[0-9]+";
         if (!Pattern.matches(phonePat, phone.getText().toString())) {
             phone.setError("Invalid phone number");
-            phone = null;
+            phone.setText("");
             valid = false;
         }
 
