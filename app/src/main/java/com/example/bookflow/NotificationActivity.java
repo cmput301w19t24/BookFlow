@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -50,7 +51,7 @@ public class NotificationActivity extends BasicActivity {
         setContentView(R.layout.activity_notification);
 
         //REMOVE
-        Button tempMyReqButton = findViewById(R.id.tempMySentRequests);
+        TextView tempMyReqButton = findViewById(R.id.tempMySentRequests);
         tempMyReqButton.setVisibility(View.VISIBLE);
 
         mAuth = FirebaseAuth.getInstance();
