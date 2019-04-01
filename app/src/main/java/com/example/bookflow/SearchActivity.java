@@ -9,8 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,7 +34,6 @@ import com.bumptech.glide.Glide;
 import com.example.bookflow.Model.Book;
 import com.example.bookflow.Model.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -52,14 +51,14 @@ import java.util.ArrayList;
  */
 public class SearchActivity extends BasicActivity {
     public static final String EXTRA_MESSAGE = "com.example.bookflow.MESSAGE";
+    FirebaseRecyclerAdapter<User, UserViewHolder> firebaseUserRecyclerAdapter;
+    FirebaseRecyclerAdapter<Book, BookViewHolder> firebaseBookRecyclerAdapter;
     private EditText search_Text;
     private RadioGroup radioGroup;
     private RadioButton checkAvailableButton, checkAcceptedButton, checkRequestedButton, checkBorrowedButton, selectedButton;
     private DatabaseReference mDatabase;
     private Spinner spinner;
     private RecyclerView recyclerView;
-    FirebaseRecyclerAdapter<User, UserViewHolder> firebaseUserRecyclerAdapter;
-    FirebaseRecyclerAdapter<Book, BookViewHolder> firebaseBookRecyclerAdapter;
     private ArrayList<Book> books;
     private ArrayList<Book> filtered_books;
 
@@ -120,7 +119,7 @@ public class SearchActivity extends BasicActivity {
         mDatabase.child("Books").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Book book =  dataSnapshot.getValue(Book.class);
+                Book book = dataSnapshot.getValue(Book.class);
                 books.add(book);
             }
 
@@ -180,182 +179,6 @@ public class SearchActivity extends BasicActivity {
     }
 
     /**
-     * Book search linear adapter
-     */
-    public class LinearAdapter extends RecyclerView.Adapter <LinearAdapter.LinearViewHolder>{
-        //context
-        private Context mContext;
-
-        private LinearAdapter(SearchActivity context) {
-            this.mContext=context;
-
-        }
-
-
-        @Override
-        public LinearAdapter.LinearViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new LinearViewHolder(LayoutInflater.from(mContext).inflate(R.layout.searchitem,parent,false));
-        }
-
-        /**
-         * bind view holder to adapter
-         * @param holder view holder
-         * @param position position in view
-         */
-        @Override
-        public void onBindViewHolder(LinearAdapter.LinearViewHolder holder, final int position) {
-            holder.setData(mContext,position);
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    //click item to go to book detail page
-                    public void onClick(View v) {
-                        String book_id = filtered_books.get(position).getBookId();
-                        Intent intent = new Intent(SearchActivity.this, BookDetailActivity.class);
-                        intent.putExtra("book_id", book_id);
-                        startActivity(intent);
-                    }
-                });
-
-        }
-
-
-        @Override
-        public int getItemCount() {
-            return filtered_books.size();
-        }
-
-        /**
-         * View holder for book search
-         */
-        class LinearViewHolder extends RecyclerView.ViewHolder{
-            private TextView title;
-            private TextView status;
-            private TextView author;
-            private ImageView photo;
-
-            /**
-             * view holder constructor
-             * @param itemView item in view
-             */
-            private LinearViewHolder(View itemView){
-                super(itemView);
-                title = itemView.findViewById(R.id.searchDetail1);
-                status = itemView.findViewById(R.id.searchDetail3);
-                author = itemView.findViewById(R.id.searchDetail2);
-                photo = itemView.findViewById(R.id.searchItemImage);
-            }
-
-            /**
-             * set data detail to book item
-             * @param ctx context
-             * @param i position
-             */
-            private void setData(Context ctx,final int i){
-                final String owner_id = filtered_books.get(i).getOwnerId();
-
-                //get ownername
-
-                mDatabase.child("Users").addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        User user = dataSnapshot.getValue(User.class);
-                        if(user.getUid().equals(owner_id)){
-                            String ownerName = user.getUsername();
-                            status.setTextColor(Color.BLUE);
-                            status.setTextSize(13);
-                            status.setGravity(Gravity.CENTER);
-                            status.setText("Owned by "+ ownerName + ", Currently "+filtered_books.get(i).getStatus());
-                        }
-                    }
-
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-                title.setTextColor(Color.BLUE);
-                title.setTypeface(null, Typeface.BOLD_ITALIC);
-                title.setText(filtered_books.get(i).getTitle());
-                title.setGravity(Gravity.CENTER);
-
-                author.setTextColor(Color.BLUE);
-                author.setTypeface(null, Typeface.ITALIC);
-                author.setTextSize(15);
-                author.setGravity(Gravity.CENTER);
-                author.setText("by "+filtered_books.get(i).getAuthor());
-
-                Glide.with(ctx).load(filtered_books.get(i).getPhotoUri()).into(photo);
-            }
-        }
-    }
-
-
-    /**
-     * User view holder class for search user
-     */
-    public static class UserViewHolder extends RecyclerView.ViewHolder {
-        View mView;
-        /**
-         * Constructor for view holder
-         *
-         * @param itemView item view for user
-         */
-        private UserViewHolder(@NonNull View itemView) {
-            super(itemView);
-            mView = itemView;
-        }
-
-        /**
-         * get view element and set details
-         *
-         * @param ctx             current context
-         * @param userName        username
-         * @param userEmail       user email
-         * @param userintro       user self intro
-         * @param userImage       user image
-         */
-        private void setDetails(Context ctx, String userName, String userEmail, String userintro, String userImage) {
-            TextView user_name =  mView.findViewById(R.id.searchDetail1);
-            TextView user_email =  mView.findViewById(R.id.searchDetail3);
-            TextView user_selfintro =  mView.findViewById(R.id.searchDetail2);
-            ImageView user_image = mView.findViewById(R.id.searchItemImage);
-            user_name.setTextColor(Color.BLACK);
-            user_name.setGravity(Gravity.START);
-            user_name.setText(userName);
-
-            user_email.setTextColor(Color.BLUE);
-            user_email.setTextSize(15);
-            user_email.setGravity(Gravity.START);
-            user_email.setText(userEmail);
-
-            user_selfintro.setGravity(Gravity.START);
-            user_selfintro.setTextSize(15);
-            if(userintro == null || userintro.equals("") ){
-                user_selfintro.setText("This guy is lazy and don't have a introduction yet");
-            }else {
-                user_selfintro.setText(userintro);
-            }
-            Glide.with(ctx).load(userImage).into(user_image);
-        }
-    }
-
-    /**
      * search User function
      *
      * @param searchText input keyword of User to search
@@ -409,43 +232,6 @@ public class SearchActivity extends BasicActivity {
         }
 
         firebaseUserRecyclerAdapter.startListening();
-    }
-
-    /**
-     * Book view holder class
-     */
-    public static class BookViewHolder extends RecyclerView.ViewHolder {
-        View mView;
-
-        /**
-         * basic constructor
-         *
-         * @param itemView
-         */
-        private BookViewHolder(@NonNull View itemView) {
-            super(itemView);
-            mView = itemView;
-        }
-
-        /**
-         * get view element and set details
-         *
-         * @param ctx       current context
-         * @param isbn      isbn
-         * @param title     title
-         * @param author    author
-         * @param bookImage book image
-         */
-        public void setDetails(Context ctx, String isbn, String title, String author, String bookImage) {
-            TextView book_isbn = (TextView) mView.findViewById(R.id.searchDetail1);
-            TextView book_title = (TextView) mView.findViewById(R.id.searchDetail2);
-            TextView book_author = (TextView) mView.findViewById(R.id.searchDetail3);
-            ImageView book_image = (ImageView) mView.findViewById(R.id.searchItemImage);
-            book_isbn.setText("isbn: "+isbn);
-            book_title.setText("title: "+title);
-            book_author.setText("author: "+author);
-            Glide.with(ctx).load(bookImage).into(book_image);
-        }
     }
 
     /**
@@ -505,15 +291,14 @@ public class SearchActivity extends BasicActivity {
         firebaseBookRecyclerAdapter.startListening();
     }
 
-
-    private void searchBook(String searchText,String status){
+    private void searchBook(String searchText, String status) {
         try {
             firebaseUserRecyclerAdapter.stopListening();
         } catch (Exception e) {
 
         }
-        filterBooks(searchText,status);
-        Log.i("filter",filtered_books.toString());
+        filterBooks(searchText, status);
+        Log.i("filter", filtered_books.toString());
         LinearAdapter madapter = new LinearAdapter(this);
         recyclerView.setAdapter(madapter);
 
@@ -536,34 +321,250 @@ public class SearchActivity extends BasicActivity {
                 searchUser(searchText);
                 break;
             case "search book":
-                selectedButton =  findViewById(radioGroup.getCheckedRadioButtonId());
+                selectedButton = findViewById(radioGroup.getCheckedRadioButtonId());
                 status = selectedButton.getText().toString().toUpperCase();
                 searchBook(searchText, status);
         }
 
     }
 
-    private void filterBooks(String searchText, String status){
+    private void filterBooks(String searchText, String status) {
         String[] words = searchText.split("\\s");
         filtered_books.clear();
-        for(Book book:books){
+        for (Book book : books) {
             filtered_books.add(book);
         }
-        for(Book book:books) {
-            if(!(book.getStatus().toString().equals(status))){
+        for (Book book : books) {
+            if (!(book.getStatus().toString().equals(status))) {
                 filtered_books.remove(book);
             }
 
-            if (searchText.equals("")){
+            if (searchText.equals("")) {
 
-            } else{
-                for(String w:words){
-                    if(!(book.getBookInfo().toLowerCase().contains(w.toLowerCase()))){
+            } else {
+                for (String w : words) {
+                    if (!(book.getBookInfo().toLowerCase().contains(w.toLowerCase()))) {
                         filtered_books.remove(book);
                     }
                 }
             }
 
+        }
+    }
+
+    /**
+     * User view holder class for search user
+     */
+    public static class UserViewHolder extends RecyclerView.ViewHolder {
+        View mView;
+
+        /**
+         * Constructor for view holder
+         *
+         * @param itemView item view for user
+         */
+        private UserViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mView = itemView;
+        }
+
+        /**
+         * get view element and set details
+         *
+         * @param ctx       current context
+         * @param userName  username
+         * @param userEmail user email
+         * @param userintro user self intro
+         * @param userImage user image
+         */
+        private void setDetails(Context ctx, String userName, String userEmail, String userintro, String userImage) {
+            TextView user_name = mView.findViewById(R.id.searchDetail1);
+            TextView user_email = mView.findViewById(R.id.searchDetail3);
+            TextView user_selfintro = mView.findViewById(R.id.searchDetail2);
+            ImageView user_image = mView.findViewById(R.id.searchItemImage);
+            user_name.setTextColor(Color.BLACK);
+            user_name.setGravity(Gravity.START);
+            user_name.setText(userName);
+
+            user_email.setTextColor(Color.BLUE);
+            user_email.setTextSize(15);
+            user_email.setGravity(Gravity.START);
+            user_email.setText(userEmail);
+
+            user_selfintro.setGravity(Gravity.START);
+            user_selfintro.setTextSize(15);
+            if (userintro == null || userintro.equals("")) {
+                user_selfintro.setText("This guy is lazy and don't have a introduction yet");
+            } else {
+                user_selfintro.setText(userintro);
+            }
+            Glide.with(ctx).load(userImage).into(user_image);
+        }
+    }
+
+    /**
+     * Book view holder class
+     */
+    public static class BookViewHolder extends RecyclerView.ViewHolder {
+        View mView;
+
+        /**
+         * basic constructor
+         *
+         * @param itemView
+         */
+        private BookViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mView = itemView;
+        }
+
+        /**
+         * get view element and set details
+         *
+         * @param ctx       current context
+         * @param isbn      isbn
+         * @param title     title
+         * @param author    author
+         * @param bookImage book image
+         */
+        public void setDetails(Context ctx, String isbn, String title, String author, String bookImage) {
+            TextView book_isbn = (TextView) mView.findViewById(R.id.searchDetail1);
+            TextView book_title = (TextView) mView.findViewById(R.id.searchDetail2);
+            TextView book_author = (TextView) mView.findViewById(R.id.searchDetail3);
+            ImageView book_image = (ImageView) mView.findViewById(R.id.searchItemImage);
+            book_isbn.setText("isbn: " + isbn);
+            book_title.setText("title: " + title);
+            book_author.setText("author: " + author);
+            Glide.with(ctx).load(bookImage).into(book_image);
+        }
+    }
+
+    /**
+     * Book search linear adapter
+     */
+    public class LinearAdapter extends RecyclerView.Adapter<LinearAdapter.LinearViewHolder> {
+        //context
+        private Context mContext;
+
+        private LinearAdapter(SearchActivity context) {
+            this.mContext = context;
+
+        }
+
+
+        @Override
+        public LinearAdapter.LinearViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new LinearViewHolder(LayoutInflater.from(mContext).inflate(R.layout.searchitem, parent, false));
+        }
+
+        /**
+         * bind view holder to adapter
+         *
+         * @param holder   view holder
+         * @param position position in view
+         */
+        @Override
+        public void onBindViewHolder(LinearAdapter.LinearViewHolder holder, final int position) {
+            holder.setData(mContext, position);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                //click item to go to book detail page
+                public void onClick(View v) {
+                    String book_id = filtered_books.get(position).getBookId();
+                    Intent intent = new Intent(SearchActivity.this, BookDetailActivity.class);
+                    intent.putExtra("book_id", book_id);
+                    startActivity(intent);
+                }
+            });
+
+        }
+
+
+        @Override
+        public int getItemCount() {
+            return filtered_books.size();
+        }
+
+        /**
+         * View holder for book search
+         */
+        class LinearViewHolder extends RecyclerView.ViewHolder {
+            private TextView title;
+            private TextView status;
+            private TextView author;
+            private ImageView photo;
+
+            /**
+             * view holder constructor
+             *
+             * @param itemView item in view
+             */
+            private LinearViewHolder(View itemView) {
+                super(itemView);
+                title = itemView.findViewById(R.id.searchDetail1);
+                status = itemView.findViewById(R.id.searchDetail3);
+                author = itemView.findViewById(R.id.searchDetail2);
+                photo = itemView.findViewById(R.id.searchItemImage);
+            }
+
+            /**
+             * set data detail to book item
+             *
+             * @param ctx context
+             * @param i   position
+             */
+            private void setData(Context ctx, final int i) {
+                final String owner_id = filtered_books.get(i).getOwnerId();
+
+                //get ownername
+
+                mDatabase.child("Users").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        User user = dataSnapshot.getValue(User.class);
+                        if (user.getUid().equals(owner_id)) {
+                            String ownerName = user.getUsername();
+                            status.setTextColor(Color.BLUE);
+                            status.setTextSize(13);
+                            status.setGravity(Gravity.CENTER);
+                            status.setText("Owned by " + ownerName + ", Currently " + filtered_books.get(i).getStatus());
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                title.setTextColor(Color.BLUE);
+                title.setTypeface(null, Typeface.BOLD_ITALIC);
+                title.setText(filtered_books.get(i).getTitle());
+                title.setGravity(Gravity.CENTER);
+
+                author.setTextColor(Color.BLUE);
+                author.setTypeface(null, Typeface.ITALIC);
+                author.setTextSize(15);
+                author.setGravity(Gravity.CENTER);
+                author.setText("by " + filtered_books.get(i).getAuthor());
+
+                Glide.with(ctx).load(filtered_books.get(i).getPhotoUri()).into(photo);
+            }
         }
     }
 }
