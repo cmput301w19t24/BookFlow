@@ -147,6 +147,7 @@
             android:onClick="showLocation"
             android:text="@string/LOCATION"
             android:textColor="@android:color/white"
+            android:layout_margin="4dp"
             android:visibility="gone" />
 
     </LinearLayout>
