@@ -153,14 +153,20 @@ public class NotificationActivity extends BasicActivity {
         };
         recyclerView.setAdapter(myFirebaseRecyclerAdapter);
     }
-
+    /**
+     * onStart method
+     * sets up onclick listener on notification list item
+     */
     @Override
     protected void onStart() {
         super.onStart();
         findViewById(R.id.notification_button).setBackgroundResource(R.drawable.notif_select);
         myFirebaseRecyclerAdapter.startListening();
     }
-
+    /**
+     * onStop method
+     * removes onclick listener on notification list item
+     */
     @Override
     protected void onStop() {
         super.onStop();
@@ -169,7 +175,10 @@ public class NotificationActivity extends BasicActivity {
             myFirebaseRecyclerAdapter.stopListening();
         }
     }
-
+    /**
+     * tempMySentRequests method
+     * onclick callback method, goes to sent requests list activity
+     */
     public void tempMySentRequests(View v) {
         Intent intent = new Intent(NotificationActivity.this, SentRequestsListActivity.class);
         startActivity(intent);

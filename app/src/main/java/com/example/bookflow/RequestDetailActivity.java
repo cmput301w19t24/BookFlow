@@ -33,6 +33,8 @@ import java.util.Date;
 
 /**
  * Request Detail Activity
+ * Activity responsible for populating detailed information about a request
+ * handles the transactions of rejecting or accepting requests
  */
 public class RequestDetailActivity extends BasicActivity {
     private FirebaseDatabase mDatabase;
@@ -92,6 +94,7 @@ public class RequestDetailActivity extends BasicActivity {
 
         /**
          * request listener
+         * retrieves owner and borrower information from request object to populate request detail page
          */
         ValueEventListener requestListener = new ValueEventListener() {
             @Override
@@ -197,6 +200,7 @@ public class RequestDetailActivity extends BasicActivity {
 
     /**
      * reject button onClick
+     * rejects a received requests, makes relevant updates to to database
      * @param v view
      */
     public void reject(View v) {
@@ -244,6 +248,7 @@ public class RequestDetailActivity extends BasicActivity {
 
     /**
      * set location onClick
+     * sets location for where users will meet up
      * @param v view
      */
     public void selectLocation(View v) {
@@ -259,6 +264,7 @@ public class RequestDetailActivity extends BasicActivity {
 
     /**
      * accept button onClick
+     * when user presses accept, sends notifications and sends updates request and book status
      * @param v view
      */
     public void accept(View v) {
@@ -394,7 +400,7 @@ public class RequestDetailActivity extends BasicActivity {
     }
 
     /**
-     * set to available if request
+     * set to available if there are no outstanding requests for a book
      */
     public void setToAvailableIfNoRequests() {
         DatabaseReference bookReqRef1 = mDatabase.getReference("RequestsReceivedByBook").child(bookId);

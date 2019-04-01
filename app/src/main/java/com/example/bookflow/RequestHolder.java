@@ -18,6 +18,9 @@ import com.google.firebase.storage.StorageReference;
 
 /**
  * Request holder class
+ * handles displaying of details for items
+ * in the request lists
+ *
  */
 public class RequestHolder extends RecyclerView.ViewHolder{
 
@@ -51,12 +54,20 @@ public class RequestHolder extends RecyclerView.ViewHolder{
     public void setOnClickListener(RequestHolder.ClickListener clickListener){
         mClickListener = clickListener;
     }
-
+    /**
+     * set requester icon function
+     * sets icon of requester
+     * @param s storage reference
+     */
     public void setRequesterIcon(StorageReference s) {
         Glide.with(itemView.getContext())
                 .load(s).into(request_item_icon);
     }
 
+    /**
+     * set request item text
+     * sets text information in a request item
+     */
     public void setRequestItemText(String ownerId, String bookId, String requesterId, String type, String status) {
         final String ownId = ownerId;
         final String myBookId = bookId;
@@ -135,6 +146,10 @@ public class RequestHolder extends RecyclerView.ViewHolder{
         };
         userRef.addListenerForSingleValueEvent(userListener);
     }
+    /**
+     * set status function
+     * displays status information in request item on list
+     */
     public void setStatus(String status) {
         request_status.setText(status);
         if (status.equals("Pending")) {
