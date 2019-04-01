@@ -33,8 +33,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
+ * RequestsForBookListActivity class
  * This class displays the requests received by a particular
- * book
+ * book in a list
  */
 
 public class RequestsForBookListActivity extends BasicActivity {
@@ -169,13 +170,19 @@ public class RequestsForBookListActivity extends BasicActivity {
 
 
     }
-
+    /**
+     * onStart method
+     * sets up onclick listener for request list
+     */
     @Override
     protected void onStart() {
         super.onStart();
         myFirebaseRecyclerAdapter.startListening();
     }
-
+    /**
+     * onStop method
+     * removes onclick listener from request list
+     */
     @Override
     protected void onStop() {
         super.onStop();

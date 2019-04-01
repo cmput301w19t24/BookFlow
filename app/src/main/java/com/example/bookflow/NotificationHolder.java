@@ -18,6 +18,8 @@ import com.google.firebase.storage.StorageReference;
 
 /**
  * Notification Holder Class
+ * displays the information for a notification item in a
+ * notification list
  */
 public class NotificationHolder extends RecyclerView.ViewHolder{
 
@@ -56,7 +58,8 @@ public class NotificationHolder extends RecyclerView.ViewHolder{
     }
 
     /**
-     * set the text of the notification
+     * set notification text function
+     * set the text in the notification item
      * @param s text
      */
     public void setNotificationText(String s) {
@@ -64,7 +67,7 @@ public class NotificationHolder extends RecyclerView.ViewHolder{
     }
 
     /**
-     * set the type of the notification
+     * set the type information for the notification item
      * @param s type
      */
     public void setNotificationType(String s) {
