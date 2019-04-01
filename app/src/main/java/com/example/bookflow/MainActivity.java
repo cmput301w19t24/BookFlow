@@ -92,47 +92,67 @@ public class MainActivity extends BasicActivity {
             TextView mtitle = v.findViewById(R.id.ititle);
             ImageView mphoto = v.findViewById(R.id.iphoto);
 
-            String userID;
+            String userID = null;
             if (parent == findViewById(R.id.myBookList)) {
                 userID = String.valueOf(book.getBorrowerId());
-            } else {
+            } else if (parent == findViewById(R.id.myBorrowList)){
                 userID = String.valueOf(book.getOwnerId());
             }
-
-            setUser(v, userID);
+            if (!userID.equals("null")) {
+                setUser(v, userID);
+            }
 
             mauthor.setText(book.getAuthor());
             mstatus.setText(book.getStatus().toString());
             mtitle.setText(book.getTitle());
             Glide.with(MainActivity.this).load(book.getPhotoUri()).into(mphoto);
 
+
+
             return v;
         }
     }
 
     private void setUser (final View v, final String tmpuid) {
-        database.getReference().child("Users").orderByChild("uid").equalTo(tmpuid).addChildEventListener(new ChildEventListener() {
+        database.getReference().child("Users").child(tmpuid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = (User) dataSnapshot.getValue(User.class);
                 TextView rname = v.findViewById(R.id.iuser);
-                rname.setText(user.getUsername());
                 TextView rby = v.findViewById(R.id.iby2);
-                rby.setVisibility(View.VISIBLE);
+                TextView status = v.findViewById(R.id.istatus);
+                if (status.getText().toString().equals("ACCEPTED") ||
+                        status.getText().toString().equals("BORROWED")) {
+                    rname.setText(user.getUsername());
+                    rby.setVisibility(View.VISIBLE);
+                }
             }
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            }
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            }
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
+
+
+//        database.getReference().child("Users").orderByChild("uid").equalTo(tmpuid).addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//            }
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//            }
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
     }
 
     /**
@@ -347,11 +367,11 @@ public class MainActivity extends BasicActivity {
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                reloadBookList();
+//                reloadBookList();
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                reloadBookList();
+//                reloadBookList();
             }
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
