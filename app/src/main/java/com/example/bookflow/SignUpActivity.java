@@ -155,17 +155,21 @@ public class SignUpActivity extends BasicActivity {
                                         public void onComplete(@NonNull Task<Uri> task) {
                                             String imageurl = task.toString();
                                             FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("imageurl").setValue(imageurl);
-                                        }                                    });
+                                            // start main activity
+                                            Intent intent_main = new Intent(SignUpActivity.this, MainActivity.class);
+                                            startActivity(intent_main);
+                                        }
+                                    });
                                 } else {
                                     Toast.makeText(SignUpActivity.this, "Failed to add icon", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
+                    } else {
+                        // start main activity
+                        Intent intent_main = new Intent(SignUpActivity.this, MainActivity.class);
+                        startActivity(intent_main);
                     }
-
-                    // start main activity
-                    Intent intent_main = new Intent(SignUpActivity.this, MainActivity.class);
-                    startActivity(intent_main);
                 } else {
                     task.getException().printStackTrace();
                     Toast.makeText(SignUpActivity.this, "Email address already registered.", Toast.LENGTH_SHORT).show();
