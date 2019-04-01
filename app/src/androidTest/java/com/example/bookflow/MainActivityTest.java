@@ -11,7 +11,9 @@
 package com.example.bookflow;
 
 import android.app.Activity;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,7 +24,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.List;
+
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 public class MainActivityTest extends ActivityTestRule<MainActivity> {
 
@@ -62,7 +70,12 @@ public class MainActivityTest extends ActivityTestRule<MainActivity> {
         MainActivity activity = (MainActivity) solo.getCurrentActivity();
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickInList(0);
+//        onView(withId(R.id.offer_switch)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+        ListView booklist = (ListView)solo.getView("myBookList");
+        if (booklist.getVisibility() == ListView.VISIBLE) {
+            solo.clickInList(0);
+        }
+
         solo.assertCurrentActivity("Wrong Activity", BookDetailActivity.class);
     }
 
