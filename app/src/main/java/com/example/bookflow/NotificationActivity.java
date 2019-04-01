@@ -1,6 +1,7 @@
 package com.example.bookflow;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -96,6 +97,7 @@ public class NotificationActivity extends BasicActivity {
                                 String requestId = n.getTransactionId();
                                 String bookId = n.getBookId();
                                 String type = n.getType();
+                                dbRef.child("viewed").setValue("true");
 
                                 if (type.equals("request")) {
                                     Intent intent = new Intent(NotificationActivity.this, RequestDetailActivity.class);
@@ -130,7 +132,12 @@ public class NotificationActivity extends BasicActivity {
                 String sender_id = model.getSenderId();
                 String path = "users/" + sender_id;
                 String timestamp = model.getTimestamp();
+                String viewed = model.getViewed();
                 StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(path);
+
+                if(viewed.equals("true")){
+                    holder.itemView.setBackgroundColor(Color.parseColor("#99B5CC"));
+                }
 
                 if (model.getType().equals("request")) {
                     holder.setNotificationType("Book Request");
