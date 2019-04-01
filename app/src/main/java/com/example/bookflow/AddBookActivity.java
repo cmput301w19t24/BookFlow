@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +31,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
  * This activity handles add book logic, and can be
  * jumped by pressing the "add" button of the bottom bar.
  */
-public class AddBookActivity extends BasicActivity {
+public class AddBookActivity extends AppCompatActivity {
 
     private static final String TAG = "AddBookActivity";
 

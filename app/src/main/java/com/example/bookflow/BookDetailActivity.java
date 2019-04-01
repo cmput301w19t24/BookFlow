@@ -6,11 +6,10 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -22,10 +21,7 @@ import com.example.bookflow.Model.Book;
 import com.example.bookflow.Model.Request;
 import com.example.bookflow.Model.Notification;
 import com.example.bookflow.Model.User;
-import com.example.bookflow.Util.FirebaseIO;
 import com.example.bookflow.Util.ScanUtility;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -48,7 +44,7 @@ import java.util.Date;
  * a borrower can request a book here
  */
 
-public class BookDetailActivity extends BasicActivity {
+public class BookDetailActivity extends AppCompatActivity {
     public static final String INTENT_EXTRA = "book_id";
 
     private TextView titleField;
