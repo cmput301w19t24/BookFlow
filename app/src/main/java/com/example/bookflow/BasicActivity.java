@@ -66,12 +66,12 @@ public class BasicActivity extends AppCompatActivity {
                 if (firstIn) {
                     notif_count = tmp;
                     firstIn = false;
-                } else if (notif_count > tmp) {
+                } else if (notif_count < tmp) {
                     // set notification count
                     TextView count_text = findViewById(R.id.basic_noti_count);
                     count_text.setVisibility(View.VISIBLE);
                     count_text.setText(String.valueOf(tmp-notif_count));
-                } else if (notif_count < tmp) {
+                } else if (notif_count > tmp) {
                     notif_count = tmp;
                 }
             }
