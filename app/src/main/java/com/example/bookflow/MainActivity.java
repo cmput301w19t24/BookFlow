@@ -64,6 +64,7 @@ public class MainActivity extends BasicActivity {
     private Query query;
 
     private long notif_count;
+    private boolean firstIn;
 
     private ArrayList<Book> books;
     private ArrayList<Book> nonfiltered_books;
@@ -161,6 +162,8 @@ public class MainActivity extends BasicActivity {
         nonfiltered_borrows = new ArrayList<Book>();
         adpBorrow = new MyAdapter(this, borrows);
 
+        firstIn = true;
+
         // add firebase token to user
         final DatabaseReference currUserRef = database.getReference("Users").child(uid);
         currUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -192,7 +195,6 @@ public class MainActivity extends BasicActivity {
             }
         });
 
-
     }
 
     private void handleNotif() {
@@ -200,10 +202,14 @@ public class MainActivity extends BasicActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 long tmp = dataSnapshot.getChildrenCount();
-                if (firstgrab) {
+                if (firstIn) {
                     notif_count = tmp;
+                    firstIn = false;
                 } else if (notif_count != tmp) {
+                    notif_count = tmp;
                     findViewById(R.id.notification_button).setBackgroundResource(R.drawable.notif_new);
+                } else {
+                    notif_count = tmp;
                 }
             }
             @Override
@@ -211,7 +217,7 @@ public class MainActivity extends BasicActivity {
                 Log.w("cancelled", databaseError.toException());
             }
         };
-        database.getReference().child("Notifications").addListenerForSingleValueEvent(notificationListener);
+        database.getReference().child("Notifications").child(uid).addValueEventListener(notificationListener);
     }
 
     @Override
