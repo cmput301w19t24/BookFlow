@@ -262,6 +262,7 @@ public class UserProfileActivity extends BasicActivity {
                         ImageView userImage = findViewById(R.id.userPicture);
                         Glide.with(UserProfileActivity.this).load(uri).into(userImage);
                     }
+
                 });
             }
             @Override
