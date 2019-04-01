@@ -108,15 +108,18 @@ public class RequestDetailActivity extends BasicActivity {
 
                             if (curUser.equals(ownerId)) {
                                 userLabel.setText("Requester");
-                                String path = "users/" + borrowerId;
-                                StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(path);
-                                Glide.with(RequestDetailActivity.this)
-                                        .load(imageRef).into(userIcon);
+
                                 DatabaseReference userDbRef =  mDatabase.getReference("Users").child(borrowerId);
                                 ValueEventListener userListener = new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         String borrowerUsername = dataSnapshot.child("username").getValue().toString();
+                                        String borrowerPhotoUrl = dataSnapshot.child("imageurl").getValue().toString();
+
+                                        Glide.with(getApplicationContext())
+                                                .load(borrowerPhotoUrl)
+                                                .into(userIcon);
+
                                         if (status.equals("Pending")) {
                                             requestText.setText(borrowerUsername + " has requested \"" + bookTitle + "\"");
                                             acceptButton.setVisibility(View.VISIBLE);
