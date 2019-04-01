@@ -248,13 +248,13 @@ public class UserProfileActivity extends BasicActivity {
         bookList = (ListView) findViewById(R.id.offerList);
         books.clear();
         adpBook.clear();
+        bookList.setAdapter(adpBook);
         // add user's book to adapter
         query_book.orderByChild("ownerId").equalTo(uid).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Book book = (Book)dataSnapshot.getValue(Book.class);
-                if (null != book.getIsbn() && null != book.getPhotoUri()) {
-
+                if (null != book.getIsbn()) {
                     if (!books.contains(book)) {
                         books.add(book);
                     }
@@ -264,18 +264,25 @@ public class UserProfileActivity extends BasicActivity {
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Book book = (Book)dataSnapshot.getValue(Book.class);
-                if (null != book.getIsbn() && null != book.getPhotoUri()) {
-                    if (!books.contains(book)) {
-                        books.add(book);
+                String bookID = book.getBookId();
+                for (int i=0; i<books.size(); i++) {
+                    if (bookID.equals(books.get(i).getBookId())) {
+                        books.remove(books.get(i));
                     }
-                    bookList.setAdapter(adpBook);
                 }
+                books.add(book);
+                bookList.setAdapter(adpBook);
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 Book book = (Book)dataSnapshot.getValue(Book.class);
-                if (null != book.getIsbn() && null != book.getPhotoUri())
-                    loadBookList();
+                String bookID = book.getBookId();
+                for (int i=0; i<books.size(); i++) {
+                    if (bookID.equals(books.get(i).getBookId())) {
+                        books.remove(books.get(i));
+                    }
+                }
+                bookList.setAdapter(adpBook);
             }
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
