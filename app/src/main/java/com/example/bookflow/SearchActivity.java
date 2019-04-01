@@ -171,8 +171,6 @@ public class SearchActivity extends BasicActivity {
                 return false;
             }
         });
-
-
     }
 
     @Override

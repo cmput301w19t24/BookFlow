@@ -246,7 +246,22 @@ public class UserProfileActivity extends BasicActivity {
 
                 ImageView userImage = findViewById(R.id.userPicture);
                 Glide.with(UserProfileActivity.this).load(user.getImageurl()).into(userImage);
+                                // download user image from storage and update
+                StorageReference storageRef;
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                try {
+                    storageRef = storage.getReference().child("users").child(uid);
+                } catch (Exception e) {
+                    return ;
+                }
 
+                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        ImageView userImage = findViewById(R.id.userPicture);
+                        Glide.with(UserProfileActivity.this).load(uri).into(userImage);
+                    }
+                });
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

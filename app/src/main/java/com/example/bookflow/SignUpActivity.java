@@ -150,7 +150,7 @@ public class SignUpActivity extends BasicActivity {
                                         // store the user's profile to database and storage
                                         @Override
                                         public void onComplete(@NonNull Task<Uri> task) {
-                                            String imageurl = task.getResult().toString();
+                                            String imageurl = task.toString();
                                             user.setImageurl(imageurl);
                                         }                                    });
                                 } else {
