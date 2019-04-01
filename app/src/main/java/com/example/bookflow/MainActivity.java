@@ -169,24 +169,22 @@ public class MainActivity extends BasicActivity {
         currUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.hasChild("notificationToken")) {
-                    FirebaseInstanceId.getInstance()
-                            .getInstanceId()
-                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                    if (task.isSuccessful()) {
-                                        // Get new Instance ID token
-                                        String token = task.getResult().getToken();
+                FirebaseInstanceId.getInstance()
+                        .getInstanceId()
+                        .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Get new Instance ID token
+                                    String token = task.getResult().getToken();
 
-                                        Log.i(TAG, "ntfctn token = " + token);
+                                    Log.i(TAG, "ntfctn token = " + token);
 
-                                        currUserRef.child("notificationToken")
-                                                .setValue(token);
-                                    }
+                                    currUserRef.child("notificationToken")
+                                            .setValue(token);
                                 }
-                            });
-                }
+                            }
+                        });
             }
 
             @Override
