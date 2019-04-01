@@ -31,6 +31,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Request Detail Activity
+ */
 public class RequestDetailActivity extends BasicActivity {
     private FirebaseDatabase mDatabase;
     private FirebaseAuth mAuth;
@@ -53,6 +56,10 @@ public class RequestDetailActivity extends BasicActivity {
     private String bookTitle;
 
 
+    /**
+     * activity onCreate
+     * @param savedInstanceState saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +90,9 @@ public class RequestDetailActivity extends BasicActivity {
         DatabaseReference requestReference = mDatabase.getReference("RequestsReceivedByBook").child(bookId).child(requestId);
         bookLabel.setText("Book");
 
+        /**
+         * request listener
+         */
         ValueEventListener requestListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -185,6 +195,10 @@ public class RequestDetailActivity extends BasicActivity {
         requestReference.addListenerForSingleValueEvent(requestListener);
     }
 
+    /**
+     * reject button onClick
+     * @param v view
+     */
     public void reject(View v) {
         Log.e("hello",requestId);
         // display toast
@@ -228,6 +242,10 @@ public class RequestDetailActivity extends BasicActivity {
         finish();
     }
 
+    /**
+     * set location onClick
+     * @param v view
+     */
     public void selectLocation(View v) {
         Intent intent = new Intent(this, MapsActivity.class);
         ArrayList<String> infos = new ArrayList<>();
@@ -239,6 +257,10 @@ public class RequestDetailActivity extends BasicActivity {
         startActivity(intent);
     }
 
+    /**
+     * accept button onClick
+     * @param v view
+     */
     public void accept(View v) {
         DatabaseReference thebookRef = mDatabase.getReference("Books").child(bookId);
         thebookRef.child("status").setValue("ACCEPTED");
@@ -337,7 +359,10 @@ public class RequestDetailActivity extends BasicActivity {
     }
 
 
-
+    /**
+     * cancel Request onClick
+     * @param v view
+     */
     public void cancelRequest(View v) {
         DatabaseReference sentReqRef = mDatabase.getReference("RequestsSentByUser").child(borrowerId).child(requestId);
         sentReqRef.removeValue();
@@ -367,6 +392,10 @@ public class RequestDetailActivity extends BasicActivity {
         notificationRef.addListenerForSingleValueEvent(notificationListener);
         finish();
     }
+
+    /**
+     * set to available if request
+     */
     public void setToAvailableIfNoRequests() {
         DatabaseReference bookReqRef1 = mDatabase.getReference("RequestsReceivedByBook").child(bookId);
         ValueEventListener bookReqListener = new ValueEventListener() {
