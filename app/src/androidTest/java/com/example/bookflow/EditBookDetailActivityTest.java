@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -31,7 +32,7 @@ public class EditBookDetailActivityTest extends ActivityTestRule<EditBookDetailA
         super(EditBookDetailActivity.class);
         mFirebaseIO = FirebaseIO.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword("shengyao@ualberta.ca", "123456");
+        mAuth.signInWithEmailAndPassword("shengyao@ualberta.ca", "112233");
     }
 
     @Rule
@@ -42,7 +43,7 @@ public class EditBookDetailActivityTest extends ActivityTestRule<EditBookDetailA
     public void setUp() throws Exception{
 
         Intent intent = new Intent();
-        intent.putExtra("bookid", "-L_fjhTYKcU4LWkF6mbs");
+        intent.putExtra("bookid", "-LbPJ2lKb7u3P__0BGH4");
 
         rule.launchActivity(intent);
         solo = new Solo(getInstrumentation(), rule.getActivity());
@@ -50,7 +51,7 @@ public class EditBookDetailActivityTest extends ActivityTestRule<EditBookDetailA
     }
 
     @Test
-    public void enterInfo() {
+    public void editBook() {
         solo.assertCurrentActivity("wrong activity!", EditBookDetailActivity.class);
 
         solo.enterText((EditText) solo.getView(R.id.edit_book_title_et), "Solo Test Book");
@@ -58,8 +59,8 @@ public class EditBookDetailActivityTest extends ActivityTestRule<EditBookDetailA
         solo.enterText((EditText) solo.getView(R.id.edit_book_isbn_et), "7010");
         solo.enterText((EditText) solo.getView(R.id.edit_book_description_it), "Solo Test Book lalaba labala hei");
 
-        ImageView addbook = (ImageView) solo.getView("edit_book_save_iv");
-        solo.clickOnView(addbook);
+        ActionMenuItemView editBook = (ActionMenuItemView) solo.getView("action_edit_book_save");
+        solo.clickOnView(editBook);
 
     }
 
@@ -67,7 +68,7 @@ public class EditBookDetailActivityTest extends ActivityTestRule<EditBookDetailA
     public void enterScan() {
         solo.assertCurrentActivity("wrong activity!", EditBookDetailActivity.class);
 
-        solo.clickOnButton(0);
+        solo.clickOnButton("scan");
         solo.assertCurrentActivity("wrong activity", ScanActivity.class);
 
         solo.goBack();
@@ -75,5 +76,4 @@ public class EditBookDetailActivityTest extends ActivityTestRule<EditBookDetailA
         solo.assertCurrentActivity("wrong activity!", EditBookDetailActivity.class);
 
     }
-
 }
