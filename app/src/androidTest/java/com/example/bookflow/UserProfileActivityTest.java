@@ -47,9 +47,6 @@ public class UserProfileActivityTest extends ActivityTestRule<UserProfileActivit
         onView(withId(R.id.offer_switch)).perform(click());
         onView(withId(R.id.offer_switch)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
 
-        onView(withId(R.id.request_switch)).perform(click());
-        onView(withId(R.id.request_switch)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-
         onView(withId(R.id.review_switch)).perform(click());
         onView(withId(R.id.review_switch)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
     }
