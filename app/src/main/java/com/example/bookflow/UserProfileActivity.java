@@ -254,7 +254,7 @@ public class UserProfileActivity extends BasicActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Book book = (Book)dataSnapshot.getValue(Book.class);
                 if (!books.contains(book)) {
-                    adpBook.add(book);
+                    books.add(book);
                 }
             }
             @Override
