@@ -13,9 +13,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -145,7 +148,7 @@ public class EditProfileActivity extends AppCompatActivity {
      * delete the old image and put a new image in, they have the same file name
      */
     private void updateStorage() {
-        StorageReference storageRef;
+        final StorageReference storageRef;
         try {
             storageRef = storage.getReference().child("users").child(userUid);
         } catch (Exception e) {
@@ -159,10 +162,24 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        storageRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        storageRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                changeImageView();
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if (task.isSuccessful()) {
+                    storageRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        // store the user's profile to database and storage
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            String imageurl = task.getResult().toString();
+                            FirebaseDatabase.getInstance().getReference().child("Users").child(userUid).child("imageurl").setValue(imageurl);
+                            // start main activity
+                            Intent intent_main = new Intent(EditProfileActivity.this, MainActivity.class);
+                            startActivity(intent_main);
+                        }
+                    });
+                } else {
+                    Toast.makeText(EditProfileActivity.this, "Failed to add icon", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -187,7 +204,7 @@ public class EditProfileActivity extends AppCompatActivity {
         boolean valid = true;
 
         // check if user name is entered in correct format
-        String usernamePat = "^([a-z0-9]{3,20})$";
+        String usernamePat = "^([a-z0-9A-Z]{3,20})$";
         if (!Pattern.matches(usernamePat, usernameStr)) {
             username.setError("username should more 6 and less than 20 characters with only letters or numbers");
             valid = false;
