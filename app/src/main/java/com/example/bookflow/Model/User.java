@@ -27,8 +27,6 @@ public class User implements Owner,Borrower{
     private String imageurl;
     private String selfIntro;
 
-    private String notificationToken;
-
     private ArrayList<Book> ownedBooks = new ArrayList<Book>();
     private ArrayList<Book> borrowedBooks= new ArrayList<Book>();
     private ArrayList<Request>  requests= new ArrayList<Request>();
@@ -55,13 +53,29 @@ public class User implements Owner,Borrower{
         this.imageurl = user.getImageurl();
     }
 
-    public String getNotificationToken() {
-        return notificationToken;
+    /**
+     * getter of image url
+     * @return imageUrl
+     */
+    public String getImageurl() {
+        return imageurl;
     }
 
-    public void setNotificationToken(String notificationToken) {
-        this.notificationToken = notificationToken;
+    /**
+     * setter of imageUrl
+     * @param url string
+     */
+    public void setImageurl(String url) {
+        this.imageurl = url;
     }
+
+//    public String getNotificationToken() {
+//        return notificationToken;
+//    }
+//
+//    public void setNotificationToken(String notificationToken) {
+//        this.notificationToken = notificationToken;
+//    }
 
     /**
      * self intro getter
@@ -292,22 +306,6 @@ public class User implements Owner,Borrower{
      */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    /**
-     * getter of image url
-     * @return imageUrl
-     */
-    public String getImageurl() {
-        return imageurl;
-    }
-
-    /**
-     * setter of imageUrl
-     * @param url string
-     */
-    public void setImageurl(String url) {
-        this.imageurl = url;
     }
 
     /**
