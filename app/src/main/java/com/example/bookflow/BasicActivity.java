@@ -32,6 +32,10 @@ public class BasicActivity extends AppCompatActivity {
     private boolean firstIn;
 
 
+    /**
+     * on create
+     * @param savedInstanceState saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +53,18 @@ public class BasicActivity extends AppCompatActivity {
         firstIn = true;
     }
 
+    /**
+     * on start
+     */
     @Override
     protected void onStart() {
         super.onStart();
         handleNotif();
     }
 
+    /**
+     * handle a notification so that all activities can be notified
+     */
     private void handleNotif() {
         FirebaseDatabase database =FirebaseDatabase.getInstance();
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -109,7 +119,6 @@ public class BasicActivity extends AppCompatActivity {
         }
     }
 
-    //Todo: add book
     public void clickAddButton(View v){
         Intent intent = new Intent(this, AddBookActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

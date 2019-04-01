@@ -120,7 +120,12 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * on activity result
+     * @param requestCode request code
+     * @param resultCode result code
+     * @param data data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {

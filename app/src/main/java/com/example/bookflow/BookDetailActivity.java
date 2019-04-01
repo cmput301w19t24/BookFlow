@@ -43,7 +43,6 @@ import java.util.Date;
  * an owner can edit their book here
  * a borrower can request a book here
  */
-
 public class BookDetailActivity extends AppCompatActivity {
     public static final String INTENT_EXTRA = "book_id";
 
@@ -209,9 +208,11 @@ public class BookDetailActivity extends AppCompatActivity {
         }
     }
 
+
     /**
      * When the request button is clicked, this function creates a request
      * and sends a notification to the owner of the book
+     * @param v clicked view
      */
     public void request(View v) {
         FirebaseUser user = mAuth.getCurrentUser();

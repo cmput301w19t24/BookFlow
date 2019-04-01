@@ -12,8 +12,10 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.InputStream;
 
-// https://stackoverflow.com/questions/44949432/how-to-integrate-firebase-with-glide-using-method/44949636
-
+/**
+ * to make Glide work with BookFlow
+ * https://stackoverflow.com/questions/44949432/how-to-integrate-firebase-with-glide-using-method/44949636
+ */
 @GlideModule
 public class MyAppGlideModule extends AppGlideModule {
 

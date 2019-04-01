@@ -38,11 +38,9 @@ import java.util.Date;
  * are displayed in a recycler view, along
  * with the senders icon
  */
-
 public class NotificationActivity extends BasicActivity {
     private FirebaseAuth mAuth;
     private FirebaseRecyclerAdapter<Notification, NotificationHolder> myFirebaseRecyclerAdapter;
-    private String photoUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

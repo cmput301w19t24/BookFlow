@@ -16,6 +16,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
+/**
+ * Notification Holder Class
+ */
 public class NotificationHolder extends RecyclerView.ViewHolder{
 
     private final TextView notification_text;
@@ -40,6 +43,9 @@ public class NotificationHolder extends RecyclerView.ViewHolder{
         });
     }
 
+    /**
+     * Click Listener Interface
+     */
     public interface ClickListener{
         public void onItemClick(View view, int position);
 //        public void onItemLongClick(View view, int position);

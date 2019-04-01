@@ -71,7 +71,9 @@ public class MainActivity extends BasicActivity {
     private ArrayList<Book> filtered_borrows;
 
 
-    // class of Adapter
+    /**
+     * adapter class that combines book with view
+     */
     class MyAdapter extends ArrayAdapter<Book> {
         MyAdapter(Context c, ArrayList<Book> books) {
             super(c,R.layout.main_listitem, books);
@@ -111,8 +113,8 @@ public class MainActivity extends BasicActivity {
 
     /**
      * Set the borrower or owner of the book when applicable
-     * @param v
-     * @param tmpuid
+     * @param v view
+     * @param tmpuid temporary user ID
      */
     private void setUser (final View v, final String tmpuid) {
         database.getReference().child("Users").child(tmpuid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -136,9 +138,10 @@ public class MainActivity extends BasicActivity {
         });
     }
 
+
     /**
-     *
-     * @param savedInstanceState
+     * onCreate activity
+     * @param savedInstanceState saved instance state
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,6 +198,9 @@ public class MainActivity extends BasicActivity {
 
     }
 
+    /**
+     * on start activity
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -338,32 +344,6 @@ public class MainActivity extends BasicActivity {
         myBorrowList.setAdapter(adpBorrow);
     }
 
-//    /**
-//     * Clear the books arraylists
-//     * reset the boolean and retrieve the book list
-//     */
-//    private void reloadBookList() {
-//        firstgrab = true;
-//        books.clear();
-//        filtered_books.clear();
-//        nonfiltered_books.clear();
-//        adpBook.clear();
-//        bookList();
-//    }
-
-//    /**
-//     * Clear the borrows arraylists
-//     * reset the boolean and retrieve the borrow list
-//     */
-//    private void reloadBorrowList() {
-//        firstgrab = true;
-//        borrows.clear();
-//        filtered_borrows.clear();
-//        adpBorrow.clear();
-//        nonfiltered_borrows.clear();
-//        borrowList();
-//    }
-
     /**
      * view book list method
      */
@@ -494,7 +474,7 @@ public class MainActivity extends BasicActivity {
 
     /**
      * Toggle the visiablities of the listviews to see the borrowlist
-     * @param borrowlistV
+     * @param borrowlistV borrow list view
      */
     public void seeBorrowList(View borrowlistV) {
         findViewById(R.id.myBookList).setVisibility(View.GONE);
@@ -508,7 +488,7 @@ public class MainActivity extends BasicActivity {
 
     /**
      * Toggle the visiablities of the listviews to see the book list
-     * @param booklistV
+     * @param booklistV book list view
      */
     public void seeBookList(View booklistV) {
         findViewById(R.id.myBookList).setVisibility(View.VISIBLE);
@@ -522,7 +502,7 @@ public class MainActivity extends BasicActivity {
 
     /**
      * when click the refresh button, this function will be called
-     * @param refreshV
+     * @param refreshV refresh button
      */
     public void refreshPage(View refreshV) {
         finish();

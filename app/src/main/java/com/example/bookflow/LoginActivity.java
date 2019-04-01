@@ -30,6 +30,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.regex.Pattern;
 
+/**
+ * Handles login functionality
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private EditText email, password;
@@ -43,8 +46,8 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
     /**
-     *
-     * @param savedInstanceState
+     * on create activity
+     * @param savedInstanceState saved instance state
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
