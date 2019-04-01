@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <solid android:width="2dp" android:color="@color/common_google_signin_btn_text_dark_default" />
+            <corners android:topLeftRadius="10dp" android:topRightRadius="10dp"/>
+        </shape>
+    </item>
+    <item android:bottom="2dp"  android:top="2dp"
+        android:left="2dp"  android:right="2dp"
+        >
+        <shape android:shape="oval">
+            <solid android:color="@color/colorYello" />
+
+        </shape>
+    </item>
+</layer-list>

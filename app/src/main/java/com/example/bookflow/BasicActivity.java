@@ -7,8 +7,15 @@ package com.example.bookflow;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
+
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -21,6 +28,9 @@ import java.util.ArrayList;
 public class BasicActivity extends AppCompatActivity {
     private ArrayList<Class> mActivityClasses;
     private String uid;
+    private long notif_count;
+    private boolean firstIn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +45,39 @@ public class BasicActivity extends AppCompatActivity {
         mActivityClasses.add(UserProfileActivity.class);
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
+        firstIn = true;
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        handleNotif();
+    }
+
+    private void handleNotif() {
+        FirebaseDatabase database =FirebaseDatabase.getInstance();
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        ValueEventListener notificationListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long tmp = dataSnapshot.getChildrenCount();
+                if (firstIn) {
+                    notif_count = tmp;
+                    firstIn = false;
+                } else if (notif_count != tmp) {
+                    notif_count = tmp;
+                    TextView count_text = findViewById(R.id.basic_noti_count);
+                    count_text.setVisibility(View.VISIBLE);
+                } else {
+                    notif_count = tmp;
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("cancelled", databaseError.toException());
+            }
+        };
+        database.getReference().child("Notifications").child(uid).addValueEventListener(notificationListener);
     }
 
     /**

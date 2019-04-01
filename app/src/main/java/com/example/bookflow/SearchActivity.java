@@ -64,9 +64,6 @@ public class SearchActivity extends BasicActivity {
     private ArrayList<Book> books;
     private ArrayList<Book> filtered_books;
 
-    private long notif_count;
-    private boolean firstIn;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +85,6 @@ public class SearchActivity extends BasicActivity {
         search_Text = findViewById(R.id.searchText);
 
         spinner = findViewById(R.id.spinner);
-        firstIn = true;
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -177,36 +173,10 @@ public class SearchActivity extends BasicActivity {
         });
     }
 
-    private void handleNotif() {
-        FirebaseDatabase database =FirebaseDatabase.getInstance();
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        ValueEventListener notificationListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                long tmp = dataSnapshot.getChildrenCount();
-                if (firstIn) {
-                    notif_count = tmp;
-                    firstIn = false;
-                } else if (notif_count != tmp) {
-                    notif_count = tmp;
-                    findViewById(R.id.notification_button).setBackgroundResource(R.drawable.notif_new);
-                } else {
-                    notif_count = tmp;
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("cancelled", databaseError.toException());
-            }
-        };
-        database.getReference().child("Notifications").child(uid).addValueEventListener(notificationListener);
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
         findViewById(R.id.search_button).setBackgroundResource(R.drawable.search_select);
-        handleNotif();
     }
 
     /**

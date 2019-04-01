@@ -84,4 +84,22 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.9" />
+
+    <TextView
+        android:id="@+id/basic_noti_count"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/notif_circle"
+        android:gravity="center"
+        android:text="!"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textSize="12sp"
+        android:visibility="gone"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/notification_button"
+        app:layout_constraintEnd_toEndOf="@+id/notification_button"
+        app:layout_constraintStart_toStartOf="@+id/notification_button"
+        app:layout_constraintTop_toTopOf="@+id/notification_button" />
 </android.support.constraint.ConstraintLayout>

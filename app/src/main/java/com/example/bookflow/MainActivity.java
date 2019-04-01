@@ -45,6 +45,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 /**
@@ -62,9 +64,6 @@ public class MainActivity extends BasicActivity {
     private FirebaseAuth mAuth;
     private String uid;
     private Query query;
-
-    private long notif_count;
-    private boolean firstIn;
 
     private ArrayList<Book> books;
     private ArrayList<Book> nonfiltered_books;
@@ -162,8 +161,6 @@ public class MainActivity extends BasicActivity {
         nonfiltered_borrows = new ArrayList<Book>();
         adpBorrow = new MyAdapter(this, borrows);
 
-        firstIn = true;
-
         // add firebase token to user
         final DatabaseReference currUserRef = database.getReference("Users").child(uid);
         currUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -197,29 +194,6 @@ public class MainActivity extends BasicActivity {
 
     }
 
-    private void handleNotif() {
-        ValueEventListener notificationListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                long tmp = dataSnapshot.getChildrenCount();
-                if (firstIn) {
-                    notif_count = tmp;
-                    firstIn = false;
-                } else if (notif_count != tmp) {
-                    notif_count = tmp;
-                    findViewById(R.id.notification_button).setBackgroundResource(R.drawable.notif_new);
-                } else {
-                    notif_count = tmp;
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("cancelled", databaseError.toException());
-            }
-        };
-        database.getReference().child("Notifications").child(uid).addValueEventListener(notificationListener);
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -230,7 +204,6 @@ public class MainActivity extends BasicActivity {
         firstgrab = true;
         bookList();
         borrowList();
-        handleNotif();
     }
 
     @Override
