@@ -140,37 +140,7 @@ public class SearchActivity extends BasicActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-        search_Text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
-                if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    String searchOption = spinner.getSelectedItem().toString();
-                    String searchText = search_Text.getText().toString();
-                    String status;
-                    switch (searchOption) {
-                        case "search user":
-                            searchUser(searchText);
-                            break;
-                        case "search by book name":
-                            selectedButton = findViewById(radioGroup.getCheckedRadioButtonId());
-                            status = selectedButton.getText().toString().toUpperCase();
-                            searchBook(searchText, status);
-                            break;
-                        case "search by book author":
-                            selectedButton = findViewById(radioGroup.getCheckedRadioButtonId());
-                            status = selectedButton.getText().toString().toUpperCase();
-                            searchBook(searchText, status);
-                            break;
-                        case "search by book ISBN":
-                            selectedButton = findViewById(radioGroup.getCheckedRadioButtonId());
-                            status = selectedButton.getText().toString().toUpperCase();
-                            searchBook(searchText, status);
-                    }
-                }
-                return false;
-            }
-        });
     }
 
     @Override
