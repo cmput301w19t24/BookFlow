@@ -190,22 +190,18 @@ public class EditProfileActivity extends AppCompatActivity {
         String usernamePat = "^([a-z0-9]{3,20})$";
         if (!Pattern.matches(usernamePat, usernameStr)) {
             username.setError("username should more 6 and less than 20 characters with only letters or numbers");
-            username = null;
             valid = false;
         }
 
         // check if self introduction is valid
         if (introStr.length() > 25) {
             selfIntro.setError("self introduction cannot exceed 25 characters");
-            selfIntro = null;
             valid = false;
         }
 
         // check if phone is valid
         String phonePat = "[0-9]+";
         if (!Pattern.matches(phonePat, phoneStr)) {
-            phone.setError("Invalid phone number");
-            phone = null;
             valid = false;
         }
 
