@@ -3,13 +3,9 @@ package com.example.bookflow;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,24 +22,16 @@ import com.bumptech.glide.Glide;
 import com.example.bookflow.Model.Book;
 import com.example.bookflow.Model.Review;
 import com.example.bookflow.Model.User;
-import com.firebase.ui.database.FirebaseListAdapter;
-import com.firebase.ui.database.FirebaseListOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  * This class is for user profile page
@@ -246,23 +234,6 @@ public class UserProfileActivity extends BasicActivity {
                 ImageView userImage = findViewById(R.id.userPicture);
                 Glide.with(UserProfileActivity.this).load(user.getImageurl()).into(userImage);
 
-//                // download user image from storage and update
-//                StorageReference storageRef;
-//                FirebaseStorage storage = FirebaseStorage.getInstance();
-//                try {
-//                    storageRef = storage.getReference().child("users").child(uid);
-//                } catch (Exception e) {
-//                    return ;
-//                }
-//
-//                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                    @Override
-//                    public void onSuccess(Uri uri) {
-//                        ImageView userImage = findViewById(R.id.userPicture);
-//                        Glide.with(UserProfileActivity.this).load(uri).into(userImage);
-//                    }
-//
-//                });
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -328,6 +299,8 @@ public class UserProfileActivity extends BasicActivity {
 
                 boolean pleaseAdd = true;
 
+                // only add the review when all the fields of the review has been
+                // received. i.e. not null
                 DataSnapshot reviewerUid = dataSnapshot.child("reviewer");
                 DataSnapshot uuidData = dataSnapshot.child("uuid");
                 if (null != reviewerUid.getValue()) {
@@ -352,6 +325,8 @@ public class UserProfileActivity extends BasicActivity {
                 Review review = (Review) dataSnapshot.getValue(Review.class);
                 boolean pleaseAdd = true;
 
+                // only add the review when all the fields of the review has been
+                // received. i.e. not null
                 DataSnapshot reviewerUid = dataSnapshot.child("reviewer");
                 DataSnapshot uuidData = dataSnapshot.child("uuid");
                 if (null != reviewerUid.getValue()) {
