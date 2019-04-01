@@ -64,10 +64,10 @@ public class LoginActivityTest extends ActivityTestRule<LoginActivity> {
         solo.clearEditText((EditText) solo.getView(R.id.email));
         solo.clearEditText((EditText) solo.getView(R.id.password));
         solo.enterText((EditText) solo.getView(R.id.email), "shengyao@ualberta.ca");
-        solo.enterText((EditText) solo.getView(R.id.password), "123456");
+        solo.enterText((EditText) solo.getView(R.id.password), "112233");
         Button loginbtn = (Button)solo.getView("login");
         solo.clickOnView(loginbtn);
-        solo.waitForText("Login Successfully",1,10000);
+        solo.waitForText("Logged in",1,10000);
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
     }
 
@@ -92,7 +92,7 @@ public class LoginActivityTest extends ActivityTestRule<LoginActivity> {
         solo.clearEditText((EditText) solo.getView(R.id.email));
         solo.clearEditText((EditText) solo.getView(R.id.password));
         solo.enterText((EditText) solo.getView(R.id.email), "shengyao@ualberta.ca");
-        solo.enterText((EditText) solo.getView(R.id.password), "123456");
+        solo.enterText((EditText) solo.getView(R.id.password), "112233");
         Button loginbtn = (Button)solo.getView("login");
         solo.clickOnView(loginbtn);
         CheckBox checkBox = (CheckBox) solo.getView(R.id.checkBox);
