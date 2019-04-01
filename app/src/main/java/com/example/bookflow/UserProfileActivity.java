@@ -71,6 +71,9 @@ public class UserProfileActivity extends BasicActivity {
     private ReviewAdapter adpReview;
     private BookAdapter adpBook;
 
+    private long notif_count;
+    private boolean firstIn;
+
     /**
      * class of review list adapter
      * it puts comments, reviewer icon, date and rating into an item of the review list
@@ -174,6 +177,8 @@ public class UserProfileActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
+        firstIn = true;
+
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         uid = mAuth.getCurrentUser().getUid();
@@ -221,6 +226,32 @@ public class UserProfileActivity extends BasicActivity {
         setUserProfile();
         loadReviewList();
         loadBookList();
+        handleNotif();
+    }
+
+    private void handleNotif() {
+        FirebaseDatabase database =FirebaseDatabase.getInstance();
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        ValueEventListener notificationListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long tmp = dataSnapshot.getChildrenCount();
+                if (firstIn) {
+                    notif_count = tmp;
+                    firstIn = false;
+                } else if (notif_count != tmp) {
+                    notif_count = tmp;
+                    findViewById(R.id.notification_button).setBackgroundResource(R.drawable.notif_new);
+                } else {
+                    notif_count = tmp;
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("cancelled", databaseError.toException());
+            }
+        };
+        database.getReference().child("Notifications").child(uid).addValueEventListener(notificationListener);
     }
 
     /**
@@ -340,11 +371,9 @@ public class UserProfileActivity extends BasicActivity {
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                loadReviewList();
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                loadReviewList();
             }
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
