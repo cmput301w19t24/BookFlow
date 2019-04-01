@@ -66,6 +66,8 @@ public class BookDetailActivity extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private DatabaseReference notificationRef;
     private DatabaseReference mBookRef;
+    private DatabaseReference mRequestRefByBook;
+    private DatabaseReference mRequestRefByUser;
 
     private FirebaseAuth mAuth;
 
@@ -82,6 +84,8 @@ public class BookDetailActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
         notificationRef = mDatabase.getReference("Notifications");
         mBookRef = mDatabase.getReference("Books");
+        mRequestRefByBook = mDatabase.getReference("RequestsReceivedByBook");
+        mRequestRefByUser = mDatabase.getReference("RequestsSentByUser");
 
         titleField = findViewById(R.id.book_detail_book_name);
         authorField = findViewById(R.id.book_detail_author);
@@ -152,6 +156,8 @@ public class BookDetailActivity extends AppCompatActivity {
 
         if (bookStatus.equals("ACCEPTED") && (isBorrower || isOwner)) {
             locationButton.setVisibility(View.VISIBLE);
+        } else {
+            locationButton.setVisibility(View.GONE);
         }
     }
 
@@ -373,6 +379,7 @@ public class BookDetailActivity extends AppCompatActivity {
         if (mThisBook.getStatus().toString().equals("ACCEPTED") && isParticipant) {
             // the owner marks the book as borrowed
             statusRef.setValue(Book.BookStatus.BORROWED);
+            deleteBookRequestsOnTransaction();
             isTransactionSuccessful = true;
             isReturn = false;
 
@@ -458,6 +465,27 @@ public class BookDetailActivity extends AppCompatActivity {
 
             }
         });
+    }
+    private void deleteBookRequestsOnTransaction(){
+        DatabaseReference reqByBookRef = mRequestRefByBook.child(mThisBook.getBookId());
+        reqByBookRef.removeValue();
+        final DatabaseReference reqByUserRef = mRequestRefByUser.child(mThisBook.getBorrowerId());
+        ValueEventListener requestListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot child : dataSnapshot.getChildren() ){
+                    Request r = child.getValue(Request.class);
+                    if (r.getBookId().equals(mThisBook.getBookId())){
+                        reqByUserRef.child(child.getKey()).removeValue();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("cancelled", databaseError.toException());
+            }
+        };
+        reqByUserRef.addListenerForSingleValueEvent(requestListener);
     }
 }
 

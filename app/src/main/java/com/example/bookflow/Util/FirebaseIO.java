@@ -90,7 +90,7 @@ public class FirebaseIO {
             Log.d(TAG, "mSelectedPhotoUri.getLast...: " + localUri.getLastPathSegment());
             Log.i(TAG, "mybook.getBookId = " + mybook.getBookId());
 
-            final StorageReference photoRef = mBookPhotoStorageReference.child(localUri.getLastPathSegment());
+            final StorageReference photoRef = mBookPhotoStorageReference.child("book_photos").child(localUri.getLastPathSegment());
             UploadTask uploadTask = photoRef.putFile(localUri);
 
             uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -173,7 +173,7 @@ public class FirebaseIO {
             Log.d(TAG, "mSelectedPhotoUri.getLast...: " + localUri.getLastPathSegment());
             Log.i(TAG, "mybook.getBookId = " + mybook.getBookId());
 
-            final StorageReference photoRef = mBookPhotoStorageReference.child(localUri.getLastPathSegment());
+            final StorageReference photoRef = mBookPhotoStorageReference.child("book_photos").child(localUri.getLastPathSegment());
 
             UploadTask uploadTask = photoRef.putFile(localUri);
 
