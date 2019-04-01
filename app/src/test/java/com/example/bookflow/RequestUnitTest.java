@@ -85,4 +85,12 @@ public class RequestUnitTest {
         req.setBookId(bookId);
         assertEquals(req.getBookId(), "789");
     }
+
+    @Test
+    public void getStatus() {
+        String status = "Pending";
+        Request req = new Request();
+        req.setStatus(status);
+        assertEquals(req.getStatus(), "Pending");
+    }
 }
