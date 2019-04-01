@@ -111,11 +111,9 @@ public class BasicActivity extends AppCompatActivity {
 
     //Todo: add book
     public void clickAddButton(View v){
-        if(this.getClass() != AddBookActivity.class) {
-            Intent intent = new Intent(this, AddBookActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(this, AddBookActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     /**
