@@ -139,7 +139,7 @@ public class UserProfileActivity extends BasicActivity {
      * @param v view
      * @param tmpuid uid
      */
-    public void setReviewUser(final View v, final String tmpuid) {
+    private void setReviewUser(final View v, final String tmpuid) {
         query_user.orderByChild("uid").equalTo(tmpuid).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -317,36 +317,61 @@ public class UserProfileActivity extends BasicActivity {
      */
     private void loadReviewList() {
         reviewList = (ListView) findViewById(R.id.reviewList);
-        reviews.clear();
-        adpReview.clear();
         // add user's book to adapter
+        adpReview.clear();
+        reviews.clear();
+
         query_review.orderByChild("reviewee").equalTo(uid).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Review review = (Review) dataSnapshot.getValue(Review.class);
+
+                boolean pleaseAdd = true;
+
                 DataSnapshot reviewerUid = dataSnapshot.child("reviewer");
-                DataSnapshot dateData = dataSnapshot.child("date");
+                DataSnapshot uuidData = dataSnapshot.child("uuid");
                 if (null != reviewerUid.getValue()) {
                     review.setReviewer(reviewerUid.getValue().toString());
                 } else {
-                    review.setReviewer("Unknown");
+                    pleaseAdd = false;
                 }
 
-                if (null != dateData.getValue()) {
-                    review.setDate(dateData.getValue().toString());
+                if (null != uuidData.getValue()) {
+                    review.setUUID(uuidData.getValue().toString());
+                } else {
+                    pleaseAdd = false;
                 }
 
-                if (!reviews.contains(review)) {
+                if (!reviews.contains(review) && pleaseAdd) {
                     adpReview.add(review);
+                    reviewList.setAdapter(adpReview);
                 }
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                loadReviewList();
+                Review review = (Review) dataSnapshot.getValue(Review.class);
+                boolean pleaseAdd = true;
+
+                DataSnapshot reviewerUid = dataSnapshot.child("reviewer");
+                DataSnapshot uuidData = dataSnapshot.child("uuid");
+                if (null != reviewerUid.getValue()) {
+                    review.setReviewer(reviewerUid.getValue().toString());
+                } else {
+                    pleaseAdd = false;
+                }
+
+                if (null != uuidData.getValue()) {
+                    review.setUUID(uuidData.getValue().toString());
+                } else {
+                    pleaseAdd = false;
+                }
+                if (!reviews.contains(review) && pleaseAdd) {
+                    reviews.add(review);
+                    reviewList.setAdapter(adpReview);
+                }
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                loadReviewList();
             }
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -355,7 +380,6 @@ public class UserProfileActivity extends BasicActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-        reviewList.setAdapter(adpReview);
     }
 
     /**
