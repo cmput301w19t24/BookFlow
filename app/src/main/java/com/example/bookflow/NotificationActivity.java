@@ -2,6 +2,7 @@ package com.example.bookflow;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.bookflow.Model.Notification;
+import com.example.bookflow.Model.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -124,15 +126,32 @@ public class NotificationActivity extends BasicActivity {
             }
 
             @Override
-            protected void onBindViewHolder(NotificationHolder holder, int position, Notification model) {
+            protected void onBindViewHolder(final NotificationHolder holder, int position, Notification model) {
                 String outString = "";
                 String sender = model.getSenderName();
                 String book = model.getBookTitle();
-                String sender_id = model.getSenderId();
-                String path = "users/" + sender_id;
+                String senderId = model.getSenderId();
+                String path = "users/" + senderId;
                 String timestamp = model.getTimestamp();
                 String viewed = model.getViewed();
-                StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(path);
+
+                FirebaseDatabase.getInstance()
+                        .getReference("Users")
+                        .child(senderId)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                User currUser = dataSnapshot.getValue(User.class);
+                                if (currUser.getImageurl() != null) {
+                                    holder.setNotificationSenderIcon(currUser.getImageurl());
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
 
                 if(viewed.equals("true")){
                     holder.itemView.setBackgroundColor(Color.parseColor("#CCE8FF"));
@@ -147,7 +166,7 @@ public class NotificationActivity extends BasicActivity {
                     outString = sender + " has accepted your request for \"" + book + "\"" ;
                 }
                 holder.setNotificationText(outString);
-                holder.setNotificationSenderIcon(imageRef);
+//                holder.setNotificationSenderIcon(imageRef);
                 holder.setNotificationTimestamp(timestamp);
             }
         };

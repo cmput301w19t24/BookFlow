@@ -83,6 +83,11 @@ public class NotificationHolder extends RecyclerView.ViewHolder{
                 .load(s).into(notification_sender_icon);
     }
 
+    public void setNotificationSenderIcon(String url) {
+        Glide.with(itemView.getContext())
+                .load(url).into(notification_sender_icon);
+    }
+
     /**
      * set the timestamp of the notification
      * @param s timestamp
