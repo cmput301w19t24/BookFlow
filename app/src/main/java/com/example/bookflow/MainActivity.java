@@ -95,8 +95,14 @@ public class MainActivity extends BasicActivity {
             String userID = "null";
             if (parent == findViewById(R.id.myBookList)) {
                 userID = String.valueOf(book.getBorrowerId());
+                if(book.getStatus().toString().equals("ACCEPTED")) {
+                    ((TextView)v.findViewById(R.id.iby)).setText("to");
+                }
             } else if (parent == findViewById(R.id.myBorrowList)){
                 userID = String.valueOf(book.getOwnerId());
+                if(book.getStatus().toString().equals("BORROWED")) {
+                    ((TextView)v.findViewById(R.id.iby)).setText("from");
+                }
             }
             if (!userID.equals("null")) {
                 setUser(v, userID);
