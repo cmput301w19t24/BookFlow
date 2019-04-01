@@ -57,11 +57,10 @@ public class SearchActivityTest extends ActivityTestRule<SearchActivity> {
     @Test
     public void checkUserProfile(){
         solo.assertCurrentActivity("Wrong Activity", SearchActivity.class);
-        solo.enterText((EditText) solo.getView(R.id.searchText), "test1");
+        solo.enterText((EditText) solo.getView(R.id.searchText), "Paul");
         solo.clickOnView(solo.getView(R.id.goSearch));
-        solo.waitForText("test1");
-        solo.waitForText("test1@ualberta.ca");
-        solo.waitForText("1111");
+        solo.waitForText("Paul");
+        solo.waitForText("puer@ualberta.ca");
         solo.clickInRecyclerView(0);
         solo.assertCurrentActivity("Wrong Activity", UserProfileActivity.class);
     }
@@ -74,12 +73,9 @@ public class SearchActivityTest extends ActivityTestRule<SearchActivity> {
         solo.clickOnView(view1);
         solo.scrollToTop();
         solo.clickOnText("search book");
-        solo.enterText((EditText) solo.getView(R.id.searchText), "9788");
         solo.clickOnView(solo.getView(R.id.goSearch));
-        solo.waitForText("George's Marvelous Medicine");
-        solo.waitForText("Roald Dahl");
+        solo.waitForText("Living Room");
     }
-
 
 
     @Test
