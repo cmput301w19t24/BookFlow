@@ -154,7 +154,7 @@ public class SignUpActivity extends AppCompatActivity {
                                         // store the user's profile to database and storage
                                         @Override
                                         public void onComplete(@NonNull Task<Uri> task) {
-                                            String imageurl = task.toString();
+                                            String imageurl = task.getResult().toString();
                                             FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("imageurl").setValue(imageurl);
                                             // start main activity
                                             Intent intent_main = new Intent(SignUpActivity.this, MainActivity.class);

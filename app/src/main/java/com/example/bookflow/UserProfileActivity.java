@@ -275,26 +275,26 @@ public class UserProfileActivity extends BasicActivity {
                 textView = findViewById(R.id.phoneToBeChange);
                 textView.setText(user.getPhoneNumber());
 
-//                ImageView userImage = findViewById(R.id.userPicture);
-//                Glide.with(UserProfileActivity.this).load(user.getImageurl()).into(userImage);
+                ImageView userImage = findViewById(R.id.userPicture);
+                Glide.with(UserProfileActivity.this).load(user.getImageurl()).into(userImage);
 
-                // download user image from storage and update
-                StorageReference storageRef;
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                try {
-                    storageRef = storage.getReference().child("users").child(uid);
-                } catch (Exception e) {
-                    return ;
-                }
-
-                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        ImageView userImage = findViewById(R.id.userPicture);
-                        Glide.with(UserProfileActivity.this).load(uri).into(userImage);
-                    }
-
-                });
+//                // download user image from storage and update
+//                StorageReference storageRef;
+//                FirebaseStorage storage = FirebaseStorage.getInstance();
+//                try {
+//                    storageRef = storage.getReference().child("users").child(uid);
+//                } catch (Exception e) {
+//                    return ;
+//                }
+//
+//                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                    @Override
+//                    public void onSuccess(Uri uri) {
+//                        ImageView userImage = findViewById(R.id.userPicture);
+//                        Glide.with(UserProfileActivity.this).load(uri).into(userImage);
+//                    }
+//
+//                });
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -368,12 +368,15 @@ public class UserProfileActivity extends BasicActivity {
                 if (!reviews.contains(review)) {
                     adpReview.add(review);
                 }
+
+                reviewList.setAdapter(adpReview);
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                loadReviewList();
             }
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -382,7 +385,6 @@ public class UserProfileActivity extends BasicActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-        reviewList.setAdapter(adpReview);
     }
 
     /**
