@@ -30,7 +30,6 @@ import android.widget.TextView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.bookflow.Model.Notification;
 import com.example.bookflow.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -44,8 +43,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -92,7 +89,8 @@ public class MainActivity extends BasicActivity {
             TextView mtitle = v.findViewById(R.id.ititle);
             ImageView mphoto = v.findViewById(R.id.iphoto);
 
-            String userID = null;
+            // get userID to display
+            String userID = "null";
             if (parent == findViewById(R.id.myBookList)) {
                 userID = String.valueOf(book.getBorrowerId());
             } else if (parent == findViewById(R.id.myBorrowList)){
@@ -111,6 +109,11 @@ public class MainActivity extends BasicActivity {
         }
     }
 
+    /**
+     * Set the borrower or owner of the book when applicable
+     * @param v
+     * @param tmpuid
+     */
     private void setUser (final View v, final String tmpuid) {
         database.getReference().child("Users").child(tmpuid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -119,6 +122,7 @@ public class MainActivity extends BasicActivity {
                 TextView rname = v.findViewById(R.id.iuser);
                 TextView rby = v.findViewById(R.id.iby2);
                 TextView status = v.findViewById(R.id.istatus);
+                // only accepted books and borrowed books are applicable
                 if (status.getText().toString().equals("ACCEPTED") ||
                         status.getText().toString().equals("BORROWED")) {
                     rname.setText(user.getUsername());
@@ -148,11 +152,13 @@ public class MainActivity extends BasicActivity {
         uid = mAuth.getCurrentUser().getUid();
         query = database.getReference().child("Books");
 
+        // books declarations
         books = new ArrayList<Book>();
         filtered_books = new ArrayList<Book>();
         nonfiltered_books = new ArrayList<Book>();
         adpBook = new MyAdapter(this,books);
 
+        // borrows declarations
         borrows = new ArrayList<Book>();
         filtered_borrows = new ArrayList<Book>();
         nonfiltered_borrows = new ArrayList<Book>();
@@ -195,10 +201,13 @@ public class MainActivity extends BasicActivity {
     protected void onStart() {
         super.onStart();
 
+        // UI
         findViewById(R.id.main_page_button).setBackgroundResource(R.drawable.home_select);
+        // initialization
         books.clear();
         borrows.clear();
         firstgrab = true;
+        // load lists
         bookList();
         borrowList();
     }
@@ -210,12 +219,17 @@ public class MainActivity extends BasicActivity {
         return true;
     }
 
+    /**
+     * When a checkbox is toggled, load the list view accordingly
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
+
         item.setChecked(!item.isChecked());
 
         switch (item.getItemId()) {
@@ -252,13 +266,20 @@ public class MainActivity extends BasicActivity {
         }
     }
 
+    /**
+     * Add the books of the specific status to the listview
+     * @param status
+     */
     private void addToList(Book.BookStatus status) {
+        // if the boolean is set to true re-copy the nonfiltered arrays
         if (firstgrab) {
             nonfiltered_books = (ArrayList<Book>) books.clone();
             nonfiltered_borrows = (ArrayList<Book>) borrows.clone();
             firstgrab = false;
         }
+        // get current book list
         filtered_books = (ArrayList<Book>)books.clone();
+        // go through all the books of the user and add corresponding books to the book list
         for (int i=0; i<nonfiltered_books.size(); i++) {
             Book book = nonfiltered_books.get(i);
             if (book.getStatus().equals(status)
@@ -269,7 +290,9 @@ public class MainActivity extends BasicActivity {
         }
         myBookList.setAdapter(adpBook);
 
+        // get current borrow list
         filtered_borrows = (ArrayList<Book>)borrows.clone();
+        // go through all the borrows of the user and add corresponding books to the borrows list
         for (int i=0; i<nonfiltered_borrows.size(); i++) {
             Book book = nonfiltered_borrows.get(i);
             if (book.getStatus().equals(status)
@@ -281,6 +304,10 @@ public class MainActivity extends BasicActivity {
         myBorrowList.setAdapter(adpBorrow);
     }
 
+    /**
+     * Remove the books of the specific status to the listview
+     * @param status
+     */
     private void removeFromList(Book.BookStatus status) {
         if (firstgrab) {
             nonfiltered_books = (ArrayList<Book>) books.clone();
@@ -288,6 +315,7 @@ public class MainActivity extends BasicActivity {
             firstgrab = false;
         }
 
+        // remove the books of the user which are not of the specific status
         filtered_books = (ArrayList<Book>)books.clone();
         for (int i=0; i<filtered_books.size(); i++) {
             Book book = filtered_books.get(i);
@@ -299,6 +327,7 @@ public class MainActivity extends BasicActivity {
         }
         myBookList.setAdapter(adpBook);
 
+        // remove the borrows of the user which are not of the specific status
         filtered_borrows = (ArrayList<Book>)borrows.clone();
         for (int i=0; i<filtered_borrows.size(); i++) {
             Book book = filtered_borrows.get(i);
@@ -311,6 +340,10 @@ public class MainActivity extends BasicActivity {
         myBorrowList.setAdapter(adpBorrow);
     }
 
+    /**
+     * Clear the books arraylists
+     * reset the boolean and retrieve the book list
+     */
     private void reloadBookList() {
         firstgrab = true;
         books.clear();
@@ -320,6 +353,10 @@ public class MainActivity extends BasicActivity {
         bookList();
     }
 
+    /**
+     * Clear the borrows arraylists
+     * reset the boolean and retrieve the borrow list
+     */
     private void reloadBorrowList() {
         firstgrab = true;
         borrows.clear();
@@ -341,6 +378,8 @@ public class MainActivity extends BasicActivity {
                 Book book = (Book)dataSnapshot.getValue(Book.class);
                 if (!books.contains(book)) {
                     adpBook.add(book);
+                    // a boolean helps us to decide if we want to
+                    // re-copy the retrieved data from the firebase to the non-filtered books
                     firstgrab = true;
                 }
             }
@@ -381,7 +420,10 @@ public class MainActivity extends BasicActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Book book = (Book)dataSnapshot.getValue(Book.class);
                 if (!borrows.contains(book)) {
+                    // add a book to the adapter
                     adpBorrow.add(book);
+                    // a boolean helps us to decide if we want to
+                    // re-copy the retrieved data from the firebase to the non-filtered borrows
                     firstgrab = true;
                 }
             }
@@ -400,6 +442,7 @@ public class MainActivity extends BasicActivity {
         });
         myBorrowList.setAdapter(adpBorrow);
         myBorrowList.setClickable(true);
+        // on click to a list item, go to book detail activity
         myBorrowList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             /**
              * @param parent
@@ -417,6 +460,10 @@ public class MainActivity extends BasicActivity {
         });
     }
 
+    /**
+     * Toggle the visiablities of the listviews to see the borrowlist
+     * @param borrowlistV
+     */
     public void seeBorrowList(View borrowlistV) {
         findViewById(R.id.myBookList).setVisibility(View.GONE);
         findViewById(R.id.myBorrowList).setVisibility(View.VISIBLE);
@@ -427,6 +474,10 @@ public class MainActivity extends BasicActivity {
         ((TextView)findViewById(R.id.title_mybook)).setTextColor(Color.WHITE);
     }
 
+    /**
+     * Toggle the visiablities of the listviews to see the book list
+     * @param booklistV
+     */
     public void seeBookList(View booklistV) {
         findViewById(R.id.myBookList).setVisibility(View.VISIBLE);
         findViewById(R.id.myBorrowList).setVisibility(View.GONE);
@@ -437,6 +488,10 @@ public class MainActivity extends BasicActivity {
         ((TextView)findViewById(R.id.title_myborrow)).setTextColor(Color.WHITE);
     }
 
+    /**
+     * when click the refresh button, this function will be called
+     * @param refreshV
+     */
     public void refreshPage(View refreshV) {
         finish();
         startActivity(getIntent());
