@@ -136,7 +136,7 @@ public class NotificationActivity extends BasicActivity {
                 StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(path);
 
                 if(viewed.equals("true")){
-                    holder.itemView.setBackgroundColor(Color.parseColor("#99B5CC"));
+                    holder.itemView.setBackgroundColor(Color.parseColor("#CCE8FF"));
                 }
 
                 if (model.getType().equals("request")) {
