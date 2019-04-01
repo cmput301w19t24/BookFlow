@@ -156,6 +156,8 @@ public class BookDetailActivity extends AppCompatActivity {
 
         if (bookStatus.equals("ACCEPTED") && (isBorrower || isOwner)) {
             locationButton.setVisibility(View.VISIBLE);
+        } else {
+            locationButton.setVisibility(View.GONE);
         }
     }
 
