@@ -23,7 +23,7 @@ public class Review {
     private String reviewee;
     private String comments;
     private String date;
-    private int rating;
+    private Integer rating;
     private String uuid;
 
     public Review() {

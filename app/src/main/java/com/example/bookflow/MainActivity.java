@@ -285,7 +285,7 @@ public class MainActivity extends BasicActivity {
             if (book.getStatus().equals(status)
                     || book.getStatus().toString().equals(status.toString())) {
                 if(!filtered_books.contains(book))
-                    adpBook.add(book);
+                    books.add(book);
             }
         }
         myBookList.setAdapter(adpBook);
@@ -298,7 +298,7 @@ public class MainActivity extends BasicActivity {
             if (book.getStatus().equals(status)
                     || book.getStatus().toString().equals(status.toString())) {
                 if(!filtered_borrows.contains(book))
-                    adpBorrow.add(book);
+                    borrows.add(book);
             }
         }
         myBorrowList.setAdapter(adpBorrow);
@@ -322,7 +322,7 @@ public class MainActivity extends BasicActivity {
             if (book.getStatus().equals(status)
                 || book.getStatus().toString().equals(status.toString())) {
                 if(filtered_books.contains(book))
-                    adpBook.remove(book);
+                    books.remove(book);
             }
         }
         myBookList.setAdapter(adpBook);
@@ -334,7 +334,7 @@ public class MainActivity extends BasicActivity {
             if (book.getStatus().equals(status)
                     || book.getStatus().toString().equals(status.toString())) {
                 if(filtered_borrows.contains(book))
-                    adpBorrow.remove(book);
+                    borrows.remove(book);
             }
         }
         myBorrowList.setAdapter(adpBorrow);
@@ -377,7 +377,7 @@ public class MainActivity extends BasicActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Book book = (Book)dataSnapshot.getValue(Book.class);
                 if (!books.contains(book)) {
-                    adpBook.add(book);
+                    books.add(book);
                     // a boolean helps us to decide if we want to
                     // re-copy the retrieved data from the firebase to the non-filtered books
                     firstgrab = true;
@@ -421,7 +421,7 @@ public class MainActivity extends BasicActivity {
                 Book book = (Book)dataSnapshot.getValue(Book.class);
                 if (!borrows.contains(book)) {
                     // add a book to the adapter
-                    adpBorrow.add(book);
+                    borrows.add(book);
                     // a boolean helps us to decide if we want to
                     // re-copy the retrieved data from the firebase to the non-filtered borrows
                     firstgrab = true;
