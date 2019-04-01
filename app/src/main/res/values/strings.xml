@@ -31,7 +31,7 @@
     <string name="writingReview">Write Down Your Review</string>
     <string name="rate_1">Rate This User</string>
     <string name="cancel_review">Cancel</string>
-    <string name="initRate">5</string>
+    <string name="initRate">3</string>
 
     <!-- main -->
     <string name="more"><![CDATA[>>More]]></string>
