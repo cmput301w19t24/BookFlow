@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +35,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.regex.Pattern;
 
-public class SignUpActivity extends BasicActivity {
+public class SignUpActivity extends AppCompatActivity {
 
     private EditText id, email, password, repassword,phone;
     private Button btn;
