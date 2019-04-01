@@ -88,7 +88,7 @@ public class SearchActivity extends BasicActivity {
         search_Text = findViewById(R.id.searchText);
 
         spinner = findViewById(R.id.spinner);
-
+        firstIn = true;
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
