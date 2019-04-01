@@ -112,5 +112,6 @@
     <string name="location_not_set">Location not set for this book.</string>
     <string name="logged_in">Logged in</string>
     <string name="login_failed">Login Failed</string>
+    <string name="book_already_requested">you have already requested this book</string>
 
 </resources>

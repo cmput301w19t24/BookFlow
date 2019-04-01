@@ -216,51 +216,56 @@ public class BookDetailActivity extends AppCompatActivity {
      */
     public void request(View v) {
         FirebaseUser user = mAuth.getCurrentUser();
-        mThisBook.setBorrowerId(user.getUid());
+        final String myUid = user.getUid();
+//        mThisBook.setBorrowerId(user.getUid());
 
         mDatabase.getReference()
                 .child("RequestsSentByUser")
-                .child(mThisBook.getBorrowerId())
+                .child(myUid)
                 .addListenerForSingleValueEvent( new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         boolean alreadyRequested = false;
                         for(DataSnapshot child : dataSnapshot.getChildren() ){
                             Request r = child.getValue(Request.class);
-                            if (r.getBorrowerId().equals(mThisBook.getBorrowerId()) && r.getBookId().equals(bookId) && !r.getStatus().equals("Rejected")){
-                                alreadyRequested = true;
+                            alreadyRequested = r != null &&
+                                                r.getBorrowerId() != null && r.getBorrowerId().equals(myUid) &&
+                                                r.getBookId() != null && r.getBookId().equals(bookId) &&
+                                                r.getStatus() != null && !r.getStatus().equals("Rejected");
+                            if (alreadyRequested){
                                 Log.d("testing", "caught by conditional");
                                 break;
                             }
                         }
                         if (alreadyRequested) {
                             Toast toast = Toast.makeText(getApplicationContext(),
-                                    "you have already requested this book",
+                                    getString(R.string.book_already_requested),
                                     Toast.LENGTH_SHORT);
                             toast.show();
                         }
                         else {
-                            if (mThisBook.getOwnerId().equals(mThisBook.getBorrowerId())) {
+                            // this is a new request
+                            if (mThisBook.getOwnerId().equals(myUid)) {
                                 Toast toast = Toast.makeText(getApplicationContext(),
                                         "you cannot request your own book",
                                         Toast.LENGTH_SHORT);
                                 toast.show();
                             }
                             else {
-                                mDatabase.getReference()
-                                        .child("Users/" + mThisBook.getBorrowerId())
+                                mDatabase.getReference("Users")
+                                        .child(myUid)
                                         .addListenerForSingleValueEvent( new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
                                                 String username = dataSnapshot.child("username").getValue().toString();
 
                                                 //create request
-                                                Request req = new Request(mThisBook.getOwnerId(), mThisBook.getBorrowerId(), bookId);
+                                                Request req = new Request(mThisBook.getOwnerId(), myUid, bookId);
 
                                                 // add request to list of sent requests by user
                                                 DatabaseReference requestsSentReference = mDatabase.getReference("RequestsSentByUser");
                                                 String requestId = requestsSentReference.push().getKey();
-                                                requestsSentReference.child(mThisBook.getBorrowerId()).child(requestId).setValue(req);
+                                                requestsSentReference.child(myUid).child(requestId).setValue(req);
 
                                                 // add request to list of received requests for book
                                                 DatabaseReference receivedRequestsByBookReference = mDatabase.getReference("RequestsReceivedByBook");
@@ -271,7 +276,8 @@ public class BookDetailActivity extends AppCompatActivity {
                                                 String timestamp = formatter.format(new Date());
                                                 DatabaseReference receiverRef = notificationRef.child(mThisBook.getOwnerId());
                                                 String notification_id = receiverRef.push().getKey();
-                                                receiverRef.child(notification_id).setValue(new Notification(mThisBook.getBorrowerId(), bookId, "request", requestId, mThisBook.getTitle(), username, timestamp));
+                                                receiverRef.child(notification_id).setValue(
+                                                        new Notification(myUid, bookId, "request", requestId, mThisBook.getTitle(), username, timestamp));
 
                                                 // transition book state
                                                 DatabaseReference bookRef = mDatabase.getReference("Books");
