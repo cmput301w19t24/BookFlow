@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,21 +18,14 @@ import com.google.firebase.storage.StorageReference;
 
 public class RequestHolder extends RecyclerView.ViewHolder{
 
-    //private final TextView request_header; // don't need until accept implemented, currently hardcoded string
-    //private final TextView requester_name;
     private final ImageView request_item_icon;
-    //private final TextView request_text;
-    //private final TextView request_item_book_title;
     private final TextView request_status;
     private final TextView request_item_text;
     FirebaseDatabase mDatabase;
 
     public RequestHolder(@NonNull View itemView) {
         super(itemView);
-        //request_item_book_title = itemView.findViewById(R.id.request_item_book_title);
-        //requester_name = itemView.findViewById(R.id.requester_name);
         request_item_icon = itemView.findViewById(R.id.request_item_icon);
-        //request_text = itemView.findViewById(R.id.request_text);
         request_item_text = itemView.findViewById(R.id.request_item_text);
         request_status = itemView.findViewById(R.id.request_header);
 
@@ -44,13 +36,6 @@ public class RequestHolder extends RecyclerView.ViewHolder{
 
             }
         });
-//        itemView.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                mClickListener.onItemLongClick(v, getAdapterPosition());
-//                return true;
-//            }
-//        });
     }
 
     private RequestHolder.ClickListener mClickListener;
@@ -58,7 +43,6 @@ public class RequestHolder extends RecyclerView.ViewHolder{
     //Interface to send callbacks...
     public interface ClickListener{
         public void onItemClick(View view, int position);
-//        public void onItemLongClick(View view, int position);
     }
 
     public void setOnClickListener(RequestHolder.ClickListener clickListener){
@@ -87,14 +71,6 @@ public class RequestHolder extends RecyclerView.ViewHolder{
                 final String requesterName = dataSnapshot.child(reqId).child("username").getValue().toString();
                 Log.e("testing", requesterName);
                 DatabaseReference bookRef = mDatabase.getReference("Books");
-
-                //request_item_text.setText(ownerName + requesterName);
-
-
-
-                //request_item_book_title.setText(ownerName);
-                //request_text.setText("has requested");
-                //Log.e("help", requesterName);
 
                 ValueEventListener bookListener = new ValueEventListener() {
                     @Override
