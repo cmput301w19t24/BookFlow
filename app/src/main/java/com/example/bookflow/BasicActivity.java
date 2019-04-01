@@ -45,6 +45,7 @@ public class BasicActivity extends AppCompatActivity {
         mActivityClasses.add(UserProfileActivity.class);
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        // boolean used to handle notification
         firstIn = true;
     }
 
@@ -61,15 +62,15 @@ public class BasicActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 long tmp = dataSnapshot.getChildrenCount();
+                // grab the number of count when enter the activity for the first time
                 if (firstIn) {
                     notif_count = tmp;
                     firstIn = false;
                 } else if (notif_count != tmp) {
-                    notif_count = tmp;
+                    // set notification count
                     TextView count_text = findViewById(R.id.basic_noti_count);
                     count_text.setVisibility(View.VISIBLE);
-                } else {
-                    notif_count = tmp;
+                    count_text.setText(String.valueOf(tmp-notif_count));
                 }
             }
             @Override
@@ -133,6 +134,8 @@ public class BasicActivity extends AppCompatActivity {
      * @param v main page button view
      */
     public void clickProfileButton(View v) {
+        // grab the uid
+        // if equal to current uid, don't allow the user to re-enter current activity
         String passuid = String.valueOf(uid);
         try {
             Class<?> c = this.getClass();
