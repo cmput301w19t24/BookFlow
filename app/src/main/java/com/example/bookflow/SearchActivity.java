@@ -35,12 +35,14 @@ import com.example.bookflow.Model.Book;
 import com.example.bookflow.Model.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -61,6 +63,9 @@ public class SearchActivity extends BasicActivity {
     private RecyclerView recyclerView;
     private ArrayList<Book> books;
     private ArrayList<Book> filtered_books;
+
+    private long notif_count;
+    private boolean firstIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,10 +177,36 @@ public class SearchActivity extends BasicActivity {
         });
     }
 
+    private void handleNotif() {
+        FirebaseDatabase database =FirebaseDatabase.getInstance();
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        ValueEventListener notificationListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long tmp = dataSnapshot.getChildrenCount();
+                if (firstIn) {
+                    notif_count = tmp;
+                    firstIn = false;
+                } else if (notif_count != tmp) {
+                    notif_count = tmp;
+                    findViewById(R.id.notification_button).setBackgroundResource(R.drawable.notif_new);
+                } else {
+                    notif_count = tmp;
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("cancelled", databaseError.toException());
+            }
+        };
+        database.getReference().child("Notifications").child(uid).addValueEventListener(notificationListener);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
         findViewById(R.id.search_button).setBackgroundResource(R.drawable.search_select);
+        handleNotif();
     }
 
     /**
