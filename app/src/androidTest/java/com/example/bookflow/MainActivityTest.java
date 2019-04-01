@@ -81,13 +81,11 @@ public class MainActivityTest extends ActivityTestRule<MainActivity> {
 
     @Test
     public void clickItem(){
-        MainActivity activity = (MainActivity) solo.getCurrentActivity();
-
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         ListView booklist = (ListView)solo.getView("myBookList");
         if (booklist.getCount()>0) {
+            solo.waitForText("by",1, 2000);
             View v = booklist.getChildAt(0);
-            TextView author = (TextView)v.findViewById(R.id.iauthor);
+            TextView author = (TextView)v.findViewById(R.id.ititle);
             solo.clickInList(0);
             solo.assertCurrentActivity("Wrong Activity", BookDetailActivity.class);
             String book_name = String.valueOf(author.getText());
