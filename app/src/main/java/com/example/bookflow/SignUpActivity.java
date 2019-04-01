@@ -16,7 +16,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,8 +28,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -46,8 +43,6 @@ public class SignUpActivity extends BasicActivity {
     private Uri imageUri = null;
     private FirebaseAuth mAuth;
     private FirebaseStorage storage;
-
-    private static final String TAG = "SignupActivity";
 
     /**
      *
@@ -150,7 +145,7 @@ public class SignUpActivity extends BasicActivity {
                                         // store the user's profile to database and storage
                                         @Override
                                         public void onComplete(@NonNull Task<Uri> task) {
-                                            String imageurl = task.toString();
+                                            String imageurl = task.getResult().toString();
                                             user.setImageurl(imageurl);
                                         }                                    });
                                 } else {
@@ -165,25 +160,10 @@ public class SignUpActivity extends BasicActivity {
                     user.setPhoneNumber(phone.getText().toString());
                     user.setUid(uid);
                     user.setSelfIntro("No introduction");
-                    FirebaseInstanceId.getInstance().getInstanceId()
-                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                    if (task.isSuccessful()) {
-                                        String token = task.getResult().getToken();
-                                        Log.i(TAG, "ntfctn token: " + token);
-
-                                        user.setNotificationToken(token);
-                                    }
-
-                                    FirebaseDatabase.getInstance().getReference().child("Users").child(uid).setValue(user);
-
-                                    // start main activity
-                                    Intent intent_main = new Intent(SignUpActivity.this, MainActivity.class);
-                                    startActivity(intent_main);
-                                }
-                            });
-
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(uid).setValue(user);
+                    // start main activity
+                    Intent intent_main = new Intent(SignUpActivity.this, MainActivity.class);
+                    startActivity(intent_main);
                 } else {
                     task.getException().printStackTrace();
                     Toast.makeText(SignUpActivity.this, "Email address already registered.", Toast.LENGTH_SHORT).show();
