@@ -113,6 +113,11 @@ public class AddBookActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * buttons on the action bar are selected
+     * @param item selected button
+     * @return return true if success
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -169,9 +174,9 @@ public class AddBookActivity extends AppCompatActivity {
      * handles the return of other activities, including "choose from album",
      * "take a photo", and "scan"
      *
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * @param requestCode request code
+     * @param resultCode result code
+     * @param data data
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
