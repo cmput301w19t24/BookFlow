@@ -22,8 +22,8 @@ import java.util.Date;
  * Rating is 0,1,2,3,4,5.
  */
 public class WriteReviewActivity extends AppCompatActivity {
-    DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
-    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    private DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+    private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private String reviewee, reviewer, comments;
     private int rating = 3;
 
