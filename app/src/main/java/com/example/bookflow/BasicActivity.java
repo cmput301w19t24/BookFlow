@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.bookflow.Model.InAppNotif;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,9 +29,7 @@ import java.util.ArrayList;
 public class BasicActivity extends AppCompatActivity {
     private ArrayList<Class> mActivityClasses;
     private String uid;
-    private long notif_count;
-    private boolean firstIn;
-
+    private InAppNotif notif = InitActivity.getNotif();
 
     /**
      * on create
@@ -49,8 +48,6 @@ public class BasicActivity extends AppCompatActivity {
         mActivityClasses.add(UserProfileActivity.class);
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        // boolean used to handle notification
-        firstIn = true;
     }
 
     /**
@@ -73,16 +70,16 @@ public class BasicActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 long tmp = dataSnapshot.getChildrenCount();
                 // grab the number of count when enter the activity for the first time
-                if (firstIn) {
-                    notif_count = tmp;
-                    firstIn = false;
-                } else if (notif_count < tmp) {
+                if (notif.isFirstIn()) {
+                    notif.setNotif_count(tmp);
+                    notif.setFirstIn(false);
+                } else if (notif.getNotif_count() < tmp) {
                     // set notification count
                     TextView count_text = findViewById(R.id.basic_noti_count);
                     count_text.setVisibility(View.VISIBLE);
-                    count_text.setText(String.valueOf(tmp-notif_count));
-                } else if (notif_count > tmp) {
-                    notif_count = tmp;
+                    count_text.setText(String.valueOf(tmp-notif.getNotif_count()));
+                } else if (notif.getNotif_count() > tmp) {
+                    notif.setNotif_count(tmp);
                 }
             }
             @Override

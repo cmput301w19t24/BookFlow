@@ -96,12 +96,12 @@ public class MainActivity extends BasicActivity {
             if (parent == findViewById(R.id.myBookList)) {
                 userID = String.valueOf(book.getBorrowerId());
                 if(book.getStatus().toString().equals("ACCEPTED")) {
-                    ((TextView)v.findViewById(R.id.iby)).setText("to");
+                    ((TextView)v.findViewById(R.id.iby2)).setText("to");
                 }
             } else if (parent == findViewById(R.id.myBorrowList)){
                 userID = String.valueOf(book.getOwnerId());
                 if(book.getStatus().toString().equals("BORROWED")) {
-                    ((TextView)v.findViewById(R.id.iby)).setText("from");
+                    ((TextView)v.findViewById(R.id.iby2)).setText("from");
                 }
             }
             if (!userID.equals("null")) {

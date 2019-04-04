@@ -241,8 +241,6 @@ public class RequestDetailActivity extends BasicActivity {
             }
         };
         notificationRef.addListenerForSingleValueEvent(notificationListener);
-
-
         finish();
     }
 

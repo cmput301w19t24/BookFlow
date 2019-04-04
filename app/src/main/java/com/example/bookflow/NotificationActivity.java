@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.bookflow.Model.InAppNotif;
 import com.example.bookflow.Model.Notification;
 import com.example.bookflow.Model.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -43,6 +44,7 @@ import java.util.Date;
 public class NotificationActivity extends BasicActivity {
     private FirebaseAuth mAuth;
     private FirebaseRecyclerAdapter<Notification, NotificationHolder> myFirebaseRecyclerAdapter;
+    private InAppNotif notif = InitActivity.getNotif();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,6 +183,8 @@ public class NotificationActivity extends BasicActivity {
         super.onStart();
         findViewById(R.id.notification_button).setBackgroundResource(R.drawable.notif_select);
         myFirebaseRecyclerAdapter.startListening();
+        notif.setFirstIn(true);
+        notif.setNotif_count(0);
     }
     /**
      * onStop method
@@ -194,6 +198,9 @@ public class NotificationActivity extends BasicActivity {
             myFirebaseRecyclerAdapter.stopListening();
         }
     }
+
+
+
     /**
      * tempMySentRequests method
      * onclick callback method, goes to sent requests list activity
