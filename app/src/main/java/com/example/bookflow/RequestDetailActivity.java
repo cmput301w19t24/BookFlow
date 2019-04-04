@@ -127,11 +127,13 @@ public class RequestDetailActivity extends BasicActivity {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         String borrowerUsername = dataSnapshot.child("username").getValue().toString();
-                                        String borrowerPhotoUrl = dataSnapshot.child("imageurl").getValue().toString();
+                                        Object borrowerPhotoUrl = dataSnapshot.child("imageurl").getValue();
 
-                                        Glide.with(getApplicationContext())
-                                                .load(borrowerPhotoUrl)
-                                                .into(userIcon);
+                                        if (borrowerPhotoUrl != null) {
+                                            Glide.with(getApplicationContext())
+                                                    .load(borrowerPhotoUrl.toString())
+                                                    .into(userIcon);
+                                        }
 
                                         if (status.equals("Pending")) {
                                             requestText.setText(borrowerUsername + " has requested \"" + bookTitle + "\"");
