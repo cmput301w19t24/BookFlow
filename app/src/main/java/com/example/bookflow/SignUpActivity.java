@@ -32,6 +32,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.regex.Pattern;
 
@@ -183,9 +185,11 @@ public class SignUpActivity extends AppCompatActivity {
      * upload image from the album
      */
     private void upload() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(intent, PICK_FROM_ALBUM);
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setFixAspectRatio(true)
+                .setAspectRatio(1, 1)
+                .start(SignUpActivity.this);
     }
 
     /**
@@ -196,9 +200,12 @@ public class SignUpActivity extends AppCompatActivity {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == PICK_FROM_ALBUM && resultCode == RESULT_OK) {
-            profile.setImageURI(data.getData());
-            imageUri = data.getData();
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                imageUri = result.getUri();
+                profile.setImageURI(imageUri);
+            }
         }
     }
 }
