@@ -5,6 +5,7 @@
  */
 package com.example.bookflow;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Field;
@@ -48,6 +50,25 @@ public class BasicActivity extends AppCompatActivity {
         mActivityClasses.add(UserProfileActivity.class);
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        try {
+            Query query = FirebaseDatabase.getInstance().getReference().child("InAppNotif").child(uid);
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    InAppNotif notif1 = dataSnapshot.getValue(InAppNotif.class);
+                    if (null != notif1) {
+                        notif.setFirstIn(notif1.isFirstIn());
+                        notif.setNotif_count(notif1.getNotif_count());
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    notif = InitActivity.getNotif();
+                }
+            });
+        } catch (Exception e) {
+            notif = InitActivity.getNotif();
+        }
     }
 
     /**
@@ -64,7 +85,7 @@ public class BasicActivity extends AppCompatActivity {
      */
     private void handleNotif() {
         FirebaseDatabase database =FirebaseDatabase.getInstance();
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         ValueEventListener notificationListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -73,6 +94,7 @@ public class BasicActivity extends AppCompatActivity {
                 if (notif.isFirstIn()) {
                     notif.setNotif_count(tmp);
                     notif.setFirstIn(false);
+                    InitActivity.pushData(uid);
                 } else if (notif.getNotif_count() < tmp) {
                     // set notification count
                     TextView count_text = findViewById(R.id.basic_noti_count);
@@ -80,11 +102,12 @@ public class BasicActivity extends AppCompatActivity {
                     count_text.setText(String.valueOf(tmp-notif.getNotif_count()));
                 } else if (notif.getNotif_count() > tmp) {
                     notif.setNotif_count(tmp);
+                    InitActivity.pushData(uid);
                 }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.w("cancelled", databaseError.toException());
+                notif = InitActivity.getNotif();
             }
         };
         database.getReference().child("Notifications").child(uid).addValueEventListener(notificationListener);

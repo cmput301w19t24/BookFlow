@@ -185,6 +185,7 @@ public class NotificationActivity extends BasicActivity {
         myFirebaseRecyclerAdapter.startListening();
         notif.setFirstIn(true);
         notif.setNotif_count(0);
+        InitActivity.pushData(mAuth.getCurrentUser().getUid());
     }
     /**
      * onStop method
